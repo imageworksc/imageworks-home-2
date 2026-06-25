@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ImageWorks Creative</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- liquid-glass SVG displacement filter (Chrome) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="liquid-glass" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feImage href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%20preserveAspectRatio%3D%27none%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27rx%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%270%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27rgb%280%2C0%2C0%29%27%2F%3E%3Cstop%20offset%3D%270.22%27%20stop-color%3D%27rgb%28128%2C0%2C0%29%27%2F%3E%3Cstop%20offset%3D%270.78%27%20stop-color%3D%27rgb%28128%2C0%2C0%29%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27rgb%28255%2C0%2C0%29%27%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%27gy%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%270%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27rgb%280%2C0%2C0%29%27%2F%3E%3Cstop%20offset%3D%270.22%27%20stop-color%3D%27rgb%280%2C128%2C0%29%27%2F%3E%3Cstop%20offset%3D%270.78%27%20stop-color%3D%27rgb%280%2C128%2C0%29%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27rgb%280%2C255%2C0%29%27%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27rgb%280%2C0%2C128%29%27%2F%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27url%28%23rx%29%27%20style%3D%27mix-blend-mode%3Ascreen%27%2F%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27url%28%23gy%29%27%20style%3D%27mix-blend-mode%3Ascreen%27%2F%3E%3C%2Fsvg%3E" result="map" preserveAspectRatio="none"/>
+    <!-- chromatic aberration: displace R / G / B by different amounts for a prismatic glass rim -->
+    <feDisplacementMap in="SourceGraphic" in2="map" scale="60" xChannelSelector="R" yChannelSelector="G" result="d_r"/>
+    <feColorMatrix in="d_r" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="c_r"/>
+    <feDisplacementMap in="SourceGraphic" in2="map" scale="72" xChannelSelector="R" yChannelSelector="G" result="d_g"/>
+    <feColorMatrix in="d_g" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="c_g"/>
+    <feDisplacementMap in="SourceGraphic" in2="map" scale="86" xChannelSelector="R" yChannelSelector="G" result="d_b"/>
+    <feColorMatrix in="d_b" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="c_b"/>
+    <feBlend in="c_r" in2="c_g" mode="screen" result="c_rg"/>
+    <feBlend in="c_rg" in2="c_b" mode="screen" result="c_rgb"/>
+    <feGaussianBlur in="c_rgb" stdDeviation="0.6"/>
+  </filter>
+</svg>
+
+<div style="position:relative;width:100%;overflow-x:hidden;background:#fff;">
+
+<!-- ===================== NAV ===================== -->
+<nav data-nav style="position:absolute;top:0;left:0;width:100%;height:72px;z-index:120;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:box-shadow .35s ease,background .35s ease;">
+  <a href="#top" style="display:flex;align-items:center;text-decoration:none;">
+    <img src="assets/logo.png" alt="ImageWorks Creative" style="height:34px;width:auto;display:block;"/>
+  </a>
+  <div style="display:flex;align-items:center;gap:38px;">
+    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Marketing</a>
+    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Web Plans</a>
+    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Branding</a>
+    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Our Work</a>
+    <a class="iw-link" href="#why" style="font-size:15px;font-weight:600;color:#3d464d;">About</a>
+  </div>
+  <a class="iw-btn" href="#cta" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 24px;border-radius:2px;background:#80c34a;color:#fff;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 1px 2px rgba(20,40,80,.14);">Contact</a>
+</nav>
+
+<!-- ===================== HERO (exact Figma frame 10234:322) ===================== -->
+<header id="top" data-hero class="iw-hero">
+  <!-- desktop: fixed 1920x1061 stage scaled to viewport width -->
+  <div class="iwh-desktop">
+    <div class="iwh-stage" data-hero-stage>
+
+      <!-- dot-grid patches (exact Figma positions, soft radial fade) -->
+      <div class="iwh-dots" style="left:643px;top:22px;width:387px;height:334px;"></div>
+      <div class="iwh-dots" style="left:1212px;top:222px;width:698px;height:697px;"></div>
+      <div class="iwh-dots" style="left:247px;top:613px;width:378px;height:273px;"></div>
+      <div class="iwh-dots" style="left:8px;top:316px;width:246px;height:154px;"></div>
+      <div class="iwh-dots" style="left:1162px;top:497px;width:246px;height:253px;"></div>
+      <div class="iwh-dots" style="left:1468px;top:711px;width:107px;height:62px;"></div>
+      <div class="iwh-dots" style="left:1422px;top:473px;width:107px;height:62px;"></div>
+      <div class="iwh-dots" style="left:676px;top:998px;width:107px;height:62px;"></div>
+      <div class="iwh-dots" style="left:527px;top:998px;width:107px;height:62px;"></div>
+
+      <!-- soft blurred accent blob -->
+      <div style="position:absolute;left:1243px;top:862px;width:120px;height:95px;border-radius:10px;background:linear-gradient(135deg,rgba(215,230,251,.46),rgba(185,210,243,.46));filter:blur(1px);opacity:.7;"></div>
+
+      <!-- subtle outline squares (Border) -->
+      <div class="iwh-square" style="left:1370px;top:96px;"></div>
+      <div class="iwh-square" style="left:62px;top:653px;"></div>
+
+      <!-- reflections: blurred low-opacity duplicates of the Award + Conversion cards -->
+      <div class="iwh-card iwh-reflection iwh-p1" style="left:432px;top:540px;width:226px;animation-delay:-1.5s;">
+        <img class="iwh-icon" src="assets/hero/ic-trophy.svg" alt="">
+        <div class="iwh-ct">Award-winning</div>
+        <div class="iwh-cs">results.</div>
+      </div>
+      <div class="iwh-card iwh-reflection iwh-p2" style="left:690px;top:798px;width:238px;animation-delay:-4.2s;">
+        <img class="iwh-icon" src="assets/hero/ic-conv.svg" alt="">
+        <div class="iwh-ct">Conversion Focused</div>
+        <div class="iwh-cs">More leads. More growth.</div>
+      </div>
+
+      <!-- connector lines (card -> node dot) -->
+      <div class="iwh-pin" style="left:406px;top:78px;"></div>
+      <div class="iwh-pin" style="left:553px;top:746px;"></div>
+      <div class="iwh-pin" style="left:1411px;top:670px;"></div>
+      <div class="iwh-pin iwh-pin--h" style="left:1350px;top:247px;"></div>
+      <div class="iwh-pin iwh-pin--h" style="left:1699px;top:687px;"></div>
+      <div class="iwh-pin iwh-pin--h" style="left:244px;top:802px;"></div>
+
+      <!-- stray node dots -->
+      <div class="iwh-dot" style="left:116px;top:960px;"></div>
+      <div class="iwh-dot" style="left:1747px;top:836px;"></div>
+      <div class="iwh-dot" style="left:1110px;top:954px;"></div>
+      <div class="iwh-dot" style="left:196px;top:222px;"></div>
+      <div class="iwh-dot" style="left:1156px;top:214px;"></div>
+      <div class="iwh-dot" style="left:599px;top:386px;"></div>
+
+      <!-- Traffic card -->
+      <div class="iwh-card iwh-c1" style="left:434px;top:176px;width:224px;animation-delay:-0.2s;">
+        <div style="display:flex;align-items:center;gap:15px;">
+          <img class="iwh-icon" style="width:30px;height:32px;margin:0;" src="assets/hero/ic-bars.svg" alt="">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#143c66;">Traffic</div>
+            <div style="font-size:32px;font-weight:800;color:#80c34a;letter-spacing:-.6px;line-height:1.05;">+33%</div>
+            <div style="font-size:12.5px;color:#8a98a6;margin-top:2px;">vs last 6 months</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Strategic by design card -->
+      <div class="iwh-card iwh-c2" style="left:1342px;top:209px;width:186px;animation-delay:-2.4s;">
+        <img class="iwh-icon" src="assets/hero/ic-gear.svg" alt="">
+        <div class="iwh-ct">Strategic by design</div>
+      </div>
+
+      <!-- Search Optimized card -->
+      <div class="iwh-card iwh-c3" style="left:1474px;top:441px;width:200px;animation-delay:-1.2s;">
+        <img class="iwh-icon" src="assets/hero/ic-search.svg" alt="">
+        <div class="iwh-ct">Search Optimized</div>
+        <div class="iwh-cs">Built for visibility.</div>
+      </div>
+
+      <!-- Award-winning card -->
+      <div class="iwh-card iwh-c4" style="left:304px;top:572px;width:226px;animation-delay:-3.6s;">
+        <img class="iwh-icon" src="assets/hero/ic-trophy.svg" alt="">
+        <div class="iwh-ct">Award-winning</div>
+        <div class="iwh-cs">results.</div>
+      </div>
+
+      <!-- Conversion Focused card -->
+      <div class="iwh-card iwh-c5" style="left:546px;top:821px;width:238px;animation-delay:-0.8s;">
+        <img class="iwh-icon" src="assets/hero/ic-conv.svg" alt="">
+        <div class="iwh-ct">Conversion Focused</div>
+        <div class="iwh-cs">More leads. More growth.</div>
+      </div>
+
+      <!-- Clean Code card -->
+      <div class="iwh-card iwh-c6" style="left:1242px;top:753px;width:212px;animation-delay:-2.9s;">
+        <img class="iwh-icon" src="assets/hero/ic-code.svg" alt="">
+        <div class="iwh-ct">Clean Code</div>
+        <div class="iwh-cs">Fast sites. Better ranking.</div>
+      </div>
+
+      <!-- center content -->
+      <div class="iwh-center">
+        <h1 class="iwh-h1">Website &amp; Marketing.<br>Built to <span>Work Together.</span></h1>
+        <p class="iwh-sub">Custom-built, world-class websites engineered for <span class="iwh-ms">modern search</span></p>
+        <a class="iw-btn iwh-cta" href="#work">Take a look under the hood<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- mobile fallback: stacked content -->
+  <div class="iwh-mobile">
+    <h1 style="margin:0;font-size:38px;line-height:1.08;font-weight:800;letter-spacing:-1.2px;color:#143c66;">Website &amp; Marketing.<br>Built to <span style="color:#80c34a;">Work Together.</span></h1>
+    <p style="margin:20px 0 0;max-width:460px;font-size:18px;line-height:1.55;font-weight:500;color:#52628a;">Custom-built, world-class websites engineered for <span style="color:#1266b5;text-decoration:underline;text-underline-offset:3px;">modern search</span></p>
+    <a class="iw-btn" href="#work" style="display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px;margin-top:30px;border-radius:4px;background:#80c34a;color:#fff;font-size:16px;font-weight:700;text-decoration:none;box-shadow:0 12px 22px rgba(14,28,64,.18);">Take a look under the hood<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+  </div>
+</header>
+
+<!-- ===================== WHAT WE DO + WHY (shared blue→navy gradient band) ===================== -->
+<div class="iw-blueband">
+<section style="position:relative;padding:104px 40px;background:transparent;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:26px 26px;pointer-events:none;"></div>
+  <div style="position:relative;max-width:1200px;margin:0 auto;">
+    <div style="text-align:center;max-width:640px;margin:0 auto 56px;">
+      <h2 class="iw-reveal" style="margin:0;font-size:44px;font-weight:800;letter-spacing:-.8px;color:#fff;">What We Do</h2>
+      <p class="iw-reveal" style="margin:14px 0 0;font-size:20px;color:rgba(255,255,255,.85);font-weight:500;">We help companies get found, build trust, and win business.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;">
+      <div class="iw-reveal iw-card" style="transition-delay:0ms;padding:34px 30px;border-radius:2px;background:linear-gradient(180deg,#fff,#fcfdff);box-shadow:0 1px 3px rgba(20,40,80,.08),0 14px 34px rgba(20,40,80,.1);">
+        <div style="width:54px;height:54px;display:flex;align-items:center;justify-content:flex-start;"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.8887 33.3334H5.83203C5.16899 33.3334 4.53311 33.07 4.06426 32.6012C3.59542 32.1323 3.33203 31.4965 3.33203 30.8334V9.16675C3.33203 8.50371 3.59542 7.86782 4.06426 7.39898C4.53311 6.93014 5.16899 6.66675 5.83203 6.66675H34.1654C34.8284 6.66675 35.4643 6.93014 35.9331 7.39898C36.402 7.86782 36.6654 8.50371 36.6654 9.16675V19.2159" stroke="#143C66" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M3.33203 9.16675C3.33203 8.50371 3.59542 7.86782 4.06426 7.39898C4.53311 6.93014 5.16899 6.66675 5.83203 6.66675H34.1654C34.8284 6.66675 35.4643 6.93014 35.9331 7.39898C36.402 7.86782 36.6654 8.50371 36.6654 9.16675V16.6667H3.33203V9.16675Z" stroke="#143C66" stroke-width="3"></path>
+<path d="M19.1771 35.1275C18.9771 34.9275 18.8811 34.6902 18.8891 34.4155C18.8971 34.1408 18.9931 33.9115 19.1771 33.7275L24.4521 28.3775C24.8355 27.9942 25.3105 27.8025 25.8771 27.8025C26.4438 27.8025 26.9188 27.9942 27.3021 28.3775L29.8771 30.9775L35.0771 25.8275H33.4771C33.1938 25.8275 32.9565 25.7315 32.7651 25.5395C32.5738 25.3475 32.4778 25.1105 32.4771 24.8285C32.4765 24.5465 32.5725 24.3092 32.7651 24.1165C32.9578 23.9238 33.1951 23.8278 33.4771 23.8285H37.4771C37.7605 23.8285 37.9981 23.9245 38.1901 24.1165C38.3821 24.3085 38.4778 24.5458 38.4771 24.8285V28.8285C38.4771 29.1118 38.3811 29.3495 38.1891 29.5415C37.9971 29.7335 37.7598 29.8292 37.4771 29.8285C37.1945 29.8278 36.9571 29.7322 36.7651 29.5415C36.5731 29.3508 36.4771 29.1132 36.4771 28.8285V27.2285L31.3021 32.4025C30.9188 32.7858 30.4438 32.9775 29.8771 32.9775C29.3105 32.9775 28.8355 32.7858 28.4521 32.4025L25.8771 29.8275L20.5771 35.1275C20.3938 35.3108 20.1605 35.4025 19.8771 35.4025C19.5938 35.4025 19.3605 35.3108 19.1771 35.1275Z" fill="#80C34A" stroke="#80C34A"></path>
+<path d="M6.66667 11.6668C6.66667 10.7464 7.41286 10.0002 8.33333 10.0002C9.25381 10.0002 10 10.7464 10 11.6668C10 12.5873 9.25381 13.3335 8.33333 13.3335C7.41286 13.3335 6.66667 12.5873 6.66667 11.6668Z" fill="#143C66"></path>
+<path d="M11.6667 11.6668C11.6667 10.7464 12.4129 10.0002 13.3333 10.0002C14.2538 10.0002 15 10.7464 15 11.6668C15 12.5873 14.2538 13.3335 13.3333 13.3335C12.4129 13.3335 11.6667 12.5873 11.6667 11.6668Z" fill="#143C66"></path>
+</svg></div>
+        <h3 style="margin:22px 0 6px;font-size:25px;font-weight:700;color:#143c66;">Web Design</h3>
+        <p style="margin:0 0 20px;font-size:15px;color:#5a6b82;">Sites built to last — and to run.</p>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;">
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:#c1daff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#007cf0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;font-weight:700;color:#143c66;">No templates, no AI shortcuts</span></li>
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:#c1daff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#007cf0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;color:#1f2b3e;">Human-crafted, AI-assisted</span></li>
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:#c1daff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#007cf0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;color:#1f2b3e;">Built in Drupal or WordPress CMS</span></li>
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:#c1daff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#007cf0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;color:#1f2b3e;">Your team can manage it easily</span></li>
+        </ul>
+      </div>
+      <div class="iw-reveal iw-card" style="transition-delay:120ms;padding:34px 30px;border-radius:2px;background:linear-gradient(180deg,#fff,#fcfdff);box-shadow:0 1px 3px rgba(20,40,80,.08),0 14px 34px rgba(20,40,80,.1);">
+        <div style="width:54px;height:54px;display:flex;align-items:center;justify-content:flex-start;"><svg width="40" height="40" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M28.875 30.25V19.9375C28.875 19.3905 28.6577 18.8659 28.2709 18.4791C27.8841 18.0923 27.3595 17.875 26.8125 17.875H22.6875C22.1405 17.875 21.6159 18.0923 21.2291 18.4791C20.8423 18.8659 20.625 19.3905 20.625 19.9375V30.25" stroke="#18497D" stroke-width="3"></path>
+<path d="M12.375 30.25V13.0625C12.375 12.5155 12.1577 11.9909 11.7709 11.6041C11.3841 11.2173 10.8595 11 10.3125 11H6.1875C5.64049 11 5.11589 11.2173 4.72909 11.6041C4.3423 11.9909 4.125 12.5155 4.125 13.0625V30.25" stroke="#18497D" stroke-width="3"></path>
+<path d="M20.625 30.25V6.875C20.625 4.93075 20.625 3.95863 20.02 3.355C19.4178 2.75 18.4456 2.75 16.5 2.75C14.5544 2.75 13.5836 2.75 12.98 3.355C12.375 3.95725 12.375 4.92938 12.375 6.875V30.25" stroke="#80C34A" stroke-width="3"></path>
+<path d="M30.25 30.25H2.75" stroke="#80C34A" stroke-width="3" stroke-linecap="round"></path>
+</svg></div>
+        <h3 style="margin:22px 0 6px;font-size:25px;font-weight:700;color:#143c66;">Digital Marketing</h3>
+        <p style="margin:0 0 20px;font-size:15px;color:#5a6b82;">Every channel, working as one.</p>
+        <ul style="list-style:none;margin:0;padding:0;">
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:#eaf6dd;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#80c34a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;color:#1f2b3e;">AIO, SEO &amp; Google Ads</span></li>
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:#eaf6dd;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#80c34a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;color:#1f2b3e;">Social media &amp; Google Maps</span></li>
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:#eaf6dd;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#80c34a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;font-weight:700;color:#143c66;">Builds visibility, trust &amp; rankings</span></li>
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:#eaf6dd;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#80c34a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;color:#1f2b3e;">All powered by your website</span></li>
+        </ul>
+      </div>
+      <div class="iw-reveal iw-card" style="transition-delay:240ms;padding:34px 30px;border-radius:2px;background:linear-gradient(180deg,#fff,#fcfdff);box-shadow:0 1px 3px rgba(20,40,80,.08),0 14px 34px rgba(20,40,80,.1);">
+        <div style="width:54px;height:54px;display:flex;align-items:center;justify-content:flex-start;"><svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M31.1285 22.9557L27.952 21.3675L25.9303 16.1087C25.9065 16.0465 25.8702 15.9899 25.8235 15.9425C25.7769 15.895 25.7209 15.8576 25.6592 15.8327L13.1152 10.8185C13.0275 10.7836 12.9315 10.7751 12.839 10.794C12.7465 10.8129 12.6616 10.8585 12.5947 10.9251L10.9217 12.5981C10.856 12.6651 10.8112 12.7497 10.7927 12.8417C10.7742 12.9337 10.7828 13.029 10.8176 13.1162L15.8317 25.6601C15.8566 25.7219 15.894 25.7778 15.9415 25.8245C15.989 25.8712 16.0456 25.9075 16.1078 25.9313L21.3665 27.953L22.9548 31.1295C22.9882 31.1996 23.038 31.2605 23.0999 31.3073C23.1619 31.3541 23.2341 31.3853 23.3107 31.3983C23.3364 31.4007 23.3624 31.4007 23.3881 31.3983C23.5164 31.3977 23.6391 31.3463 23.7295 31.2554L31.2544 23.7305C31.3098 23.6771 31.3517 23.6112 31.3765 23.5383C31.4014 23.4655 31.4085 23.3878 31.3973 23.3116C31.3843 23.2351 31.3531 23.1628 31.3063 23.1009C31.2596 23.039 31.1986 22.9892 31.1285 22.9557ZM11.832 13.0532L12.1008 12.7869L18.3449 19.031C17.9334 19.6142 17.7557 20.3305 17.8469 21.0383C17.9381 21.7461 18.2915 22.394 18.8374 22.8538C19.3833 23.3135 20.0818 23.5517 20.7949 23.5212C21.5079 23.4908 22.1836 23.1938 22.6882 22.6892C23.1929 22.1845 23.4898 21.5089 23.5203 20.7958C23.5507 20.0828 23.3126 19.3843 22.8528 18.8384C22.393 18.2925 21.7452 17.939 21.0373 17.8478C20.3295 17.7566 19.6132 17.9344 19.0301 18.3459L12.7859 12.1017L13.0523 11.833L25.1023 16.6535L27.0029 21.5975L21.5965 27.0039L16.6525 25.1033L11.832 13.0532ZM20.6716 18.7914C21.1068 18.792 21.5283 18.9435 21.8643 19.2201C22.2004 19.4967 22.4301 19.8812 22.5144 20.3081C22.5987 20.7351 22.5324 21.178 22.3267 21.5616C22.1211 21.9451 21.7888 22.2455 21.3865 22.4115C20.9842 22.5776 20.5368 22.599 20.1205 22.4721C19.7042 22.3453 19.3448 22.0781 19.1034 21.7159C18.8621 21.3538 18.7537 20.9192 18.7969 20.4861C18.84 20.0531 19.0319 19.6484 19.34 19.341C19.6935 18.9885 20.1725 18.7909 20.6716 18.7914ZM23.5213 30.0957L22.3107 27.6745L27.6687 22.3165L30.0899 23.5271L23.5213 30.0957Z" fill="#3D464D" stroke="#143C66"></path>
+<path d="M9.66844 26.3138C9.57584 26.2263 9.45326 26.1775 9.32584 26.1775C9.19843 26.1775 9.07585 26.2263 8.98325 26.3138L8.36828 26.9288C6.72718 24.7014 5.82184 22.0176 5.77844 19.2513C5.73504 16.485 6.55574 13.7741 8.12617 11.4964C8.59667 11.7553 9.1384 11.8547 9.67017 11.7798C10.202 11.7049 10.6951 11.4597 11.0758 11.0809C11.4565 10.7022 11.7042 10.2102 11.7818 9.67883C11.8593 9.14743 11.7626 8.60521 11.5061 8.13341C13.7838 6.56299 16.4947 5.74229 19.261 5.78569C22.0273 5.82909 24.7111 6.73443 26.9385 8.37553L26.3138 8.98324C26.2238 9.07402 26.1733 9.19675 26.1734 9.32462C26.173 9.38835 26.1852 9.45152 26.2093 9.51052C26.2334 9.56951 26.2689 9.62317 26.3138 9.66842L28.4493 11.7869C28.54 11.8771 28.6627 11.9277 28.7906 11.9277C28.9186 11.9277 29.0413 11.8771 29.132 11.7869L31.2554 9.66358C31.3004 9.61861 31.3361 9.5652 31.3605 9.50642C31.3848 9.44763 31.3974 9.38462 31.3974 9.32099C31.3974 9.25735 31.3848 9.19434 31.3605 9.13555C31.3361 9.07677 31.3004 9.02337 31.2554 8.97839L29.132 6.85505C29.0413 6.76486 28.9186 6.71424 28.7906 6.71424C28.6627 6.71424 28.54 6.76486 28.4493 6.85505L27.6285 7.67098C25.6056 6.14879 23.2141 5.19244 20.6994 4.90013C18.1848 4.60781 15.6376 4.99007 13.3195 6.00765L16.1111 3.22333C16.4276 3.37457 16.7875 3.40881 17.1269 3.31996C17.4662 3.23112 17.7632 3.02493 17.965 2.73799C18.1668 2.45104 18.2604 2.10189 18.2293 1.75247C18.1981 1.40305 18.0443 1.07595 17.7949 0.829209C17.5455 0.582464 17.2168 0.432024 16.8671 0.404576C16.5174 0.377129 16.1692 0.474449 15.8844 0.679271C15.5996 0.884094 15.3966 1.18318 15.3113 1.52346C15.2261 1.86375 15.2641 2.22323 15.4187 2.53815L10.7071 7.25696C10.2287 6.93606 9.65377 6.79121 9.08045 6.84716C8.50714 6.9031 7.97103 7.15637 7.5637 7.56369C7.15638 7.97101 6.90312 8.50712 6.84717 9.08044C6.79123 9.65376 6.93608 10.2287 7.25698 10.7071L2.53816 15.4186C2.22202 15.2646 1.86149 15.2276 1.52065 15.3143C1.17982 15.4009 0.880739 15.6056 0.676568 15.892C0.472397 16.1783 0.376355 16.5278 0.40551 16.8783C0.434664 17.2287 0.587126 17.5575 0.835803 17.8062C1.08448 18.0549 1.41327 18.2073 1.76374 18.2365C2.11421 18.2656 2.46367 18.1696 2.75002 17.9654C3.03637 17.7612 3.24106 17.4622 3.32772 17.1213C3.41438 16.7805 3.3774 16.42 3.22335 16.1038L6.01493 13.3195C4.99633 15.637 4.61287 18.1838 4.9039 20.6984C5.19494 23.2131 6.14999 25.6049 7.67099 27.6285L6.85264 28.4492C6.76246 28.54 6.71183 28.6627 6.71183 28.7906C6.71183 28.9186 6.76246 29.0413 6.85264 29.132L8.97599 31.2554C9.06638 31.3463 9.18915 31.3977 9.31737 31.3982C9.38127 31.3983 9.44454 31.3857 9.50355 31.3611C9.56256 31.3366 9.61613 31.3007 9.66117 31.2554L11.7869 29.132C11.8771 29.0413 11.9277 28.9186 11.9277 28.7906C11.9277 28.6627 11.8771 28.54 11.7869 28.4492L9.66844 26.3138ZM28.7955 7.87677L30.2336 9.31493L28.7955 10.7531L27.3573 9.31493L28.7955 7.87677ZM16.3871 1.52853C16.4591 1.45599 16.551 1.40645 16.6511 1.38621C16.7513 1.36598 16.8552 1.37594 16.9496 1.41485C17.0441 1.45376 17.1249 1.51986 17.1818 1.60475C17.2386 1.68965 17.269 1.78953 17.269 1.8917C17.269 1.99388 17.2386 2.09375 17.1818 2.17865C17.1249 2.26354 17.0441 2.32964 16.9496 2.36855C16.8552 2.40746 16.7513 2.41743 16.6511 2.39719C16.551 2.37695 16.4591 2.32741 16.3871 2.25487C16.3394 2.2072 16.3015 2.15059 16.2757 2.08827C16.2498 2.02596 16.2366 1.95916 16.2366 1.8917C16.2366 1.82424 16.2498 1.75744 16.2757 1.69513C16.3015 1.63281 16.3394 1.5762 16.3871 1.52853ZM8.25207 8.25205C8.39268 8.11077 8.55981 7.99865 8.74388 7.92215C8.92794 7.84565 9.12531 7.80627 9.32463 7.80627C9.52396 7.80627 9.72133 7.84565 9.90539 7.92215C10.0895 7.99865 10.2566 8.11077 10.3972 8.25205C10.6097 8.46426 10.7546 8.73475 10.8133 9.02929C10.8721 9.32383 10.8422 9.62918 10.7274 9.90671C10.6125 10.1842 10.418 10.4215 10.1683 10.5884C9.91858 10.7553 9.62498 10.8444 9.32463 10.8444C9.02429 10.8444 8.73069 10.7553 8.48099 10.5884C8.2313 10.4215 8.03672 10.1842 7.9219 9.90671C7.80707 9.62918 7.77715 9.32383 7.83592 9.02929C7.8947 8.73475 8.03952 8.46426 8.25207 8.25205ZM2.25731 17.1134C2.15845 17.1959 2.03234 17.2384 1.90375 17.2326C1.77516 17.2268 1.65339 17.1731 1.56237 17.082C1.47135 16.991 1.41766 16.8693 1.41185 16.7407C1.40604 16.6121 1.44853 16.486 1.53097 16.3871C1.62786 16.2919 1.75828 16.2385 1.89414 16.2385C2.02999 16.2385 2.16041 16.2919 2.25731 16.3871C2.30504 16.4348 2.34291 16.4914 2.36874 16.5537C2.39458 16.616 2.40787 16.6828 2.40787 16.7503C2.40787 16.8177 2.39458 16.8845 2.36874 16.9468C2.34291 17.0092 2.30504 17.0658 2.25731 17.1134ZM9.32463 30.2191L7.88647 28.7809L9.32463 27.3428L10.7628 28.7809L9.32463 30.2191Z" fill="#80C34A" stroke="#80C34A" stroke-width="0.8"></path>
+</svg></div>
+        <h3 style="margin:22px 0 6px;font-size:25px;font-weight:700;color:#143c66;">Branding</h3>
+        <p style="margin:0 0 20px;font-size:15px;color:#5a6b82;">Easy to recognize and choose.</p>
+        <ul style="list-style:none;margin:0;padding:0;">
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:rgba(24,73,125,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#18497d" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;font-weight:700;color:#143c66;">Logos &amp; brand visuals</span></li>
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:rgba(24,73,125,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#18497d" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;color:#1f2b3e;">Brand voice &amp; tone</span></li>
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:rgba(24,73,125,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#18497d" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;color:#1f2b3e;">Marketing collateral</span></li>
+          <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #eaeff6;"><span style="width:22px;height:22px;border-radius:50%;background:rgba(24,73,125,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#18497d" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="font-size:15px;color:#1f2b3e;">A clear, understandable identity</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHY IMAGEWORKS ===================== -->
+<section id="why" style="position:relative;padding:104px 40px;background:transparent;overflow:hidden;">
+  <div style="position:relative;max-width:1100px;margin:0 auto;">
+    <h2 class="iw-reveal" style="margin:0 0 60px;text-align:center;font-size:44px;font-weight:800;letter-spacing:-.8px;color:#fff;">Why ImageWorks?</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;">
+      <div class="iw-reveal" style="transition-delay:0ms;padding:0 30px;border-left:1px solid rgba(255,255,255,.12);">
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:flex-start;"><svg width="44" height="44" viewBox="0 0 38 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_10153_7)">
+<path d="M22.089 14.3906L27.3304 15.9844L24.6629 20.4375L25.1776 27.2344L19.2811 24.8438L13.3845 27.9375L12.9634 20.4375L9.6875 15.6562L15.6776 14.3906L19.2811 9.28125L22.089 14.3906Z" fill="#80C34A"></path>
+<path d="M37.9533 18.9844C37.9533 8.51634 29.4509 0 19.0001 0C8.54923 0 0.046875 8.51634 0.046875 18.9844C0.046875 23.8827 1.90878 28.3536 4.96067 31.7246V42.375H6.36461C7.82452 42.375 9.24877 42.0951 10.5764 41.557V48H11.9804C14.5689 48 17.0163 47.1336 19.0001 45.5364C20.9838 47.1336 23.4313 48 26.0198 48H27.4237V41.557C28.7514 42.095 30.1756 42.375 31.6355 42.375H33.0395V31.7246C36.0914 28.3536 37.9533 23.8827 37.9533 18.9844ZM19.0001 2.8125C27.9027 2.8125 35.1454 10.0672 35.1454 18.9844C35.1454 27.9016 27.9027 35.1562 19.0001 35.1562C10.0975 35.1562 2.85476 27.9016 2.85476 18.9844C2.85476 10.0672 10.0975 2.8125 19.0001 2.8125ZM7.76855 39.4463V34.2663C8.65301 34.9202 9.5925 35.496 10.5764 35.9872V38.4352C9.70868 38.9384 8.75753 39.2809 7.76855 39.4463ZM20.0027 42.6572L19.0001 41.6326L17.9975 42.6572C16.7332 43.9491 15.1303 44.7815 13.3843 45.0721V37.1181C15.1595 37.6708 17.0457 37.9688 19.0001 37.9688C20.9545 37.9688 22.8406 37.6707 24.6158 37.1181V45.0721C22.8698 44.7814 21.267 43.9491 20.0027 42.6572ZM27.4237 38.4352V35.9872C28.4077 35.496 29.3471 34.9202 30.2316 34.2663V39.4463C29.2426 39.2809 28.2915 38.9384 27.4237 38.4352Z" fill="#ffffff"></path>
+<path d="M11.1596 29.7923L18.9992 26.0763L26.8388 29.7922L25.733 21.1758L31.6839 14.856L23.1609 13.2469L18.9992 5.625L14.8374 13.2469L6.31445 14.8561L12.2654 21.1759L11.1596 29.7923ZM11.8798 16.6673L16.6634 15.7642L18.9992 11.4863L21.3349 15.7642L26.1185 16.6674L22.7786 20.2144L23.3992 25.0504L18.9992 22.9648L14.5991 25.0505L15.2197 20.2145L11.8798 16.6673Z" fill="#ffffff"></path>
+</g>
+<defs>
+<clipPath id="clip0_10153_7">
+<rect width="38" height="48" fill="white"></rect>
+</clipPath>
+</defs>
+</svg></div>
+        <h3 style="margin:22px 0 0;font-size:19px;font-weight:700;line-height:1.4;color:#fff;">A Full Creative Team Working Together</h3>
+      </div>
+      <div class="iw-reveal" style="transition-delay:120ms;padding:0 30px;border-left:1px solid rgba(255,255,255,.12);">
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:flex-start;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_10153_12)">
+<path d="M45.8258 21.1891C42.3748 21.1891 39.5672 23.9969 39.5672 27.4478V31.2624C37.4167 30.1686 34.7142 30.5196 32.9181 32.3158L31.3235 33.9105C29.3416 35.8924 28.209 38.6365 28.2163 41.4394L28.2334 47.9867H39.634L48 39.6208V21.1891H45.8258ZM45.1891 38.4564L38.4697 45.1757H31.0371L31.0274 41.432C31.022 39.372 31.8544 37.3548 33.3112 35.8981L34.9058 34.3034C36.0202 33.1892 37.8194 33.1672 38.9606 34.2375L35.1301 38.0683L37.1153 40.0582L42.3783 34.7953V27.4478C42.3783 25.7641 43.5911 24.3585 45.1892 24.059V38.4564H45.1891ZM16.6765 33.9104L15.0818 32.3157C13.2857 30.5195 10.5833 30.1683 8.43281 31.2623V27.4477C8.43281 23.9968 5.62509 21.1891 2.17416 21.1891H0V39.6206L8.36597 47.9865H19.7665L19.7836 41.4392C19.7909 38.6365 18.6584 35.8923 16.6765 33.9104ZM16.9629 45.1757H9.53025L2.81091 38.4564V24.0589C4.40897 24.3585 5.62181 25.764 5.62181 27.4477V34.8206L10.8847 40.058L12.87 38.0681L9.03947 34.2374C10.1807 33.1669 11.98 33.189 13.0942 34.3032L14.6889 35.8979C16.1456 37.3547 16.978 39.3718 16.9728 41.4318L16.9629 45.1757ZM13.4294 27.5226L15.4652 26.3473C16.4506 27.111 17.5348 27.7378 18.6883 28.2108V30.5589H29.3118V28.2108C30.4653 27.7379 31.5495 27.111 32.5349 26.3473L34.5707 27.5226L39.8825 18.3225L37.8471 17.1474C37.9293 16.5304 37.9706 15.9087 37.9707 15.2863C37.9707 14.6638 37.9294 14.0421 37.8471 13.4251L39.8825 12.25L34.5707 3.04992L32.5349 4.22527C31.5495 3.46153 30.4653 2.83462 29.3118 2.36161V0.0135498H18.6883V2.36161C17.5348 2.8346 16.4506 3.46151 15.4652 4.22527L13.4294 3.04992L8.11762 12.25L10.153 13.4251C10.0708 14.0421 10.0295 14.6638 10.0294 15.2863C10.0294 15.9085 10.0708 16.5312 10.153 17.1474L8.11772 18.3225L13.4294 27.5226ZM13.0782 17.5874C12.92 16.8305 12.8402 16.0594 12.8403 15.2862C12.8403 14.5125 12.9203 13.7383 13.0782 12.9849L13.287 11.9885L11.9575 11.221L14.4583 6.88946L15.7913 7.65914L16.55 6.97814C17.7133 5.93414 19.0524 5.15986 20.5304 4.67677L21.4992 4.36008V2.82446H26.5009V4.36036L27.4697 4.67705C28.9477 5.16005 30.2869 5.93442 31.4501 6.97843L32.2087 7.65942L33.5418 6.88974L36.0427 11.2213L34.7131 11.9888L34.9219 12.9852C35.0801 13.742 35.1599 14.5132 35.1598 15.2865C35.1598 16.0601 35.0798 16.8343 34.9219 17.5876L34.7131 18.584L36.0427 19.3516L33.5418 23.6832L32.2087 22.9134L31.4501 23.5944C30.2868 24.6385 28.9477 25.4127 27.4697 25.8958L26.5009 26.2125V27.7484H21.4992V26.2125L20.5304 25.8958C19.0524 25.4128 17.7132 24.6385 16.55 23.5944L15.7913 22.9134L14.4583 23.6832L11.9575 19.3516L13.287 18.584L13.0782 17.5874Z" fill="#ffffff"></path>
+<path d="M29.6224 17.5164C29.6224 15.9835 28.848 14.6284 27.6701 13.8206C28.1161 13.1236 28.3528 12.3133 28.3521 11.4859C28.3521 9.08656 26.4001 7.1344 24.0006 7.1344C21.6013 7.1344 19.6492 9.08656 19.6492 11.4859C19.6492 12.3446 19.9002 13.1454 20.3312 13.8206C19.1534 14.6283 18.3789 15.9834 18.3789 17.5164V21.4702H29.6226V17.5164H29.6224ZM24.0006 9.94549C24.85 9.94549 25.5411 10.6366 25.5411 11.486C25.5411 12.3355 24.85 13.0266 24.0006 13.0266C23.1512 13.0266 22.46 12.3355 22.46 11.486C22.46 10.6366 23.1511 9.94549 24.0006 9.94549ZM26.8115 18.6594H21.1896V17.5165C21.1896 16.5968 21.9379 15.8484 22.8577 15.8484H25.1434C26.0632 15.8484 26.8115 16.5967 26.8115 17.5165V18.6594Z" fill="#80C34A"></path>
+</g>
+<defs>
+<clipPath id="clip0_10153_12">
+<rect width="48" height="48" fill="white"></rect>
+</clipPath>
+</defs>
+</svg></div>
+        <h3 style="margin:22px 0 0;font-size:19px;font-weight:700;line-height:1.4;color:#fff;">Creative &amp; Art Direction on Every Project</h3>
+      </div>
+      <div class="iw-reveal" style="transition-delay:240ms;padding:0 30px;border-left:1px solid rgba(255,255,255,.12);">
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:flex-start;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_10153_16)">
+<path d="M46.0312 23.9062C46.0312 26.754 43.7227 29.0625 40.875 29.0625C38.0273 29.0625 35.7188 26.754 35.7188 23.9062C35.7188 21.0585 38.0273 18.75 40.875 18.75C43.7227 18.75 46.0312 21.0585 46.0312 23.9062Z" fill="#80C34A"></path>
+<path d="M47.3918 39.7171L41.3592 35.5596C40.4275 34.9175 39.155 35.5863 39.155 36.7175V39.4688H30.9849C30.3302 36.2113 27.4474 33.75 24 33.75C20.5526 33.75 17.6698 36.2113 17.0151 39.4688H8.53125V30.9849C11.3339 30.4216 13.5466 28.2089 14.1099 25.4062H33.89C34.5447 28.6637 37.4275 31.125 40.8749 31.125C44.8036 31.125 47.9999 27.9288 47.9999 24C47.9999 20.5526 45.5386 17.6698 42.2812 17.0151V7.125C42.2812 6.34837 41.6515 5.71875 40.8749 5.71875H30.9849C30.3302 2.46122 27.4474 0 24 0C20.4694 0 17.5318 2.58188 16.9725 5.95641L10.9555 1.80956C10.0237 1.16747 8.75128 1.83637 8.75128 2.96747V5.71875H4.3125C3.53587 5.71875 2.90625 6.34837 2.90625 7.125C2.90625 7.90163 3.53587 8.53125 4.3125 8.53125H8.75128V11.2825C8.75128 12.4224 10.0318 13.0773 10.9555 12.4404L16.9725 8.29359C17.5318 11.6681 20.4694 14.25 24 14.25C27.4474 14.25 30.3302 11.7888 30.9849 8.53125H39.4688V17.0151C36.6661 17.5784 34.4534 19.7911 33.8901 22.5938H14.1099C13.4552 19.3362 10.5724 16.875 7.125 16.875C3.19631 16.875 0 20.0712 0 24C0 27.4474 2.46131 30.3302 5.71875 30.9849V40.875C5.71875 41.6516 6.34837 42.2812 7.125 42.2812H17.0151C17.6698 45.5387 20.5526 48 24 48C27.4474 48 30.3302 45.5387 30.9849 42.2812H39.155V45.0325C39.155 46.1724 40.4355 46.8273 41.3592 46.1904L47.3918 42.0329C48.2007 41.4754 48.2034 40.2765 47.3918 39.7171ZM11.5638 8.6055V5.6445L13.712 7.125L11.5638 8.6055ZM24 11.4375C21.6221 11.4375 19.6875 9.50288 19.6875 7.125C19.6875 4.74713 21.6221 2.8125 24 2.8125C26.3779 2.8125 28.3125 4.74713 28.3125 7.125C28.3125 9.50288 26.3779 11.4375 24 11.4375ZM40.875 19.6875C43.2529 19.6875 45.1875 21.6221 45.1875 24C45.1875 26.3779 43.2529 28.3125 40.875 28.3125C38.4971 28.3125 36.5625 26.3779 36.5625 24C36.5625 21.6221 38.4971 19.6875 40.875 19.6875ZM2.8125 24C2.8125 21.6221 4.74713 19.6875 7.125 19.6875C9.50288 19.6875 11.4375 21.6221 11.4375 24C11.4375 26.3779 9.50288 28.3125 7.125 28.3125C4.74713 28.3125 2.8125 26.3779 2.8125 24ZM24 45.1875C21.6221 45.1875 19.6875 43.2529 19.6875 40.875C19.6875 38.4971 21.6221 36.5625 24 36.5625C26.3779 36.5625 28.3125 38.4971 28.3125 40.875C28.3125 43.2529 26.3779 45.1875 24 45.1875ZM41.9675 42.3555V39.3946L44.1157 40.875L41.9675 42.3555Z" fill="#ffffff"></path>
+</g>
+<defs>
+<clipPath id="clip0_10153_16">
+<rect width="48" height="48" fill="white"></rect>
+</clipPath>
+</defs>
+</svg></div>
+        <h3 style="margin:22px 0 0;font-size:19px;font-weight:700;line-height:1.4;color:#fff;">Senior-Level Design<br>&amp; Development</h3>
+      </div>
+      <div class="iw-reveal" style="transition-delay:360ms;padding:0 30px;border-left:1px solid rgba(255,255,255,.12);">
+        <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:flex-start;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_10153_22)">
+<path d="M28.3223 30.3602C28.3223 32.5726 26.5288 34.3661 24.3164 34.3661C22.104 34.3661 20.3105 32.5726 20.3105 30.3602C20.3105 28.1479 22.104 26.3544 24.3164 26.3544C26.5288 26.3544 28.3223 28.1479 28.3223 30.3602Z" fill="#80C34A"></path>
+<path d="M47.9766 19.6779V0H0V19.6779H4.95391L8.62081 24.1827C5.39237 24.3302 2.81113 27.0022 2.81113 30.2665C2.81113 31.5421 3.20609 32.7266 3.87886 33.7061C1.65154 34.2749 0 36.298 0 38.6999V47.9766H47.9766V38.6999C47.9766 36.298 46.3251 34.2749 44.0977 33.7061C44.7705 32.7266 45.1655 31.5421 45.1655 30.2665C45.1655 27.0022 42.5842 24.3302 39.3558 24.1827L43.0227 19.6779H47.9766ZM29.7043 14.0556H30.1727V16.8668H26.5996L23.9883 20.075L21.377 16.8668H17.8038V11.2445H14.5242C13.7493 11.2445 13.1186 10.6138 13.1186 9.83895C13.1186 9.06406 13.7493 8.43338 14.5242 8.43338H17.8038V2.81113H30.1727V5.62225H29.7043C27.3792 5.62225 25.4876 7.51393 25.4876 9.83895C25.4876 12.164 27.3792 14.0556 29.7043 14.0556ZM32.9839 30.2665C32.9839 31.5421 33.3788 32.7266 34.0516 33.7061C33.0908 33.9513 32.2383 34.4681 31.5783 35.168C30.9001 34.4484 30.0179 33.9238 29.0245 33.6874C29.6896 32.7115 30.0791 31.5337 30.0791 30.2665C30.0791 27.0022 27.4978 24.3302 24.2694 24.1827L27.9363 19.6779H35.1267L38.7936 24.1827C35.5651 24.3302 32.9839 27.0022 32.9839 30.2665ZM16.3982 35.168C15.7383 34.4681 14.8854 33.9513 13.925 33.7061C14.5978 32.7266 14.9927 31.5421 14.9927 30.2665C14.9927 27.0022 12.4114 24.3302 9.18304 24.1827L12.8499 19.6779H20.0402L23.7072 24.1827C20.4788 24.3302 17.8975 27.0022 17.8975 30.2665C17.8975 31.5337 18.2869 32.7115 18.9521 33.6874C17.9586 33.9243 17.0765 34.4487 16.3982 35.168ZM20.7087 30.2665C20.7087 28.4579 22.1797 26.9868 23.9883 26.9868C25.7969 26.9868 27.2679 28.4579 27.2679 30.2665C27.2679 32.075 25.7969 33.5461 23.9883 33.5461C22.1797 33.5461 20.7087 32.075 20.7087 30.2665ZM2.81113 16.8668V2.81113H14.9927V5.62225H14.5242C12.1991 5.62225 10.3075 7.51393 10.3075 9.83895C10.3075 12.164 12.1991 14.0556 14.5242 14.0556H14.9927V16.8668H11.5132L8.90193 20.075L6.2906 16.8668H2.81113ZM8.90193 26.9868C10.7105 26.9868 12.1815 28.4579 12.1815 30.2665C12.1815 32.075 10.7105 33.5461 8.90193 33.5461C7.09332 33.5461 5.62225 32.075 5.62225 30.2665C5.62225 28.4579 7.09332 26.9868 8.90193 26.9868ZM14.9927 45.1655H2.81113V38.6999C2.81113 37.4081 3.862 36.3572 5.15371 36.3572H12.6501C13.9418 36.3572 14.9927 37.4081 14.9927 38.6999V45.1655ZM30.1727 45.1655H17.8038V38.6999C17.8038 37.4081 18.8547 36.3572 20.1464 36.3572H27.8302C29.1219 36.3572 30.1727 37.4081 30.1727 38.6999V45.1655ZM45.1655 38.6999V45.1655H32.9839V38.6999C32.9839 37.4081 34.0347 36.3572 35.3265 36.3572H42.8228C44.1146 36.3572 45.1655 37.4081 45.1655 38.6999ZM42.3543 30.2665C42.3543 32.075 40.8832 33.5461 39.0747 33.5461C37.2661 33.5461 35.795 32.075 35.795 30.2665C35.795 28.4579 37.2661 26.9868 39.0747 26.9868C40.8832 26.9868 42.3543 28.4579 42.3543 30.2665ZM39.0747 20.075L36.4634 16.8668H32.9839V11.2445H29.7043C28.9294 11.2445 28.2987 10.6138 28.2987 9.83895C28.2987 9.06406 28.9294 8.43338 29.7043 8.43338H32.9839V2.81113H45.1655V16.8668H41.6859L39.0747 20.075Z" fill="#ffffff"></path>
+</g>
+<defs>
+<clipPath id="clip0_10153_22">
+<rect width="48" height="48" fill="white"></rect>
+</clipPath>
+</defs>
+</svg></div>
+        <h3 style="margin:22px 0 0;font-size:19px;font-weight:700;line-height:1.4;color:#fff;"><span data-countup="28" data-suffix=" Years">28 Years</span> of Award-Winning Digital Work</h3>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ===================== SHOWCASE ===================== -->
+<div id="work" style="position:relative;">
+
+  <!-- MODE A: SCROLL / PINNED -->
+  <div id="showcase-scroll">
+    <!-- Our Work -->
+    <section data-screen-label="Our Work" style="position:relative;display:flex;flex-direction:column;background:#fff;padding:104px 0;overflow:hidden;">
+      <div style="text-align:center;max-width:680px;margin:0 auto 48px;padding:0 40px;">
+        <h2 class="iw-reveal" style="margin:0;font-size:48px;font-weight:800;letter-spacing:-1px;color:#143c66;">Our Work</h2>
+      </div>
+      <div class="iw-marq iw-reveal" style="width:100%;margin-bottom:22px;">
+        <div class="iw-track" id="track-scroll-works-a" style="gap:24px;animation:iwMarquee 48s linear infinite;"></div>
+      </div>
+      <div class="iw-marq iw-reveal" style="width:100%;">
+        <div class="iw-track" id="track-scroll-works-b" style="gap:24px;animation:iwMarqueeR 54s linear infinite;"></div>
+      </div>
+    </section>
+
+    <!-- What our clients say -->
+    <section data-screen-label="What our clients say" style="position:relative;display:flex;flex-direction:column;background:#f1f3f6;padding:104px 0;overflow:hidden;">
+      <div style="text-align:center;max-width:720px;margin:0 auto 50px;padding:0 40px;">
+        <h2 class="iw-reveal" style="margin:0;font-size:48px;font-weight:800;letter-spacing:-1px;color:#143c66;">What our clients say</h2>
+        <p class="iw-reveal" style="margin:14px 0 0;font-size:19px;color:#5a6b82;">Our clients <strong style="color:#80c34a;font-weight:800;">love</strong> our work &amp; the results.</p>
+      </div>
+      <div class="iw-marq iw-reveal" style="width:100%;margin-bottom:22px;">
+        <div class="iw-track" id="track-scroll-testi-a" data-mq="fwd" style="gap:24px;"></div>
+      </div>
+      <div class="iw-marq iw-reveal" style="width:100%;">
+        <div class="iw-track" id="track-scroll-testi-b" data-mq="rev" style="gap:24px;"></div>
+      </div>
+    </section>
+  </div>
+
+
+</div>
+
+<!-- ===================== CTA ===================== -->
+<section id="cta" style="position:relative;padding:104px 40px;background:#fff;overflow:hidden;">
+  <div style="position:relative;max-width:900px;margin:0 auto;text-align:center;padding:70px 40px;border-radius:2px;background:linear-gradient(135deg,#1266b5,#0a2c4d);box-shadow:0 1px 3px rgba(20,40,80,.1),0 24px 50px rgba(20,40,80,.16);overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:24px 24px;pointer-events:none;"></div>
+    <h2 class="iw-reveal" style="position:relative;margin:0;font-size:46px;font-weight:800;letter-spacing:-1px;color:#fff;">Ready to create something brilliant?</h2>
+    <p class="iw-reveal" style="position:relative;margin:18px auto 0;max-width:540px;font-size:21px;line-height:1.5;color:rgba(255,255,255,.85);">Let's design a brand experience that works as hard as you do.</p>
+    <a class="iw-btn iw-reveal" href="#top" style="position:relative;display:inline-flex;align-items:center;gap:10px;margin-top:36px;height:58px;padding:0 36px;border-radius:2px;background:#80c34a;color:#fff;font-size:17px;font-weight:700;text-decoration:none;box-shadow:0 1px 2px rgba(20,40,80,.14);">Let's get started<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+  </div>
+</section>
+
+<!-- ===================== PARTNERS & AWARDS (above footer) ===================== -->
+<section style="position:relative;background:#fff;padding:104px 0;overflow:hidden;">
+  <div style="text-align:center;max-width:700px;margin:0 auto 40px;padding:0 40px;">
+    <h2 class="iw-reveal" style="margin:0;font-size:42px;font-weight:800;letter-spacing:-1px;color:#143c66;">Partners &amp; Awards</h2>
+  </div>
+  <div class="iw-marq iw-reveal" style="width:100%;">
+    <div class="iw-track" id="track-scroll-partners" style="gap:64px;align-items:center;animation:iwMarquee 40s linear infinite;"></div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer style="background:#0a2c4d;color:#fff;padding:104px 40px 0;">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr 1.4fr;gap:48px;align-items:start;">
+    <div>
+      <div style="display:flex;flex-direction:column;line-height:1;"><span style="font-size:26px;font-weight:800;letter-spacing:-.5px;color:#fff;">imageworks</span><span style="font-size:10px;font-weight:700;letter-spacing:5px;color:#80c34a;margin-top:4px;">CREATIVE</span></div>
+      <p style="margin:22px 0 0;font-size:16px;line-height:1.6;color:rgba(255,255,255,.92);max-width:260px;">Our web design company &amp; marketing agency has served the DC metro area for 28 years.</p>
+      <div style="margin-top:26px;font-size:16px;font-weight:700;letter-spacing:.5px;">QUICK LINKS</div>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px;">
+        <a class="iw-link" href="#work" style="font-size:16px;color:#fff;text-decoration:none;width:fit-content;">▸ Web Services</a>
+        <a class="iw-link" href="#work" style="font-size:16px;color:#fff;text-decoration:none;width:fit-content;">▸ Marketing</a>
+        <a class="iw-link" href="#work" style="font-size:16px;color:#fff;text-decoration:none;width:fit-content;">▸ Design &amp; Branding</a>
+      </div>
+      <a class="iw-btn" href="#cta" style="display:inline-flex;align-items:center;margin-top:24px;height:48px;padding:0 26px;border-radius:2px;background:#80c34a;color:#fff;font-size:18px;font-weight:600;text-decoration:none;">Contact Us</a>
+      <div style="display:flex;gap:10px;margin-top:24px;">
+        <a class="iw-social" href="#cta" aria-label="Facebook" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:2px;background:rgba(255,255,255,.12);color:#fff;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.52 1.49-3.91 3.78-3.91 1.1 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.44 2.9h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg></a>
+        <a class="iw-social" href="#cta" aria-label="X" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:2px;background:rgba(255,255,255,.12);color:#fff;text-decoration:none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.22-6.82-5.97 6.82H1.66l7.73-8.84L1.24 2.25H8.08l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.01 4.13H5.04l12.04 15.64Z"/></svg></a>
+        <a class="iw-social" href="#cta" aria-label="LinkedIn" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:2px;background:rgba(255,255,255,.12);color:#fff;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a>
+        <a class="iw-social" href="#cta" aria-label="Instagram" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:2px;background:rgba(255,255,255,.12);color:#fff;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16ZM12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.12 1.38C1.35 2.68.93 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.12.66.66 1.33 1.08 2.12 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.12-1.38.66-.66 1.08-1.33 1.38-2.12.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.12A5.92 5.92 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0Zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.41-10.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/></svg></a>
+      </div>
+    </div>
+    <div style="font-size:16px;line-height:1.5;color:#fff;">
+      <div style="display:flex;align-items:center;gap:8px;font-weight:600;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#80c34a" stroke-width="2.4"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Ashburn, VA Location</div>
+      <div style="margin:4px 0 0 24px;color:rgba(255,255,255,.85);">44679 Endicott Dr Suite 300<br>Unit 580 | Ashburn, VA 20147</div>
+      <div style="display:flex;align-items:center;gap:8px;font-weight:600;margin-top:20px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#80c34a" stroke-width="2.4"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>St. Petersburg, FL Location</div>
+      <div style="margin:4px 0 0 24px;color:rgba(255,255,255,.85);">433 Central Ave<br>4th floor | St. Petersburg, FL 33701</div>
+      <div style="display:flex;align-items:center;gap:8px;font-weight:600;margin-top:20px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#80c34a" stroke-width="2.4"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Questions? Quote?</div>
+      <div style="margin:4px 0 0 24px;color:rgba(255,255,255,.85);">Call or text us: <a href="#" style="color:#fff;font-weight:700;text-decoration:none;">(703) 928-7309</a></div>
+      <div style="margin-top:24px;font-size:16px;font-weight:700;">Subscribe to Our Newsletter</div>
+      <div style="margin-top:6px;color:rgba(255,255,255,.85);font-size:15px;">Marketing insights &amp; company news sent straight to your inbox</div>
+      <form onsubmit="return false" style="margin-top:12px;display:flex;gap:8px;max-width:280px;">
+        <input type="email" placeholder="Email Address" style="flex:1;height:40px;border:none;border-radius:2px;padding:0 12px;font-family:inherit;font-size:14px;color:#333;"/>
+        <button class="iw-btn" style="border:none;cursor:pointer;width:48px;height:40px;border-radius:2px;background:#80c34a;color:#fff;font-size:18px;">→</button>
+      </form>
+    </div>
+    <div style="border-radius:2px;overflow:hidden;box-shadow:0 1px 3px rgba(20,40,80,.12),0 10px 26px rgba(20,40,80,.12);"><img src="assets/footer-map.png" alt="Map of ImageWorks Creative locations" style="width:100%;display:block;"/></div>
+  </div>
+  <div style="max-width:1200px;margin:48px auto 0;padding:22px 0;border-top:1px solid rgba(255,255,255,.18);text-align:center;font-size:14px;color:rgba(255,255,255,.85);">
+    © 2026 ImageWorks Creative, a full-service marketing company, branding firm, and web design agency since 1997. All rights reserved.
+    <div style="margin-top:8px;"><a class="iw-link" href="#" style="color:#fff;text-decoration:none;">Sitemap</a> &nbsp;|&nbsp; <a class="iw-link" href="#" style="color:#fff;text-decoration:none;">Privacy Policy</a></div>
+  </div>
+  <div style="height:50px;"></div>
+</footer>
+
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
