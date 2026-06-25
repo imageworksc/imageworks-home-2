@@ -86,10 +86,6 @@ body {
 
 .iw-seg { transition: color .3s ease; }
 
-/* ---------- showcase mode visibility (toggled by JS) ---------- */
-.iw-mode-scroll #showcase-tabbed { display: none; }
-.iw-mode-tabbed #showcase-scroll { display: none; }
-
 /* tabbed panels: shown/hidden by JS via [hidden] */
 [hidden] { display: none !important; }
 
