@@ -412,6 +412,41 @@ function initDotField() {
 }
 
 /* -----------------------------------------------------------
+   HERO CARDS — subtle cursor-following 3D tilt on hover
+   ----------------------------------------------------------- */
+function initCardTilt() {
+  if (REDUCE) return;               // no tilt under reduced motion
+  var stage = document.querySelector('[data-hero-stage]');
+  if (!stage) return;
+  var cards = [].slice.call(stage.querySelectorAll('.iwh-card:not(.iwh-reflection)'));
+  if (!cards.length) return;
+
+  var MAX = 6;                      // max tilt in degrees (subtle)
+  var PERS = 700;                   // perspective depth (px)
+  // fast, eased transform while tracking; smooth settle back on leave.
+  // (scale / box-shadow / border keep their existing hover transitions)
+  var trackT = 'transform .18s ease-out, scale .4s cubic-bezier(.2,.7,.3,1), box-shadow .4s ease, border-color .4s ease, opacity .6s ease';
+  var resetT = 'transform .6s cubic-bezier(.2,.8,.3,1), scale .4s cubic-bezier(.2,.7,.3,1), box-shadow .4s ease, border-color .4s ease, opacity .6s ease';
+
+  cards.forEach(function (card) {
+    card.addEventListener('pointerenter', function () { card.style.transition = trackT; });
+    card.addEventListener('pointermove', function (e) {
+      var r = card.getBoundingClientRect();
+      if (!r.width) return;
+      var fx = (e.clientX - r.left) / r.width;    // 0..1 across the card
+      var fy = (e.clientY - r.top) / r.height;
+      var ry = ((fx - 0.5) * 2 * MAX).toFixed(2); // right/left -> rotateY
+      var rx = ((0.5 - fy) * 2 * MAX).toFixed(2); // up/down    -> rotateX
+      card.style.transform = 'perspective(' + PERS + 'px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+    });
+    card.addEventListener('pointerleave', function () {
+      card.style.transition = resetT;
+      card.style.transform = '';                  // ease back to rest (CSS `none`)
+    });
+  });
+}
+
+/* -----------------------------------------------------------
    BOOT
    ----------------------------------------------------------- */
 function boot() {
@@ -422,6 +457,7 @@ function boot() {
   initHeroStage();
   initDotField();
   initCardEntrance();
+  initCardTilt();
   initConnectors();
 }
 
