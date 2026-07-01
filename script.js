@@ -300,6 +300,153 @@ function initConnectors() {
 }
 
 /* -----------------------------------------------------------
+   HERO DOT FIELD — canvas grid; dots sink inward toward the cursor
+   ----------------------------------------------------------- */
+function initDotField() {
+  var hero = document.querySelector('[data-hero]');
+  if (!hero) return;
+  var canvas = hero.querySelector('[data-dotfield]');
+  if (!canvas) return;
+
+  var ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  var GAP = 30;                     // dot spacing in CSS px
+  var R_DOT = 2.1;                  // base dot radius
+  var INFLUENCE = 150;              // cursor reach in px
+  var PULL = 14;                    // how far dots slide toward the cursor
+  var COLOR = 'rgba(120,140,170,';  // blue-grey; alpha appended per dot
+  var BASE_A = 0.30;
+
+  var W = 0, H = 0;                  // hero size in CSS px
+
+  // walk an evenly-centred grid that covers the whole hero at the current size
+  function forEachDot(cb) {
+    var cols = Math.ceil(W / GAP) + 2;
+    var rows = Math.ceil(H / GAP) + 2;
+    var offX = (W - (cols - 1) * GAP) / 2;   // centre the grid so it stays even
+    var offY = (H - (rows - 1) * GAP) / 2;
+    for (var j = 0; j < rows; j++) {
+      for (var i = 0; i < cols; i++) { cb(offX + i * GAP, offY + j * GAP); }
+    }
+  }
+
+  // draw the plain grid once (static / reduced-motion / rest state)
+  function drawStatic() {
+    if (!W) return;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = COLOR + BASE_A + ')';
+    forEachDot(function (x, y) {
+      ctx.beginPath();
+      ctx.arc(x, y, R_DOT, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  // match the canvas backing store to the hero's pixel size (crisp on HiDPI)
+  function resize() {
+    if (!canvas.offsetParent) { W = 0; H = 0; return; }  // hidden (mobile)
+    var r = hero.getBoundingClientRect();
+    W = Math.round(r.width);
+    H = Math.round(r.height);
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);   // draw in CSS px
+    drawStatic();
+  }
+
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  if (REDUCE) return;               // no cursor interaction under reduced motion
+
+  var px = -9999, py = -9999;       // raw pointer (CSS px in hero)
+  var cx = -9999, cy = -9999;       // eased pointer used for drawing
+  var active = false;
+  var raf = null;
+
+  function draw() {
+    cx += (px - cx) * 0.18;         // ease so the depression glides
+    cy += (py - cy) * 0.18;
+    ctx.clearRect(0, 0, W, H);
+    forEachDot(function (x, y) {
+      var dx = x - cx, dy = y - cy;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      var r = R_DOT, a = BASE_A, ox = 0, oy = 0;
+      if (dist < INFLUENCE) {
+        var t = 1 - dist / INFLUENCE;           // 0..1, strongest at cursor
+        var e = t * t;
+        var inv = 1 / (dist || 1);
+        ox = -dx * inv * e * PULL;              // slide toward cursor...
+        oy = -dy * inv * e * PULL;
+        r = R_DOT * (1 - e * 0.8);              // ...shrink...
+        a = BASE_A * (1 - e * 0.6);             // ...and dim => sinks inward
+      }
+      if (r <= 0.05) return;
+      ctx.beginPath();
+      ctx.arc(x + ox, y + oy, r, 0, Math.PI * 2);
+      ctx.fillStyle = COLOR + a.toFixed(3) + ')';
+      ctx.fill();
+    });
+    var settling = Math.abs(px - cx) > 0.5 || Math.abs(py - cy) > 0.5;
+    if (active || settling) { raf = requestAnimationFrame(draw); }
+    else { raf = null; drawStatic(); }
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(draw); }
+
+  hero.addEventListener('pointermove', function (e) {
+    if (!W) return;                             // hidden (mobile) — ignore
+    var r = hero.getBoundingClientRect();
+    px = e.clientX - r.left;
+    py = e.clientY - r.top;
+    if (cx < -9000) { cx = px; cy = py; }        // first move: no glide from origin
+    active = true;
+    kick();
+  });
+  hero.addEventListener('pointerleave', function () {
+    active = false;                              // depression eases back out
+    px = -9999; py = -9999;
+    kick();
+  });
+}
+
+/* -----------------------------------------------------------
+   HERO CARDS — subtle cursor-following 3D tilt on hover
+   ----------------------------------------------------------- */
+function initCardTilt() {
+  if (REDUCE) return;               // no tilt under reduced motion
+  var stage = document.querySelector('[data-hero-stage]');
+  if (!stage) return;
+  var cards = [].slice.call(stage.querySelectorAll('.iwh-card:not(.iwh-reflection)'));
+  if (!cards.length) return;
+
+  var MAX = 6;                      // max tilt in degrees (subtle)
+  var PERS = 700;                   // perspective depth (px)
+  // fast, eased transform while tracking; smooth settle back on leave.
+  // (scale / box-shadow / border keep their existing hover transitions)
+  var trackT = 'transform .18s ease-out, scale .4s cubic-bezier(.2,.7,.3,1), box-shadow .4s ease, border-color .4s ease, opacity .6s ease';
+  var resetT = 'transform .6s cubic-bezier(.2,.8,.3,1), scale .4s cubic-bezier(.2,.7,.3,1), box-shadow .4s ease, border-color .4s ease, opacity .6s ease';
+
+  cards.forEach(function (card) {
+    card.addEventListener('pointerenter', function () { card.style.transition = trackT; });
+    card.addEventListener('pointermove', function (e) {
+      var r = card.getBoundingClientRect();
+      if (!r.width) return;
+      var fx = (e.clientX - r.left) / r.width;    // 0..1 across the card
+      var fy = (e.clientY - r.top) / r.height;
+      var ry = ((fx - 0.5) * 2 * MAX).toFixed(2); // right/left -> rotateY
+      var rx = ((0.5 - fy) * 2 * MAX).toFixed(2); // up/down    -> rotateX
+      card.style.transform = 'perspective(' + PERS + 'px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+    });
+    card.addEventListener('pointerleave', function () {
+      card.style.transition = resetT;
+      card.style.transform = '';                  // ease back to rest (CSS `none`)
+    });
+  });
+}
+
+/* -----------------------------------------------------------
    BOOT
    ----------------------------------------------------------- */
 function boot() {
@@ -308,7 +455,9 @@ function boot() {
   initObservers();
   initNav();
   initHeroStage();
+  initDotField();
   initCardEntrance();
+  initCardTilt();
   initConnectors();
 }
 
