@@ -106,16 +106,16 @@ body {
   position: relative; width: 100%; overflow: hidden;
   background: #ffffff; /* clean solid background (gradient removed) */
 }
-/* content runs on a 1600-max grid, centered — closer to the full 1920 Figma frame
-   scale without going giant on ultrawide screens. Height is cropped from the
-   full 1061 stage (1920/941) to trim the sparse top/bottom dot bands — the
-   composition itself is unchanged, just less vertical whitespace. */
-.iwh-desktop { position: relative; width: 100%; max-width: 1600px; margin: 0 auto; aspect-ratio: 1920 / 941; }
+/* content runs on a 1500-max grid, centered. Height is cropped from the full
+   1061 stage (1920/900) to trim the sparse top/bottom dot bands, giving a
+   ~700px hero at the capped width — the composition/positions are unchanged,
+   only the vertical whitespace is reduced. */
+.iwh-desktop { position: relative; width: 100%; max-width: 1500px; margin: 0 auto; aspect-ratio: 1920 / 900; }
 .iwh-stage {
   position: absolute; top: 0; left: 0; width: 1920px; height: 1061px;
-  /* lift 40px so the trimmed frame stays vertically centred on the content
-     and the lower cards are never clipped */
-  transform-origin: top left; transform: scale(var(--iwh-s, 1)) translateY(-40px);
+  /* lift 60px so the trimmed frame clears the nav at the top and never
+     clips the lower cards at the bottom */
+  transform-origin: top left; transform: scale(var(--iwh-s, 1)) translateY(-60px);
 }
 /* interactive dot field — canvas grid whose dots sink inward near the cursor */
 .iwh-dotfield {
@@ -124,6 +124,10 @@ body {
   width: 1920px; height: 1061px;
   pointer-events: none;   /* never blocks card hover / connectors */
   z-index: 0;
+  /* soft vignette so the even grid fades at the far edges instead of
+     ending in a hard rectangle */
+  -webkit-mask-image: radial-gradient(125% 125% at 50% 48%, #000 62%, transparent 100%);
+          mask-image: radial-gradient(125% 125% at 50% 48%, #000 62%, transparent 100%);
 }
 /* dot-grid patches — soft-edged dot clouds (match Figma groups) */
 .iwh-dots {
@@ -249,7 +253,7 @@ body {
 
 /* >=1441: title capped at 72px + more vertical breathing room (<=1440 stays 56px) */
 @media (min-width: 1441px) {
-  .iw-hero { padding-block: 16px; }
+  .iw-hero { padding-block: 0; }
   .iwh-h1 { font-size: 72px; line-height: 84px; letter-spacing: -2.4px; }
   .iwh-center { left: 535px; width: 850px; top: 346px; }
   .iwh-sub { margin-top: 28px; }
