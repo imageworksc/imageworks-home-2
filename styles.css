@@ -107,11 +107,15 @@ body {
   background: #ffffff; /* clean solid background (gradient removed) */
 }
 /* content runs on a 1600-max grid, centered — closer to the full 1920 Figma frame
-   scale/height without going giant on ultrawide screens */
-.iwh-desktop { position: relative; width: 100%; max-width: 1600px; margin: 0 auto; aspect-ratio: 1920 / 1061; }
+   scale without going giant on ultrawide screens. Height is cropped from the
+   full 1061 stage (1920/941) to trim the sparse top/bottom dot bands — the
+   composition itself is unchanged, just less vertical whitespace. */
+.iwh-desktop { position: relative; width: 100%; max-width: 1600px; margin: 0 auto; aspect-ratio: 1920 / 941; }
 .iwh-stage {
   position: absolute; top: 0; left: 0; width: 1920px; height: 1061px;
-  transform-origin: top left; transform: scale(var(--iwh-s, 1));
+  /* lift 40px so the trimmed frame stays vertically centred on the content
+     and the lower cards are never clipped */
+  transform-origin: top left; transform: scale(var(--iwh-s, 1)) translateY(-40px);
 }
 /* interactive dot field — canvas grid whose dots sink inward near the cursor */
 .iwh-dotfield {
@@ -245,14 +249,14 @@ body {
 
 /* >=1441: title capped at 72px + more vertical breathing room (<=1440 stays 56px) */
 @media (min-width: 1441px) {
-  .iw-hero { padding-block: 64px; }
+  .iw-hero { padding-block: 16px; }
   .iwh-h1 { font-size: 72px; line-height: 84px; letter-spacing: -2.4px; }
   .iwh-center { left: 535px; width: 850px; top: 346px; }
   .iwh-sub { margin-top: 28px; }
 }
 .iwh-mobile { display: none; }
 @media (max-width: 860px) {
-  .iw-hero { padding: 120px 24px 72px; }
+  .iw-hero { padding: 96px 24px 56px; }
   .iwh-desktop { display: none; }
   .iwh-mobile { display: flex; flex-direction: column; align-items: center; text-align: center; }
 }
