@@ -316,7 +316,7 @@ function initDotField() {
   canvas.height = H;
 
   var GAP = 32;                     // dot spacing (matches .iwh-dots patches)
-  var R_DOT = 1.7;                  // base dot radius
+  var R_DOT = 2.3;                  // base dot radius (slightly larger dots)
   var INFLUENCE = 160;              // cursor reach in px
   var PULL = 14;                    // how far dots slide toward the cursor
   var COLOR = 'rgba(120,140,170,';  // blue-grey; alpha appended per dot

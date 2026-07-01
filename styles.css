@@ -104,9 +104,7 @@ body {
 /* ---------- HERO (Figma frame 10234:322) ---------- */
 .iw-hero {
   position: relative; width: 100%; overflow: hidden;
-  background:
-    radial-gradient(60% 62% at 50% 42%, rgba(150,160,180,0) 50%, rgba(150,160,180,.22) 100%),
-    radial-gradient(130% 105% at 50% 30%, #ffffff 0%, #eaf1fb 46%, #dde7f6 100%);
+  background: #ffffff; /* clean solid background (gradient removed) */
 }
 /* content runs on a 1600-max grid, centered — closer to the full 1920 Figma frame
    scale/height without going giant on ultrawide screens */
@@ -126,7 +124,7 @@ body {
 /* dot-grid patches — soft-edged dot clouds (match Figma groups) */
 .iwh-dots {
   position: absolute;
-  background-image: radial-gradient(#c8d3e0 1.5px, transparent 1.7px);
+  background-image: radial-gradient(#c8d3e0 2px, transparent 2.3px);
   background-size: 32px 32px;
   -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 22%, transparent 78%);
   mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 22%, transparent 78%);
@@ -164,7 +162,7 @@ body {
   transform: translateY(26px) scale(.95);
 }
 .iwh-stage.is-loaded .iwh-card { opacity: 1; transform: none; }
-.iwh-stage.is-loaded .iwh-reflection { opacity: .5; }
+.iwh-stage.is-loaded .iwh-reflection { opacity: .18; }
 .iwh-card:hover {
   scale: 1.05;
   z-index: 6;
@@ -237,7 +235,7 @@ body {
   pointer-events: none;
   animation: iwhFloat 9s ease-in-out infinite;
 }
-.iwh-reflection > * { filter: blur(5px); opacity: .65; }
+.iwh-reflection > * { filter: blur(14px); opacity: .4; }
 .iwh-center { position: absolute; left: 667px; top: 366px; width: 586px; text-align: center; }
 .iwh-h1 { margin: 0; font-size: 56px; line-height: 67.2px; font-weight: 800; letter-spacing: -2px; color: #143c66; }
 .iwh-h1 span { color: #80c34a; }
