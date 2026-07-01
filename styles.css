@@ -108,11 +108,20 @@ body {
     radial-gradient(60% 62% at 50% 42%, rgba(150,160,180,0) 50%, rgba(150,160,180,.22) 100%),
     radial-gradient(130% 105% at 50% 30%, #ffffff 0%, #eaf1fb 46%, #dde7f6 100%);
 }
-/* content runs on a 1440-max grid, centered — no giant scaling on wide screens */
-.iwh-desktop { position: relative; width: 100%; max-width: 1440px; margin: 0 auto; aspect-ratio: 1920 / 1061; }
+/* content runs on a 1600-max grid, centered — closer to the full 1920 Figma frame
+   scale/height without going giant on ultrawide screens */
+.iwh-desktop { position: relative; width: 100%; max-width: 1600px; margin: 0 auto; aspect-ratio: 1920 / 1061; }
 .iwh-stage {
   position: absolute; top: 0; left: 0; width: 1920px; height: 1061px;
   transform-origin: top left; transform: scale(var(--iwh-s, 1));
+}
+/* interactive dot field — canvas grid whose dots sink inward near the cursor */
+.iwh-dotfield {
+  position: absolute;
+  left: 0; top: 0;
+  width: 1920px; height: 1061px;
+  pointer-events: none;   /* never blocks card hover / connectors */
+  z-index: 0;
 }
 /* dot-grid patches — soft-edged dot clouds (match Figma groups) */
 .iwh-dots {
@@ -169,6 +178,18 @@ body {
     inset -1px 0 7px rgba(255,255,255,.22);
 }
 .iwh-card:hover .iwh-icon { transform: scale(1.16) rotate(-5deg); }
+
+/* glassy reveal: card content stays blurred/faint until the card is hovered,
+   then sharpens to fully readable (reflections keep their own permanent blur) */
+.iwh-card:not(.iwh-reflection) > * {
+  filter: blur(5px);
+  opacity: .5;
+  transition: filter .5s cubic-bezier(.2,.8,.3,1), opacity .5s ease, transform .45s cubic-bezier(.2,.7,.3,1);
+}
+.iwh-card:not(.iwh-reflection):hover > * {
+  filter: blur(0);
+  opacity: 1;
+}
 
 /* keyframes */
 @keyframes iwhFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }

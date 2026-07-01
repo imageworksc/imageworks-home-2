@@ -300,6 +300,97 @@ function initConnectors() {
 }
 
 /* -----------------------------------------------------------
+   HERO DOT FIELD — canvas grid; dots sink inward toward the cursor
+   ----------------------------------------------------------- */
+function initDotField() {
+  var stage = document.querySelector('[data-hero-stage]');
+  if (!stage) return;
+  var canvas = stage.querySelector('[data-dotfield]');
+  if (!canvas) return;
+
+  var ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  var W = 1920, H = 1061;           // stage coordinate space
+  canvas.width = W;
+  canvas.height = H;
+
+  var GAP = 32;                     // dot spacing (matches .iwh-dots patches)
+  var R_DOT = 1.7;                  // base dot radius
+  var INFLUENCE = 160;              // cursor reach in px
+  var PULL = 14;                    // how far dots slide toward the cursor
+  var COLOR = 'rgba(120,140,170,';  // blue-grey; alpha appended per dot
+  var BASE_A = 0.30;
+
+  // draw the plain grid once (used as the static / reduced-motion state)
+  function drawStatic() {
+    ctx.clearRect(0, 0, W, H);
+    for (var y = GAP / 2; y < H; y += GAP) {
+      for (var x = GAP / 2; x < W; x += GAP) {
+        ctx.beginPath();
+        ctx.arc(x, y, R_DOT, 0, Math.PI * 2);
+        ctx.fillStyle = COLOR + BASE_A + ')';
+        ctx.fill();
+      }
+    }
+  }
+  drawStatic();
+
+  if (REDUCE) return;               // no cursor interaction under reduced motion
+
+  var px = -9999, py = -9999;       // raw pointer (stage coords)
+  var cx = -9999, cy = -9999;       // eased pointer used for drawing
+  var active = false;
+  var raf = null;
+
+  function draw() {
+    cx += (px - cx) * 0.18;         // ease so the depression glides
+    cy += (py - cy) * 0.18;
+    ctx.clearRect(0, 0, W, H);
+    for (var y = GAP / 2; y < H; y += GAP) {
+      for (var x = GAP / 2; x < W; x += GAP) {
+        var dx = x - cx, dy = y - cy;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        var r = R_DOT, a = BASE_A, ox = 0, oy = 0;
+        if (dist < INFLUENCE) {
+          var t = 1 - dist / INFLUENCE;         // 0..1, strongest at cursor
+          var e = t * t;
+          var inv = 1 / (dist || 1);
+          ox = -dx * inv * e * PULL;            // slide toward cursor...
+          oy = -dy * inv * e * PULL;
+          r = R_DOT * (1 - e * 0.8);            // ...shrink...
+          a = BASE_A * (1 - e * 0.6);           // ...and dim => sinks inward
+        }
+        if (r <= 0.05) continue;
+        ctx.beginPath();
+        ctx.arc(x + ox, y + oy, r, 0, Math.PI * 2);
+        ctx.fillStyle = COLOR + a.toFixed(3) + ')';
+        ctx.fill();
+      }
+    }
+    var settling = Math.abs(px - cx) > 0.5 || Math.abs(py - cy) > 0.5;
+    if (active || settling) { raf = requestAnimationFrame(draw); }
+    else { raf = null; drawStatic(); }
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(draw); }
+
+  stage.addEventListener('pointermove', function (e) {
+    var rect = canvas.getBoundingClientRect();
+    if (!rect.width) return;                    // hidden (mobile) — ignore
+    px = (e.clientX - rect.left) / rect.width * W;
+    py = (e.clientY - rect.top) / rect.height * H;
+    if (cx < -9000) { cx = px; cy = py; }        // first move: no glide from origin
+    active = true;
+    kick();
+  });
+  stage.addEventListener('pointerleave', function () {
+    active = false;                              // depression eases back out
+    px = -9999; py = -9999;
+    kick();
+  });
+}
+
+/* -----------------------------------------------------------
    BOOT
    ----------------------------------------------------------- */
 function boot() {
@@ -308,6 +399,7 @@ function boot() {
   initObservers();
   initNav();
   initHeroStage();
+  initDotField();
   initCardEntrance();
   initConnectors();
 }
