@@ -46,15 +46,17 @@
 
 <!-- ===================== HERO (exact Figma frame 10234:322) ===================== -->
 <header id="top" data-hero class="iw-hero">
+
+  <!-- full-bleed interactive dot field: spans the whole hero (any width),
+       dots sink inward toward the cursor -->
+  <canvas class="iwh-dotfield" data-dotfield aria-hidden="true"></canvas>
+
   <!-- desktop: fixed 1920x1061 stage scaled to viewport width -->
   <div class="iwh-desktop">
     <div class="iwh-stage" data-hero-stage>
 
-      <!-- interactive dot field: dots sink inward toward the cursor -->
-      <canvas class="iwh-dotfield" data-dotfield aria-hidden="true"></canvas>
-
-      <!-- (static dot-cloud patches removed — the even interactive canvas
-           dot field above is now the single, evenly-distributed dot layer) -->
+      <!-- (static dot-cloud patches removed — the full-bleed interactive
+           canvas dot field is the single, evenly-distributed dot layer) -->
 
       <!-- soft blurred accent blob -->
       <div style="position:absolute;left:1243px;top:862px;width:120px;height:95px;border-radius:10px;background:linear-gradient(135deg,rgba(215,230,251,.46),rgba(185,210,243,.46));filter:blur(1px);opacity:.7;"></div>

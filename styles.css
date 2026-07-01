@@ -105,30 +105,34 @@ body {
 .iw-hero {
   position: relative; width: 100%; overflow: hidden;
   background: #ffffff; /* clean solid background (gradient removed) */
+  padding-block: 52px; /* breathing room above/below the composition */
 }
 /* content runs on a 1500-max grid, centered. Height is cropped from the full
    1061 stage (1920/900) to trim the sparse top/bottom dot bands, giving a
    ~700px hero at the capped width — the composition/positions are unchanged,
    only the vertical whitespace is reduced. */
-.iwh-desktop { position: relative; width: 100%; max-width: 1500px; margin: 0 auto; aspect-ratio: 1920 / 900; }
+.iwh-desktop { position: relative; z-index: 1; width: 100%; max-width: 1500px; margin: 0 auto; aspect-ratio: 1920 / 930; }
 .iwh-stage {
   position: absolute; top: 0; left: 0; width: 1920px; height: 1061px;
-  /* lift 60px so the trimmed frame clears the nav at the top and never
+  /* lift 52px so the trimmed frame clears the nav at the top and never
      clips the lower cards at the bottom */
-  transform-origin: top left; transform: scale(var(--iwh-s, 1)) translateY(-60px);
+  transform-origin: top left; transform: scale(var(--iwh-s, 1)) translateY(-52px);
 }
 /* interactive dot field — canvas grid whose dots sink inward near the cursor */
+/* full-bleed dot field — covers the entire hero at any screen width so the
+   dots never run out on the sides; drawn in real pixels by JS */
 .iwh-dotfield {
   position: absolute;
-  left: 0; top: 0;
-  width: 1920px; height: 1061px;
+  inset: 0;
+  width: 100%; height: 100%;
   pointer-events: none;   /* never blocks card hover / connectors */
   z-index: 0;
-  /* soft vignette so the even grid fades at the far edges instead of
-     ending in a hard rectangle */
-  -webkit-mask-image: radial-gradient(125% 125% at 50% 48%, #000 62%, transparent 100%);
-          mask-image: radial-gradient(125% 125% at 50% 48%, #000 62%, transparent 100%);
+  /* fade only top & bottom (under the nav, into the next section); the sides
+     stay full so dots reach the screen edges on wide monitors */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 7%, #000 92%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0, #000 7%, #000 92%, transparent 100%);
 }
+@media (max-width: 860px) { .iwh-dotfield { display: none; } }
 /* dot-grid patches — soft-edged dot clouds (match Figma groups) */
 .iwh-dots {
   position: absolute;
@@ -253,14 +257,14 @@ body {
 
 /* >=1441: title capped at 72px + more vertical breathing room (<=1440 stays 56px) */
 @media (min-width: 1441px) {
-  .iw-hero { padding-block: 0; }
+  .iw-hero { padding-block: 64px; }
   .iwh-h1 { font-size: 72px; line-height: 84px; letter-spacing: -2.4px; }
   .iwh-center { left: 535px; width: 850px; top: 346px; }
   .iwh-sub { margin-top: 28px; }
 }
 .iwh-mobile { display: none; }
 @media (max-width: 860px) {
-  .iw-hero { padding: 96px 24px 56px; }
+  .iw-hero { padding: 112px 24px 72px; }
   .iwh-desktop { display: none; }
   .iwh-mobile { display: flex; flex-direction: column; align-items: center; text-align: center; }
 }

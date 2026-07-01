@@ -303,42 +303,65 @@ function initConnectors() {
    HERO DOT FIELD — canvas grid; dots sink inward toward the cursor
    ----------------------------------------------------------- */
 function initDotField() {
-  var stage = document.querySelector('[data-hero-stage]');
-  if (!stage) return;
-  var canvas = stage.querySelector('[data-dotfield]');
+  var hero = document.querySelector('[data-hero]');
+  if (!hero) return;
+  var canvas = hero.querySelector('[data-dotfield]');
   if (!canvas) return;
 
   var ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  var W = 1920, H = 1061;           // stage coordinate space
-  canvas.width = W;
-  canvas.height = H;
-
-  var GAP = 32;                     // dot spacing (matches .iwh-dots patches)
-  var R_DOT = 2.1;                  // base dot radius (even, slightly larger dots)
-  var INFLUENCE = 160;              // cursor reach in px
+  var GAP = 30;                     // dot spacing in CSS px
+  var R_DOT = 2.1;                  // base dot radius
+  var INFLUENCE = 150;              // cursor reach in px
   var PULL = 14;                    // how far dots slide toward the cursor
   var COLOR = 'rgba(120,140,170,';  // blue-grey; alpha appended per dot
   var BASE_A = 0.30;
 
-  // draw the plain grid once (used as the static / reduced-motion state)
-  function drawStatic() {
-    ctx.clearRect(0, 0, W, H);
-    for (var y = GAP / 2; y < H; y += GAP) {
-      for (var x = GAP / 2; x < W; x += GAP) {
-        ctx.beginPath();
-        ctx.arc(x, y, R_DOT, 0, Math.PI * 2);
-        ctx.fillStyle = COLOR + BASE_A + ')';
-        ctx.fill();
-      }
+  var W = 0, H = 0;                  // hero size in CSS px
+
+  // walk an evenly-centred grid that covers the whole hero at the current size
+  function forEachDot(cb) {
+    var cols = Math.ceil(W / GAP) + 2;
+    var rows = Math.ceil(H / GAP) + 2;
+    var offX = (W - (cols - 1) * GAP) / 2;   // centre the grid so it stays even
+    var offY = (H - (rows - 1) * GAP) / 2;
+    for (var j = 0; j < rows; j++) {
+      for (var i = 0; i < cols; i++) { cb(offX + i * GAP, offY + j * GAP); }
     }
   }
-  drawStatic();
+
+  // draw the plain grid once (static / reduced-motion / rest state)
+  function drawStatic() {
+    if (!W) return;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = COLOR + BASE_A + ')';
+    forEachDot(function (x, y) {
+      ctx.beginPath();
+      ctx.arc(x, y, R_DOT, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  // match the canvas backing store to the hero's pixel size (crisp on HiDPI)
+  function resize() {
+    if (!canvas.offsetParent) { W = 0; H = 0; return; }  // hidden (mobile)
+    var r = hero.getBoundingClientRect();
+    W = Math.round(r.width);
+    H = Math.round(r.height);
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);   // draw in CSS px
+    drawStatic();
+  }
+
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
 
   if (REDUCE) return;               // no cursor interaction under reduced motion
 
-  var px = -9999, py = -9999;       // raw pointer (stage coords)
+  var px = -9999, py = -9999;       // raw pointer (CSS px in hero)
   var cx = -9999, cy = -9999;       // eased pointer used for drawing
   var active = false;
   var raf = null;
@@ -347,43 +370,41 @@ function initDotField() {
     cx += (px - cx) * 0.18;         // ease so the depression glides
     cy += (py - cy) * 0.18;
     ctx.clearRect(0, 0, W, H);
-    for (var y = GAP / 2; y < H; y += GAP) {
-      for (var x = GAP / 2; x < W; x += GAP) {
-        var dx = x - cx, dy = y - cy;
-        var dist = Math.sqrt(dx * dx + dy * dy);
-        var r = R_DOT, a = BASE_A, ox = 0, oy = 0;
-        if (dist < INFLUENCE) {
-          var t = 1 - dist / INFLUENCE;         // 0..1, strongest at cursor
-          var e = t * t;
-          var inv = 1 / (dist || 1);
-          ox = -dx * inv * e * PULL;            // slide toward cursor...
-          oy = -dy * inv * e * PULL;
-          r = R_DOT * (1 - e * 0.8);            // ...shrink...
-          a = BASE_A * (1 - e * 0.6);           // ...and dim => sinks inward
-        }
-        if (r <= 0.05) continue;
-        ctx.beginPath();
-        ctx.arc(x + ox, y + oy, r, 0, Math.PI * 2);
-        ctx.fillStyle = COLOR + a.toFixed(3) + ')';
-        ctx.fill();
+    forEachDot(function (x, y) {
+      var dx = x - cx, dy = y - cy;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      var r = R_DOT, a = BASE_A, ox = 0, oy = 0;
+      if (dist < INFLUENCE) {
+        var t = 1 - dist / INFLUENCE;           // 0..1, strongest at cursor
+        var e = t * t;
+        var inv = 1 / (dist || 1);
+        ox = -dx * inv * e * PULL;              // slide toward cursor...
+        oy = -dy * inv * e * PULL;
+        r = R_DOT * (1 - e * 0.8);              // ...shrink...
+        a = BASE_A * (1 - e * 0.6);             // ...and dim => sinks inward
       }
-    }
+      if (r <= 0.05) return;
+      ctx.beginPath();
+      ctx.arc(x + ox, y + oy, r, 0, Math.PI * 2);
+      ctx.fillStyle = COLOR + a.toFixed(3) + ')';
+      ctx.fill();
+    });
     var settling = Math.abs(px - cx) > 0.5 || Math.abs(py - cy) > 0.5;
     if (active || settling) { raf = requestAnimationFrame(draw); }
     else { raf = null; drawStatic(); }
   }
   function kick() { if (!raf) raf = requestAnimationFrame(draw); }
 
-  stage.addEventListener('pointermove', function (e) {
-    var rect = canvas.getBoundingClientRect();
-    if (!rect.width) return;                    // hidden (mobile) — ignore
-    px = (e.clientX - rect.left) / rect.width * W;
-    py = (e.clientY - rect.top) / rect.height * H;
+  hero.addEventListener('pointermove', function (e) {
+    if (!W) return;                             // hidden (mobile) — ignore
+    var r = hero.getBoundingClientRect();
+    px = e.clientX - r.left;
+    py = e.clientY - r.top;
     if (cx < -9000) { cx = px; cy = py; }        // first move: no glide from origin
     active = true;
     kick();
   });
-  stage.addEventListener('pointerleave', function () {
+  hero.addEventListener('pointerleave', function () {
     active = false;                              // depression eases back out
     px = -9999; py = -9999;
     kick();
