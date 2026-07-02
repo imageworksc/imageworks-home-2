@@ -21,20 +21,20 @@ var WORKS = [
 ];
 
 var PARTNERS = [
-  { name: 'HERMES Creative Awards',            src: 'assets/logos/hermes.jpg',   h: 56 },
-  { name: 'Davey Awards',                      src: 'assets/logos/davey.png',    h: 34 },
-  { name: 'Best in Search',                    src: 'assets/logos/bis.png',      h: 56 },
-  { name: 'Best Web Design Agencies',          src: 'assets/logos/bwda.png',     h: 40 },
-  { name: 'Google Partner',                    src: 'assets/logos/google.jpg',   h: 34 },
-  { name: 'Mailchimp',                         src: 'assets/logos/mailchimp.png', h: 50 },
-  { name: 'MOZ',                               src: 'assets/logos/moz.jpg',      h: 28 },
-  { name: 'Crazy Egg',                         src: 'assets/logos/crazyegg.png', h: 40 },
-  { name: 'SEMRUSH Certified Agency Partner',  src: 'assets/logos/semrush.jpg',  h: 58 },
-  { name: 'IMA Interactive Media Awards',      src: 'assets/logos/ima.png',      h: 26 },
-  { name: 'W3 Awards',                         src: 'assets/logos/w3.png',       h: 56 },
-  { name: 'Expertise',                         src: 'assets/logos/expertise.jpg', h: 56 },
-  { name: 'Summit International Awards',        src: 'assets/logos/sia.png',      h: 30 },
-  { name: 'Vega Digital Awards',               src: 'assets/logos/winner.png',   h: 56 }
+  { name: 'HERMES Creative Awards',            src: 'assets/logos/hermes.jpg',   h: 76 },
+  { name: 'Davey Awards',                      src: 'assets/logos/davey.png',    h: 46 },
+  { name: 'Best in Search',                    src: 'assets/logos/bis.png',      h: 76 },
+  { name: 'Best Web Design Agencies',          src: 'assets/logos/bwda.png',     h: 54 },
+  { name: 'Google Partner',                    src: 'assets/logos/google.jpg',   h: 46 },
+  { name: 'Mailchimp',                         src: 'assets/logos/mailchimp.png', h: 68 },
+  { name: 'MOZ',                               src: 'assets/logos/moz.jpg',      h: 38 },
+  { name: 'Crazy Egg',                         src: 'assets/logos/crazyegg.png', h: 54 },
+  { name: 'SEMRUSH Certified Agency Partner',  src: 'assets/logos/semrush.jpg',  h: 78 },
+  { name: 'IMA Interactive Media Awards',      src: 'assets/logos/ima.png',      h: 36 },
+  { name: 'W3 Awards',                         src: 'assets/logos/w3.png',       h: 76 },
+  { name: 'Expertise',                         src: 'assets/logos/expertise.jpg', h: 76 },
+  { name: 'Summit International Awards',        src: 'assets/logos/sia.png',      h: 40 },
+  { name: 'Vega Digital Awards',               src: 'assets/logos/winner.png',   h: 76 }
 ];
 
 var TESTIMONIALS = [
