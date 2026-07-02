@@ -67,6 +67,8 @@ body {
   transition: transform .3s cubic-bezier(.16,.84,.44,1);
 }
 .iw-link:hover::after { transform: scaleX(1); }
+/* CTA links: underline matches the text color instead of the default green */
+.iw-cta-link::after { background: currentColor; }
 
 .iw-card { transition: transform .4s cubic-bezier(.16,.84,.44,1), box-shadow .4s cubic-bezier(.16,.84,.44,1); }
 .iw-work { transition: transform .45s cubic-bezier(.16,.84,.44,1), box-shadow .45s cubic-bezier(.16,.84,.44,1); }
