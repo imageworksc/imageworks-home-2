@@ -67,6 +67,8 @@ body {
   transition: transform .3s cubic-bezier(.16,.84,.44,1);
 }
 .iw-link:hover::after { transform: scaleX(1); }
+/* CTA links: underline matches the text color instead of the default green */
+.iw-cta-link::after { background: currentColor; }
 
 .iw-card { transition: transform .4s cubic-bezier(.16,.84,.44,1), box-shadow .4s cubic-bezier(.16,.84,.44,1); }
 .iw-work { transition: transform .45s cubic-bezier(.16,.84,.44,1), box-shadow .45s cubic-bezier(.16,.84,.44,1); }
@@ -269,10 +271,44 @@ body {
   .iwh-mobile { display: flex; flex-direction: column; align-items: center; text-align: center; }
 }
 
+/* ---------- intro statement responsive ---------- */
+@media (max-width: 860px) {
+  .iw-intro-grid { grid-template-columns: 1fr !important; gap: 44px !important; }
+  .iw-intro-grid svg { max-width: 380px !important; }
+}
+
+/* ---------- intro illustration: soft float + hover motion ---------- */
+.iw-illus-window, .iw-illus-trust, .iw-illus-found,
+.iw-illus-trust-in, .iw-illus-found-in { transform-box: fill-box; transform-origin: center; }
+.iw-illus-window { transition: transform .55s cubic-bezier(.2,.8,.3,1); }
+.iw-illus-trust  { animation: iwIllusFloatA 7s ease-in-out infinite; }
+.iw-illus-found  { animation: iwIllusFloatB 8s ease-in-out infinite; }
+.iw-illus-trust-in, .iw-illus-found-in { transition: transform .45s cubic-bezier(.2,.7,.3,1); }
+.iw-illus:hover .iw-illus-window   { transform: translateY(-3px); }
+.iw-illus:hover .iw-illus-trust-in { transform: scale(1.05) rotate(-3deg); }
+.iw-illus:hover .iw-illus-found-in { transform: scale(1.06) rotate(3deg); }
+@keyframes iwIllusFloatA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+@keyframes iwIllusFloatB { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
+
+/* ---------- footer responsive ---------- */
+/* inline styles set the desktop grid; override with !important on small screens */
+@media (max-width: 860px) {
+  .iw-footer { padding: 72px 44px 0 !important; }
+  .iw-foot-grid { grid-template-columns: 1fr !important; gap: 52px !important; justify-items: center !important; }
+  /* each stacked block becomes a centered band; text inside stays left-aligned */
+  .iw-foot-grid > * { width: 100% !important; max-width: 420px !important; margin-left: auto !important; margin-right: auto !important; text-align: left !important; }
+  .iw-foot-grid form { max-width: 100% !important; }
+}
+@media (max-width: 520px) {
+  .iw-footer { padding: 60px 34px 0 !important; }
+  .iw-foot-menus { grid-template-columns: 1fr !important; gap: 40px !important; }
+}
+
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .iw-reveal { transition: none; opacity: 1; transform: none; }
   .iw-track { animation: none !important; }
   .iwh-card, .iwh-pin, .iwh-pin--h, .iwh-dot, .iwh-dots { animation: none !important; }
   .iwh-pin { opacity: 1 !important; }
+  .iw-illus-trust, .iw-illus-found { animation: none !important; }
 }
