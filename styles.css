@@ -269,6 +269,20 @@ body {
   .iwh-mobile { display: flex; flex-direction: column; align-items: center; text-align: center; }
 }
 
+/* ---------- footer responsive ---------- */
+/* inline styles set the desktop grid; override with !important on small screens */
+@media (max-width: 860px) {
+  .iw-footer { padding: 72px 44px 0 !important; }
+  .iw-foot-grid { grid-template-columns: 1fr !important; gap: 52px !important; justify-items: center !important; }
+  /* each stacked block becomes a centered band; text inside stays left-aligned */
+  .iw-foot-grid > * { width: 100% !important; max-width: 420px !important; margin-left: auto !important; margin-right: auto !important; text-align: left !important; }
+  .iw-foot-grid form { max-width: 100% !important; }
+}
+@media (max-width: 520px) {
+  .iw-footer { padding: 60px 34px 0 !important; }
+  .iw-foot-menus { grid-template-columns: 1fr !important; gap: 40px !important; }
+}
+
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .iw-reveal { transition: none; opacity: 1; transform: none; }
