@@ -271,6 +271,25 @@ body {
   .iwh-mobile { display: flex; flex-direction: column; align-items: center; text-align: center; }
 }
 
+/* ---------- intro statement responsive ---------- */
+@media (max-width: 860px) {
+  .iw-intro-grid { grid-template-columns: 1fr !important; gap: 44px !important; }
+  .iw-intro-grid svg { max-width: 380px !important; }
+}
+
+/* ---------- intro illustration: soft float + hover motion ---------- */
+.iw-illus-window, .iw-illus-trust, .iw-illus-found,
+.iw-illus-trust-in, .iw-illus-found-in { transform-box: fill-box; transform-origin: center; }
+.iw-illus-window { transition: transform .55s cubic-bezier(.2,.8,.3,1); }
+.iw-illus-trust  { animation: iwIllusFloatA 7s ease-in-out infinite; }
+.iw-illus-found  { animation: iwIllusFloatB 8s ease-in-out infinite; }
+.iw-illus-trust-in, .iw-illus-found-in { transition: transform .45s cubic-bezier(.2,.7,.3,1); }
+.iw-illus:hover .iw-illus-window   { transform: translateY(-3px); }
+.iw-illus:hover .iw-illus-trust-in { transform: scale(1.05) rotate(-3deg); }
+.iw-illus:hover .iw-illus-found-in { transform: scale(1.06) rotate(3deg); }
+@keyframes iwIllusFloatA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+@keyframes iwIllusFloatB { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
+
 /* ---------- footer responsive ---------- */
 /* inline styles set the desktop grid; override with !important on small screens */
 @media (max-width: 860px) {
@@ -291,4 +310,5 @@ body {
   .iw-track { animation: none !important; }
   .iwh-card, .iwh-pin, .iwh-pin--h, .iwh-dot, .iwh-dots { animation: none !important; }
   .iwh-pin { opacity: 1 !important; }
+  .iw-illus-trust, .iw-illus-found { animation: none !important; }
 }
