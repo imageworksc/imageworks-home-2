@@ -27,9 +27,6 @@ var PARTNERS = [
   { name: 'Best Web Design Agencies',          src: 'assets/logos/bwda.png',     h: 54 },
   { name: 'Google Partner',                    src: 'assets/logos/google.jpg',   h: 46 },
   { name: 'Mailchimp',                         src: 'assets/logos/mailchimp.png', h: 68 },
-  { name: 'MOZ',                               src: 'assets/logos/moz.jpg',      h: 38 },
-  { name: 'Crazy Egg',                         src: 'assets/logos/crazyegg.png', h: 54 },
-  { name: 'SEMRUSH Certified Agency Partner',  src: 'assets/logos/semrush.jpg',  h: 78 },
   { name: 'IMA Interactive Media Awards',      src: 'assets/logos/ima.png',      h: 36 },
   { name: 'W3 Awards',                         src: 'assets/logos/w3.png',       h: 76 },
   { name: 'Expertise',                         src: 'assets/logos/expertise.jpg', h: 76 },
@@ -447,6 +444,92 @@ function initCardTilt() {
 }
 
 /* -----------------------------------------------------------
+   HOW WE DO IT — seamless infinite horizontal rail
+   ----------------------------------------------------------- */
+function initHowRail() {
+  var rail = document.querySelector('.iw-hwrail');
+  if (!rail) return;
+  var track = rail.querySelector('.iw-hwrail-track');
+  if (!track) return;
+  var originals = [].slice.call(track.children);
+  if (!originals.length) return;
+
+  // clone one full set before and after the originals so scrolling can wrap
+  var before = document.createDocumentFragment();
+  var after = document.createDocumentFragment();
+  originals.forEach(function (node) {
+    var a = node.cloneNode(true); a.setAttribute('aria-hidden', 'true'); before.appendChild(a);
+    var b = node.cloneNode(true); b.setAttribute('aria-hidden', 'true'); after.appendChild(b);
+  });
+  track.insertBefore(before, track.firstChild);
+  track.appendChild(after);
+
+  function setWidth() { return track.scrollWidth / 3; }      // width of one set (3 sets total)
+  function step() {
+    var s = getComputedStyle(track);
+    var gap = parseFloat(s.columnGap || s.gap) || 24;
+    return originals[0].getBoundingClientRect().width + gap;
+  }
+  function recenter() { rail.scrollLeft = setWidth(); }        // start on the middle (real) set
+  recenter();
+  window.addEventListener('resize', recenter, { passive: true });
+
+  // after scrolling settles, if we've drifted into a clone set, jump back one set (invisible: clones match)
+  var t;
+  rail.addEventListener('scroll', function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      var w = setWidth();
+      if (rail.scrollLeft >= 2 * w - 2)      rail.scrollLeft -= w;
+      else if (rail.scrollLeft <= 2)         rail.scrollLeft += w;
+      syncDots();
+    }, 80);
+  }, { passive: true });
+
+  function go(dir) { rail.scrollBy({ left: dir * step(), behavior: 'smooth' }); }
+  var section = rail.closest('section');
+  var arrows = section.querySelectorAll('[data-hw]');
+  [].slice.call(arrows).forEach(function (btn) {
+    btn.addEventListener('click', function () { go(btn.getAttribute('data-hw') === 'prev' ? -1 : 1); restart(); });
+  });
+
+  // auto-advance every few seconds, pause on hover / touch / when tab hidden
+  var AUTO = 4500, timer = null;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function start() { if (reduce || timer) return; timer = setInterval(function () { go(1); }, AUTO); }
+  function stop()  { if (timer) { clearInterval(timer); timer = null; } }
+  function restart() { stop(); start(); }
+  section.addEventListener('mouseenter', stop);
+  section.addEventListener('mouseleave', start);
+  section.addEventListener('focusin', stop);
+  section.addEventListener('focusout', start);
+  rail.addEventListener('touchstart', stop, { passive: true });
+  rail.addEventListener('pointerdown', stop);
+  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+
+  // step indicator dots — reflect the active card and jump on click
+  var dots = [].slice.call(section.querySelectorAll('.iw-hw-dot'));
+  function activeIndex() {
+    var i = Math.round((rail.scrollLeft - setWidth()) / step());
+    return ((i % originals.length) + originals.length) % originals.length;
+  }
+  function syncDots() {
+    if (!dots.length) return;
+    var a = activeIndex();
+    dots.forEach(function (d, i) { d.classList.toggle('is-active', i === a); });
+  }
+  dots.forEach(function (d) {
+    d.addEventListener('click', function () {
+      rail.scrollTo({ left: setWidth() + (+d.getAttribute('data-i')) * step(), behavior: 'smooth' });
+      restart();
+    });
+  });
+  syncDots();
+
+  start();
+}
+
+/* -----------------------------------------------------------
    BOOT
    ----------------------------------------------------------- */
 function boot() {
@@ -459,6 +542,7 @@ function boot() {
   initCardEntrance();
   initCardTilt();
   initConnectors();
+  initHowRail();
 }
 
 if (document.readyState === 'loading') {
