@@ -95,11 +95,11 @@ body {
 /* shared blue -> navy gradient behind "What We Do" + "Why ImageWorks" */
 .iw-blueband {
   background: linear-gradient(180deg,
-    #3b61a7 0%,
-    #37599e 28%,
-    #244784 47%,
-    #163359 65%,
-    #0e2548 83%,
+    #205fa6 0%,
+    #1d569a 28%,
+    #164784 47%,
+    #113659 65%,
+    #0d2748 83%,
     #0a1c38 100%);
 }
 
@@ -253,7 +253,7 @@ body {
 .iwh-center { position: absolute; left: 667px; top: 366px; width: 586px; text-align: center; }
 .iwh-h1 { margin: 0; font-size: 56px; line-height: 67.2px; font-weight: 800; letter-spacing: -2px; color: #143c66; }
 .iwh-h1 span { color: #80c34a; }
-.iwh-sub { margin: 24px auto 0; width: 412px; font-size: 24px; line-height: 36px; font-weight: 500; color: #52628a; }
+.iwh-sub { margin: 24px auto 0; width: 640px; font-size: 24px; line-height: 36px; font-weight: 500; color: #52628a; text-wrap: balance; }
 .iwh-ms { color: #1266b5; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .iwh-cta { display: inline-flex; align-items: center; gap: 12px; height: 54px; padding: 0 24px; margin-top: 44px; border-radius: 4px; background: #80c34a; color: #fff; font-size: 16px; font-weight: 700; text-decoration: none; box-shadow: 0 18px 24px rgba(14,28,64,.18); }
 
@@ -277,18 +277,62 @@ body {
   .iw-intro-grid svg { max-width: 380px !important; }
 }
 
+/* ---------- How We Do It: horizontal scroll rail ---------- */
+.iw-step { transition: transform .4s cubic-bezier(.16,.84,.44,1), box-shadow .4s ease; }
+.iw-step:hover { transform: translateY(-6px); box-shadow: 0 9px 20px rgba(20,40,80,.08); }
+.iw-hw-arrow { transition: background .25s ease, border-color .25s ease, color .25s ease; }
+.iw-hw-arrow:hover { background: #80c34a; border-color: #80c34a; color: #fff; }
+.iw-hwrail {
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;              /* Firefox: hide scrollbar */
+  -ms-overflow-style: none;           /* IE/Edge legacy */
+}
+.iw-hwrail::-webkit-scrollbar { width: 0; height: 0; display: none; }  /* WebKit: hide */
+/* extra vertical padding so the card shadow + hover lift aren't clipped by overflow */
+.iw-hwrail-track { display: flex; gap: 26px; width: max-content; padding: 32px 0 56px; }
+.iw-hw-card {
+  flex: none; width: 348px; scroll-snap-align: start;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  padding: 34px 30px 30px;
+  background: #fff; border: 1px solid #eaeff6; border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(20,40,80,.04), 0 5px 14px rgba(20,40,80,.045);
+}
+.iw-hw-num { position: absolute; top: 18px; right: 22px; font-size: 60px; font-weight: 800; line-height: 1; letter-spacing: -2px; color: #eef2f8; pointer-events: none; transition: color .4s ease; }
+.iw-step:hover .iw-hw-num { color: rgba(128,195,74,.18); }
+.iw-hw-ic { width: 50px; height: 50px; border-radius: 13px; background: #eef6e6; display: flex; align-items: center; justify-content: center; }
+.iw-hw-title { margin: 22px 0 0; font-size: 20px; font-weight: 700; line-height: 1.3; color: #143c66; position: relative; }
+.iw-hw-rule { display: block; width: 32px; height: 3px; border-radius: 2px; background: #80c34a; margin: 14px 0 16px; transition: width .4s cubic-bezier(.16,.84,.44,1); }
+.iw-step:hover .iw-hw-rule { width: 54px; }
+.iw-hw-body { margin: 0; font-size: 15px; line-height: 1.65; color: #5a6b82; }
+.iw-hw-body + .iw-hw-body { margin-top: 12px; }
+.iw-hw-dot { width: 8px; height: 8px; padding: 0; border: none; border-radius: 50%; background: #cdd8e6; cursor: pointer; transition: width .35s ease, background .35s ease, border-radius .35s ease; }
+.iw-hw-dot.is-active { width: 24px; border-radius: 4px; background: #80c34a; }
+@media (max-width: 460px) { .iw-hw-card { width: 82vw; } }
+
 /* ---------- intro illustration: soft float + hover motion ---------- */
-.iw-illus-window, .iw-illus-trust, .iw-illus-found,
-.iw-illus-trust-in, .iw-illus-found-in { transform-box: fill-box; transform-origin: center; }
-.iw-illus-window { transition: transform .55s cubic-bezier(.2,.8,.3,1); }
-.iw-illus-trust  { animation: iwIllusFloatA 7s ease-in-out infinite; }
-.iw-illus-found  { animation: iwIllusFloatB 8s ease-in-out infinite; }
-.iw-illus-trust-in, .iw-illus-found-in { transition: transform .45s cubic-bezier(.2,.7,.3,1); }
-.iw-illus:hover .iw-illus-window   { transform: translateY(-3px); }
-.iw-illus:hover .iw-illus-trust-in { transform: scale(1.05) rotate(-3deg); }
-.iw-illus:hover .iw-illus-found-in { transform: scale(1.06) rotate(3deg); }
+.iw-illus-window, .iw-illus-trust, .iw-illus-found, .iw-illus-analytics, .iw-illus-ai,
+.iw-illus-trust-in, .iw-illus-found-in, .iw-illus-analytics-in, .iw-illus-ai-in { transform-box: fill-box; transform-origin: center; }
+.iw-illus-window    { transition: transform .55s cubic-bezier(.2,.8,.3,1); }
+.iw-illus-trust     { animation: iwIllusFloatA 7s   ease-in-out infinite; }
+.iw-illus-found     { animation: iwIllusFloatB 8s   ease-in-out infinite; }
+.iw-illus-analytics { animation: iwIllusFloatB 7.5s ease-in-out infinite; }
+.iw-illus-ai        { animation: iwIllusFloatA 6.5s ease-in-out infinite; }
+.iw-illus-trust-in, .iw-illus-found-in, .iw-illus-analytics-in, .iw-illus-ai-in { transition: transform .45s cubic-bezier(.2,.7,.3,1); }
+.iw-illus:hover .iw-illus-window       { transform: translateY(-3px); }
+.iw-illus:hover .iw-illus-trust-in     { transform: scale(1.05) rotate(-2deg); }
+.iw-illus:hover .iw-illus-found-in     { transform: scale(1.06) rotate(3deg); }
+.iw-illus:hover .iw-illus-analytics-in { transform: scale(1.05) rotate(2deg); }
+.iw-illus:hover .iw-illus-ai-in        { transform: scale(1.06) rotate(-3deg); }
 @keyframes iwIllusFloatA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
 @keyframes iwIllusFloatB { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
+.iw-illus-pin, .iw-illus-pin-in { transform-box: fill-box; transform-origin: center; }
+.iw-illus-pin { animation: iwIllusFloatB 9s ease-in-out infinite; }
+.iw-illus-pin-in { transition: transform .45s cubic-bezier(.2,.7,.3,1); }
+.iw-illus:hover .iw-illus-pin-in { transform: scale(1.08) rotate(-4deg); }
 
 /* ---------- footer responsive ---------- */
 /* inline styles set the desktop grid; override with !important on small screens */
@@ -310,5 +354,5 @@ body {
   .iw-track { animation: none !important; }
   .iwh-card, .iwh-pin, .iwh-pin--h, .iwh-dot, .iwh-dots { animation: none !important; }
   .iwh-pin { opacity: 1 !important; }
-  .iw-illus-trust, .iw-illus-found { animation: none !important; }
+  .iw-illus-trust, .iw-illus-found, .iw-illus-analytics, .iw-illus-ai, .iw-illus-pin { animation: none !important; }
 }
