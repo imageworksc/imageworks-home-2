@@ -464,12 +464,13 @@ function initHowRail() {
   track.insertBefore(before, track.firstChild);
   track.appendChild(after);
 
-  function setWidth() { return track.scrollWidth / 3; }      // width of one set (3 sets total)
-  function step() {
+  function gapPx() {
     var s = getComputedStyle(track);
-    var gap = parseFloat(s.columnGap || s.gap) || 24;
-    return originals[0].getBoundingClientRect().width + gap;
+    return parseFloat(s.columnGap || s.gap) || 24;
   }
+  function step() { return originals[0].getBoundingClientRect().width + gapPx(); }
+  // width of one set = exactly N card-steps, so positions land on card boundaries
+  function setWidth() { return originals.length * step(); }
   function recenter() { rail.scrollLeft = setWidth(); }        // start on the middle (real) set
   recenter();
   window.addEventListener('resize', recenter, { passive: true });
