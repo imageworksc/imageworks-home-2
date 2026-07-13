@@ -53,15 +53,118 @@
         <p style="margin:16px 0 0;font-size:16px;line-height:1.65;color:#52628a;text-wrap:pretty;max-width:520px;">A modern website has to do more than look good or rank well. It has to help every audience understand who you are, what you do, and why you are credible.</p>
         <p style="margin:16px 0 0;font-size:16px;line-height:1.65;color:#52628a;text-wrap:pretty;max-width:520px;">We build websites that are clear for people, structured for Modern Search, ready for AI, and built to keep improving.</p>
       </div>
-      <!-- right column: slot held open for the new graphic -->
+      <!-- The same page, read twice: the site as a person sees it, and the
+           machine-readable structure standing behind it. The dashed rungs pair
+           each visible block with its structured counterpart — that pairing is
+           the whole point, so nothing is drawn that doesn't serve it. -->
       <div class="iw-illus" style="display:flex;justify-content:center;align-self:center;">
+        <svg class="iw-sem" width="100%" viewBox="0 0 520 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;height:auto;display:block;overflow:visible;" role="img" aria-label="The same web page read two ways: on the left, the site as a person sees it; behind it, the same page as machines read it — structured blocks on a spine, with metadata attached above, entities branching off, and a verified trust mark at the end. Dashed lines pair each visible block with its structured counterpart.">
+          <defs>
+            <filter id="iwSemCard" x="-30%" y="-30%" width="160%" height="180%">
+              <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0d2748" flood-opacity="0.13"/>
+            </filter>
+            <filter id="iwSemChip" x="-40%" y="-60%" width="180%" height="240%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0d2748" flood-opacity="0.10"/>
+            </filter>
+          </defs>
+
+          <!-- ---------- the machine layer, standing behind ---------- -->
+          <rect x="214" y="60" width="282" height="280" rx="12" fill="#e9eff7" stroke="#d7e1ee" stroke-width="1"/>
+
+          <!-- metadata riding above the page — schema, meta tags, open graph — wired
+               down into the structure on a rail rather than sketched over it -->
+          <g class="iw-sem-tags">
+            <g stroke="#a9c4e3" stroke-width="1.2" stroke-linecap="round">
+              <line class="iw-sem-flow" x1="320" y1="48" x2="320" y2="80"/>
+              <line class="iw-sem-flow" x1="382" y1="48" x2="382" y2="80"/>
+              <line class="iw-sem-flow" x1="446" y1="48" x2="446" y2="80"/>
+              <line class="iw-sem-flow" x1="446" y1="80" x2="292" y2="80"/>
+            </g>
+            <g filter="url(#iwSemChip)">
+              <rect x="296" y="28" width="48" height="18" rx="9" fill="#ffffff" stroke="#cddcec" stroke-width="1"/>
+              <rect x="358" y="28" width="48" height="18" rx="9" fill="#ffffff" stroke="#cddcec" stroke-width="1"/>
+              <rect x="420" y="28" width="52" height="18" rx="9" fill="#ffffff" stroke="#cddcec" stroke-width="1"/>
+            </g>
+            <circle cx="307" cy="37" r="2.6" fill="#2f7dd1"/><rect x="315" y="34.5" width="20" height="5" rx="2.5" fill="#d7e0ec"/>
+            <circle cx="369" cy="37" r="2.6" fill="#2f7dd1"/><rect x="377" y="34.5" width="20" height="5" rx="2.5" fill="#d7e0ec"/>
+            <circle cx="431" cy="37" r="2.6" fill="#2f7dd1"/><rect x="439" y="34.5" width="24" height="5" rx="2.5" fill="#d7e0ec"/>
+          </g>
+
+          <!-- the spine: the page's structure, top to bottom -->
+          <line x1="292" y1="80" x2="292" y2="288" stroke="#a9c4e3" stroke-width="1.5"/>
+
+          <!-- structured blocks — each one mirrors a block of the real page -->
+          <g stroke="#c6d7ea" stroke-width="1.2">
+            <rect x="308" y="104" width="150" height="28" rx="5" fill="#ffffff"/>
+            <rect x="308" y="148" width="150" height="44" rx="5" fill="#ffffff"/>
+            <rect x="308" y="206" width="150" height="44" rx="5" fill="#ffffff"/>
+            <rect x="308" y="272" width="150" height="32" rx="5" fill="#ffffff"/>
+          </g>
+          <g fill="#d7e0ec">
+            <rect x="322" y="115" width="58" height="6" rx="3"/>
+            <rect x="322" y="160" width="76" height="6" rx="3"/><rect x="322" y="174" width="48" height="6" rx="3"/>
+            <rect x="322" y="218" width="86" height="6" rx="3"/><rect x="322" y="232" width="60" height="6" rx="3"/>
+          </g>
+          <g fill="#80b3e3">
+            <circle cx="314" cy="118" r="2.6"/><circle cx="314" cy="170" r="2.6"/><circle cx="314" cy="228" r="2.6"/>
+          </g>
+          <!-- the trust block reads green: a credible, verified page -->
+          <rect x="308" y="272" width="150" height="32" rx="5" fill="#eaf6dd" stroke="#bfe09b" stroke-width="1.2"/>
+          <rect x="330" y="285" width="62" height="6" rx="3" fill="#a7d183"/>
+
+          <!-- spine nodes -->
+          <g fill="#1266b5">
+            <circle cx="292" cy="118" r="4.5"/>
+            <circle cx="292" cy="170" r="4.5"/>
+            <circle cx="292" cy="228" r="4.5"/>
+          </g>
+          <!-- credibility: the signal the whole structure adds up to -->
+          <g class="iw-sem-check">
+            <circle cx="292" cy="288" r="9" fill="#5c9a2e"/>
+            <path d="M287.5 288 l3.2 3.2 l6 -6.4" stroke="#ffffff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+
+          <!-- entities lifted out of the content -->
+          <g>
+            <path d="M458 168 L482 156 M458 176 L488 188 M458 226 L480 240" stroke="#b7cee6" stroke-width="1.1"/>
+            <circle cx="484" cy="154" r="3.4" fill="#2f7dd1"/>
+            <circle cx="490" cy="190" r="3.4" fill="#2f7dd1"/>
+            <circle cx="482" cy="242" r="3.4" fill="#2f7dd1"/>
+          </g>
+
+          <!-- ---------- the page itself, in front ---------- -->
+          <g filter="url(#iwSemCard)">
+            <rect x="24" y="96" width="236" height="228" rx="10" fill="#ffffff" stroke="#e6ebf2" stroke-width="1"/>
+          </g>
+          <line x1="24" y1="140" x2="260" y2="140" stroke="#eef2f7" stroke-width="1.5"/>
+          <circle cx="44" cy="118" r="3.5" fill="#80c34a"/>
+          <circle cx="57" cy="118" r="3.5" fill="#dce4ee"/>
+          <circle cx="70" cy="118" r="3.5" fill="#dce4ee"/>
+          <rect x="44" y="146" width="196" height="48" rx="5" fill="#eef2f7"/>
+          <rect x="44" y="212" width="118" height="9" rx="3" fill="#143c66"/>
+          <rect x="44" y="230" width="160" height="6" rx="3" fill="#d7e0ec"/>
+          <rect x="44" y="244" width="128" height="6" rx="3" fill="#d7e0ec"/>
+          <rect x="44" y="277" width="76" height="22" rx="4" fill="#5c9a2e"/>
+          <rect x="56" y="285" width="40" height="5" rx="2.5" fill="rgba(255,255,255,.85)"/>
+
+          <!-- ---------- the pairing: every visible block has a machine-readable twin ---------- -->
+          <g class="iw-sem-rungs" stroke="#8fb4da" stroke-width="1.3" stroke-linecap="round">
+            <line class="iw-sem-flow" x1="264" y1="118" x2="286" y2="118"/>
+            <line class="iw-sem-flow" x1="264" y1="170" x2="286" y2="170"/>
+            <line class="iw-sem-flow" x1="264" y1="228" x2="286" y2="228"/>
+            <line class="iw-sem-flow" x1="264" y1="288" x2="282" y2="288"/>
+          </g>
+
+          <text class="iw-sem-label" x="142" y="360" text-anchor="middle">WHAT PEOPLE SEE</text>
+          <text class="iw-sem-label" x="382" y="360" text-anchor="middle">WHAT MACHINES READ</text>
+        </svg>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===================== HOW WE DO IT (process) ===================== -->
-<section style="position:relative;background:linear-gradient(180deg,#f6f8fc,#edf2f9);padding:112px 0 100px;overflow:hidden;">
+<section style="position:relative;background:#ffffff;padding:112px 0 100px;overflow:hidden;">
   <div style="max-width:1176px;margin:0 auto 42px;padding:0 40px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;">
     <div>
       <div class="iw-reveal" style="font-size:13px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#5c9a2e;margin:0 0 14px;">Our Process</div>

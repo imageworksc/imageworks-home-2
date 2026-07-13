@@ -197,8 +197,10 @@ body {
   position: relative; overflow: hidden;
   display: flex; flex-direction: column;
   padding: 34px 30px 30px;
-  background: #fff; border: 1px solid #eaeff6; border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(20,40,80,.04), 0 5px 14px rgba(20,40,80,.045);
+  /* white cards on a white section: the border and shadow are the only things
+     holding their edge, so they carry a little more weight than usual */
+  background: #fff; border: 1px solid #e3eaf3; border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(20,40,80,.05), 0 6px 18px rgba(20,40,80,.07);
 }
 .iw-hw-num { position: absolute; top: 18px; right: 22px; font-size: 60px; font-weight: 800; line-height: 1; letter-spacing: -2px; color: #eef2f8; pointer-events: none; transition: color .4s ease; }
 .iw-step:hover .iw-hw-num { color: rgba(128,195,74,.18); }
@@ -211,6 +213,15 @@ body {
 .iw-hw-dot { width: 8px; height: 8px; padding: 0; border: none; border-radius: 50%; background: #cdd8e6; cursor: pointer; transition: width .35s ease, background .35s ease, border-radius .35s ease; }
 .iw-hw-dot.is-active { width: 24px; border-radius: 4px; background: #80c34a; }
 @media (max-width: 460px) { .iw-hw-card { width: 82vw; } }
+
+/* ---------- intro graphic: the page, read twice ---------- */
+.iw-sem-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; fill: #8a98a6; }
+/* the dashed runs read as the page being continuously ingested — slow enough
+   to register as a system working, not as an animation asking for attention */
+.iw-sem-flow { stroke-dasharray: 4 5; animation: iwSemFlow 2.8s linear infinite; }
+@keyframes iwSemFlow { to { stroke-dashoffset: -18; } }
+.iw-sem-check { transform-box: fill-box; transform-origin: center; animation: iwSemPulse 4.5s ease-in-out infinite; }
+@keyframes iwSemPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.09); } }
 
 /* ---------- footer responsive ---------- */
 /* inline styles set the desktop grid; override with !important on small screens */
@@ -230,4 +241,5 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .iw-reveal { transition: none; opacity: 1; transform: none; }
   .iw-track { animation: none !important; }
+  .iw-sem-flow, .iw-sem-check { animation: none !important; }
 }
