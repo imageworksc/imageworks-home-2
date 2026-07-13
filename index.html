@@ -10,23 +10,6 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<!-- liquid-glass SVG displacement filter (Chrome) -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <filter id="liquid-glass" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
-    <feImage href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%20preserveAspectRatio%3D%27none%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27rx%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%270%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27rgb%280%2C0%2C0%29%27%2F%3E%3Cstop%20offset%3D%270.22%27%20stop-color%3D%27rgb%28128%2C0%2C0%29%27%2F%3E%3Cstop%20offset%3D%270.78%27%20stop-color%3D%27rgb%28128%2C0%2C0%29%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27rgb%28255%2C0%2C0%29%27%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%27gy%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%270%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27rgb%280%2C0%2C0%29%27%2F%3E%3Cstop%20offset%3D%270.22%27%20stop-color%3D%27rgb%280%2C128%2C0%29%27%2F%3E%3Cstop%20offset%3D%270.78%27%20stop-color%3D%27rgb%280%2C128%2C0%29%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27rgb%280%2C255%2C0%29%27%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27rgb%280%2C0%2C128%29%27%2F%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27url%28%23rx%29%27%20style%3D%27mix-blend-mode%3Ascreen%27%2F%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27url%28%23gy%29%27%20style%3D%27mix-blend-mode%3Ascreen%27%2F%3E%3C%2Fsvg%3E" result="map" preserveAspectRatio="none"/>
-    <!-- chromatic aberration: displace R / G / B by different amounts for a prismatic glass rim -->
-    <feDisplacementMap in="SourceGraphic" in2="map" scale="60" xChannelSelector="R" yChannelSelector="G" result="d_r"/>
-    <feColorMatrix in="d_r" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="c_r"/>
-    <feDisplacementMap in="SourceGraphic" in2="map" scale="72" xChannelSelector="R" yChannelSelector="G" result="d_g"/>
-    <feColorMatrix in="d_g" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="c_g"/>
-    <feDisplacementMap in="SourceGraphic" in2="map" scale="86" xChannelSelector="R" yChannelSelector="G" result="d_b"/>
-    <feColorMatrix in="d_b" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="c_b"/>
-    <feBlend in="c_r" in2="c_g" mode="screen" result="c_rg"/>
-    <feBlend in="c_rg" in2="c_b" mode="screen" result="c_rgb"/>
-    <feGaussianBlur in="c_rgb" stdDeviation="0.6"/>
-  </filter>
-</svg>
-
 <div style="position:relative;width:100%;overflow-x:hidden;background:#fff;">
 
 <!-- ===================== NAV ===================== -->
@@ -34,243 +17,44 @@
   <a href="#top" style="display:flex;align-items:center;text-decoration:none;">
     <img src="assets/logo.png" alt="ImageWorks Creative" style="height:34px;width:auto;display:block;"/>
   </a>
-  <div style="display:flex;align-items:center;gap:38px;">
-    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Marketing</a>
-    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Web Plans</a>
-    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Branding</a>
-    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Our Work</a>
-    <a class="iw-link" href="#why" style="font-size:15px;font-weight:600;color:#3d464d;">About</a>
+  <!-- links + CTA travel together on the right -->
+  <div style="display:flex;align-items:center;gap:34px;">
+    <div style="display:flex;align-items:center;gap:30px;">
+      <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Marketing</a>
+      <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Web Plans</a>
+      <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Branding</a>
+      <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Our Work</a>
+      <a class="iw-link" href="#why" style="font-size:15px;font-weight:600;color:#3d464d;">About</a>
+    </div>
+    <a class="iw-btn" href="#cta" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 24px;border-radius:2px;background:#80c34a;color:#fff;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 1px 2px rgba(20,40,80,.14);">Contact</a>
   </div>
-  <a class="iw-btn" href="#cta" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 24px;border-radius:2px;background:#80c34a;color:#fff;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 1px 2px rgba(20,40,80,.14);">Contact</a>
 </nav>
 
-<!-- ===================== HERO (exact Figma frame 10234:322) ===================== -->
+<!-- ===================== HERO — navy + animated tech mesh ===================== -->
 <header id="top" data-hero class="iw-hero">
 
-  <!-- full-bleed interactive dot field: spans the whole hero (any width),
-       dots sink inward toward the cursor -->
-  <canvas class="iwh-dotfield" data-dotfield aria-hidden="true"></canvas>
+  <!-- full-bleed tech mesh: a wire grid that undulates slowly and reacts to the cursor -->
+  <canvas class="iwh-mesh" data-mesh aria-hidden="true"></canvas>
 
-  <!-- desktop: fixed 1920x1061 stage scaled to viewport width -->
-  <div class="iwh-desktop">
-    <div class="iwh-stage" data-hero-stage>
-
-      <!-- (static dot-cloud patches removed — the full-bleed interactive
-           canvas dot field is the single, evenly-distributed dot layer) -->
-
-      <!-- soft blurred accent blob -->
-      <div style="position:absolute;left:1243px;top:862px;width:120px;height:95px;border-radius:10px;background:linear-gradient(135deg,rgba(215,230,251,.46),rgba(185,210,243,.46));filter:blur(1px);opacity:.7;"></div>
-
-      <!-- subtle outline squares (Border) -->
-      <div class="iwh-square" style="left:1370px;top:96px;"></div>
-      <div class="iwh-square" style="left:62px;top:653px;"></div>
-
-      <!-- reflections: blurred low-opacity duplicates of the Award + Conversion cards -->
-      <div class="iwh-card iwh-reflection iwh-p1" style="left:432px;top:540px;width:226px;animation-delay:-1.5s;">
-        <img class="iwh-icon" src="assets/hero/ic-trophy.svg" alt="">
-        <div class="iwh-ct">Award-winning</div>
-        <div class="iwh-cs">results.</div>
-      </div>
-      <div class="iwh-card iwh-reflection iwh-p2" style="left:690px;top:798px;width:238px;animation-delay:-4.2s;">
-        <img class="iwh-icon" src="assets/hero/ic-conv.svg" alt="">
-        <div class="iwh-ct">Conversion Focused</div>
-        <div class="iwh-cs">More leads. More growth.</div>
-      </div>
-
-      <!-- connector lines (card -> node dot) -->
-      <div class="iwh-pin" style="left:406px;top:78px;"></div>
-      <div class="iwh-pin" style="left:553px;top:746px;"></div>
-      <div class="iwh-pin" style="left:1411px;top:670px;"></div>
-      <div class="iwh-pin iwh-pin--h" style="left:1350px;top:247px;"></div>
-      <div class="iwh-pin iwh-pin--h" style="left:1699px;top:687px;"></div>
-      <div class="iwh-pin iwh-pin--h" style="left:244px;top:802px;"></div>
-
-      <!-- stray node dots -->
-      <div class="iwh-dot" style="left:116px;top:960px;"></div>
-      <div class="iwh-dot" style="left:1747px;top:836px;"></div>
-      <div class="iwh-dot" style="left:1110px;top:954px;"></div>
-      <div class="iwh-dot" style="left:196px;top:222px;"></div>
-      <div class="iwh-dot" style="left:1156px;top:214px;"></div>
-      <div class="iwh-dot" style="left:599px;top:386px;"></div>
-
-      <!-- Traffic card -->
-      <div class="iwh-card iwh-c1" style="left:434px;top:176px;width:224px;animation-delay:-0.2s;">
-        <div style="display:flex;align-items:center;gap:15px;">
-          <img class="iwh-icon" style="width:30px;height:32px;margin:0;" src="assets/hero/ic-bars.svg" alt="">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#143c66;">Traffic</div>
-            <div style="font-size:32px;font-weight:800;color:#80c34a;letter-spacing:-.6px;line-height:1.05;">+33%</div>
-            <div style="font-size:12.5px;color:#8a98a6;margin-top:2px;">vs last 6 months</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Strategic by design card -->
-      <div class="iwh-card iwh-c2" style="left:1342px;top:209px;width:186px;animation-delay:-2.4s;">
-        <img class="iwh-icon" src="assets/hero/ic-gear.svg" alt="">
-        <div class="iwh-ct">Strategic by design</div>
-      </div>
-
-      <!-- Search Optimized card -->
-      <div class="iwh-card iwh-c3" style="left:1474px;top:441px;width:200px;animation-delay:-1.2s;">
-        <img class="iwh-icon" src="assets/hero/ic-search.svg" alt="">
-        <div class="iwh-ct">Search Optimized</div>
-        <div class="iwh-cs">Built for visibility.</div>
-      </div>
-
-      <!-- Award-winning card -->
-      <div class="iwh-card iwh-c4" style="left:304px;top:572px;width:226px;animation-delay:-3.6s;">
-        <img class="iwh-icon" src="assets/hero/ic-trophy.svg" alt="">
-        <div class="iwh-ct">Award-winning</div>
-        <div class="iwh-cs">results.</div>
-      </div>
-
-      <!-- Conversion Focused card -->
-      <div class="iwh-card iwh-c5" style="left:546px;top:821px;width:238px;animation-delay:-0.8s;">
-        <img class="iwh-icon" src="assets/hero/ic-conv.svg" alt="">
-        <div class="iwh-ct">Conversion Focused</div>
-        <div class="iwh-cs">More leads. More growth.</div>
-      </div>
-
-      <!-- Clean Code card -->
-      <div class="iwh-card iwh-c6" style="left:1242px;top:753px;width:212px;animation-delay:-2.9s;">
-        <img class="iwh-icon" src="assets/hero/ic-code.svg" alt="">
-        <div class="iwh-ct">Clean Code</div>
-        <div class="iwh-cs">Fast sites. Better ranking.</div>
-      </div>
-
-      <!-- center content -->
-      <div class="iwh-center">
-        <h1 class="iwh-h1">Website &amp; Marketing.<br>Built to <span>Work Together.</span></h1>
-        <p class="iwh-sub">Custom websites built for <span class="iwh-ms">Modern Search</span> — designed to impress your customers and make competitors jealous.</p>
-        <a class="iw-btn iwh-cta" href="#work">Take a look under the hood<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- mobile fallback: stacked content -->
-  <div class="iwh-mobile">
-    <h1 style="margin:0;font-size:38px;line-height:1.08;font-weight:800;letter-spacing:-1.2px;color:#143c66;">Website &amp; Marketing.<br>Built to <span style="color:#80c34a;">Work Together.</span></h1>
-    <p style="margin:20px 0 0;max-width:460px;font-size:18px;line-height:1.55;font-weight:500;color:#52628a;">Custom websites built for <span style="color:#1266b5;text-decoration:underline;text-underline-offset:3px;">Modern Search</span> — designed to impress your customers and make competitors jealous.</p>
-    <a class="iw-btn" href="#work" style="display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px;margin-top:30px;border-radius:4px;background:#80c34a;color:#fff;font-size:16px;font-weight:700;text-decoration:none;box-shadow:0 12px 22px rgba(14,28,64,.18);">Take a look under the hood<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+  <div class="iwh-center">
+    <h1 class="iwh-h1">Website &amp; Marketing.<br>Built to <span>Work Together.</span></h1>
+    <p class="iwh-sub">Custom websites built for <span class="iwh-ms">Modern Search</span> — designed to impress your customers and make competitors jealous.</p>
+    <a class="iw-btn iwh-cta" href="#work">Take a look under the hood<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
   </div>
 </header>
 
 <!-- ===================== INTRO STATEMENT (below hero) ===================== -->
-<section style="position:relative;background:linear-gradient(150deg,#123f6b,#0a2c4d);padding:108px 40px 116px;overflow:hidden;">
-  <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:26px 26px;pointer-events:none;"></div>
+<section style="position:relative;background:#f2f5f9;padding:108px 40px 116px;overflow:hidden;">
   <div class="iw-reveal" style="position:relative;max-width:1080px;margin:0 auto;">
     <div class="iw-intro-grid" style="display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;">
       <div>
-        <h2 style="margin:0 0 30px;text-align:left;font-size:44px;line-height:1.15;font-weight:800;letter-spacing:-.8px;color:#fff;"><span style="color:#80c34a;">Built</span> to Be Found.<br>Designed to Be <span style="color:#80c34a;">Trusted</span>.</h2>
-        <p style="margin:0;font-size:16px;line-height:1.65;color:rgba(255,255,255,.9);text-wrap:pretty;max-width:520px;">ImageWorks Creative is a custom web design and digital marketing agency serving businesses across the U.S. We build <strong style="color:#80c34a;font-weight:700;">Drupal and WordPress</strong> websites supported by branding, content, search, and marketing systems.</p>
-        <p style="margin:16px 0 0;font-size:16px;line-height:1.65;color:rgba(255,255,255,.9);text-wrap:pretty;max-width:520px;">A modern website has to do more than look good or rank well. It has to help every audience understand who you are, what you do, and why you are credible.</p>
-        <p style="margin:16px 0 0;font-size:16px;line-height:1.65;color:rgba(255,255,255,.9);text-wrap:pretty;max-width:520px;">We build websites that are clear for people, structured for Modern Search, ready for AI, and built to keep improving.</p>
+        <h2 style="margin:0 0 30px;text-align:left;font-size:44px;line-height:1.15;font-weight:800;letter-spacing:-.8px;color:#143c66;"><span style="color:#5c9a2e;">Built</span> to Be Found.<br>Designed to Be <span style="color:#5c9a2e;">Trusted</span>.</h2>
+        <p style="margin:0;font-size:16px;line-height:1.65;color:#52628a;text-wrap:pretty;max-width:520px;">ImageWorks Creative is a custom web design and digital marketing agency serving businesses across the U.S. We build <strong style="color:#5c9a2e;font-weight:700;">Drupal and WordPress</strong> websites supported by branding, content, search, and marketing systems.</p>
+        <p style="margin:16px 0 0;font-size:16px;line-height:1.65;color:#52628a;text-wrap:pretty;max-width:520px;">A modern website has to do more than look good or rank well. It has to help every audience understand who you are, what you do, and why you are credible.</p>
+        <p style="margin:16px 0 0;font-size:16px;line-height:1.65;color:#52628a;text-wrap:pretty;max-width:520px;">We build websites that are clear for people, structured for Modern Search, ready for AI, and built to keep improving.</p>
       </div>
+      <!-- right column: slot held open for the new graphic -->
       <div class="iw-illus" style="display:flex;justify-content:center;align-self:center;">
-        <svg width="100%" viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;height:auto;display:block;overflow:visible;" role="img" aria-label="A website being discovered online: dashboard, search ranking analytics, a Google search window, a local map pin and an add button">
-          <defs>
-            <filter id="iwSoft" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="8" stdDeviation="13" flood-color="#04162b" flood-opacity="0.32"/></filter>
-            <filter id="iwSoftGreen" x="-70%" y="-70%" width="240%" height="240%"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#3f6b16" flood-opacity="0.45"/></filter>
-            <radialGradient id="iwHalo" cx="50%" cy="48%" r="60%"><stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
-            <filter id="iwGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="28"/></filter>
-          </defs>
-
-          <circle cx="260" cy="200" r="215" fill="url(#iwHalo)"/>
-          <g filter="url(#iwGlow)">
-            <circle cx="260" cy="200" r="195" fill="#1f66b3" fill-opacity="0.16"/>
-            <circle cx="260" cy="200" r="155" fill="#2f7dd1" fill-opacity="0.20"/>
-            <circle cx="260" cy="200" r="115" fill="#3f8fd6" fill-opacity="0.28"/>
-          </g>
-
-          <g fill="rgba(255,255,255,.24)">
-            <circle cx="250" cy="20" r="3"/><circle cx="266" cy="20" r="3"/><circle cx="282" cy="20" r="3"/>
-            <circle cx="526" cy="192" r="3"/><circle cx="526" cy="208" r="3"/><circle cx="510" cy="200" r="3"/>
-          </g>
-
-          <!-- main dashboard -->
-          <g class="iw-illus-window" filter="url(#iwSoft)">
-            <rect x="130" y="98" width="260" height="208" rx="6" fill="#ffffff" stroke="#eef2f8" stroke-width="2"/>
-            <line x1="130" y1="128" x2="390" y2="128" stroke="#eef2f8" stroke-width="2"/>
-            <circle cx="150" cy="113" r="4" fill="#80c34a"/><circle cx="164" cy="113" r="4" fill="#dce4ee"/><circle cx="178" cy="113" r="4" fill="#dce4ee"/>
-            <path d="M372 107 v12 M366 113 h12" stroke="#c7d3e2" stroke-width="2" stroke-linecap="round"/>
-            <rect x="150" y="140" width="220" height="20" rx="5" fill="#f0f4fa"/>
-            <circle cx="162" cy="150" r="4.5" fill="none" stroke="#9fb0c4" stroke-width="2"/><line x1="165.5" y1="153.5" x2="169" y2="157" stroke="#9fb0c4" stroke-width="2" stroke-linecap="round"/>
-            <rect x="176" y="147" width="96" height="6" rx="3" fill="#d7e0ec"/>
-            <rect x="150" y="168" width="220" height="104" rx="4" fill="#eef2f7"/>
-            <rect x="162" y="180" width="84" height="11" rx="2" fill="#143c66"/>
-            <rect x="162" y="198" width="104" height="6" rx="2" fill="#d7e0ec"/>
-            <rect x="162" y="209" width="82" height="6" rx="2" fill="#dbe3ee"/>
-            <rect x="162" y="224" width="64" height="18" rx="3" fill="#80c34a"/><rect x="172" y="231" width="32" height="4" rx="2" fill="rgba(255,255,255,.9)"/>
-            <rect x="232" y="224" width="56" height="18" rx="3" fill="none" stroke="#cdd8e6" stroke-width="1.5"/>
-            <rect x="298" y="180" width="60" height="60" rx="3" fill="#ffffff" stroke="#dbe6f3" stroke-width="1.5"/>
-            <circle cx="313" cy="198" r="6" fill="#cdd9e8"/><path d="M303 234 L319 216 L335 234 Z" fill="#cdd9e8"/>
-            <rect x="150" y="280" width="50" height="16" rx="3" fill="#eaf6dd"/>
-            <rect x="206" y="280" width="50" height="16" rx="3" fill="#eef0f2"/>
-            <rect x="262" y="280" width="50" height="16" rx="3" fill="#eef0f2"/>
-            <rect x="318" y="280" width="52" height="16" rx="3" fill="#eef0f2"/>
-          </g>
-
-          <!-- ranking analytics card -->
-          <g transform="translate(1 -10)"><g class="iw-illus-analytics"><g class="iw-illus-analytics-in" filter="url(#iwSoft)">
-            <rect x="388" y="62" width="122" height="104" rx="6" fill="#ffffff"/>
-            <path d="M400 80 l5 -7 l5 7 z" fill="#80c34a"/>
-            <rect x="414" y="74" width="48" height="7" rx="3" fill="#cdd8e6"/>
-            <rect x="414" y="86" width="32" height="5" rx="2.5" fill="#e6edf5"/>
-            <line x1="402" y1="150" x2="500" y2="150" stroke="#e6edf5" stroke-width="1"/>
-            <rect x="404" y="128" width="15" height="22" rx="2" fill="#092f53"/>
-            <rect x="426" y="116" width="15" height="34" rx="2" fill="#114d86"/>
-            <rect x="448" y="102" width="15" height="48" rx="2" fill="#1266b5"/>
-            <rect x="470" y="88" width="15" height="62" rx="2" fill="#278ded"/>
-          </g></g></g>
-
-          <!-- Google search window -->
-          <g transform="translate(2 136)"><g class="iw-illus-ai"><g class="iw-illus-ai-in" filter="url(#iwSoft)">
-            <rect x="18" y="150" width="126" height="70" rx="6" fill="#ffffff"/>
-            <g transform="translate(30 162) scale(1.6667)">
-              <path d="M3.99286 0.378037C2.84735 0.775423 1.85947 1.52967 1.17432 2.53C0.489166 3.53033 0.142854 4.72401 0.18625 5.93571C0.229647 7.1474 0.660465 8.31325 1.41542 9.262C2.17038 10.2108 3.20969 10.8924 4.38069 11.2068C5.33004 11.4518 6.32468 11.4625 7.27911 11.2382C8.14373 11.044 8.94309 10.6285 9.59893 10.0326C10.2815 9.39338 10.777 8.58022 11.032 7.68053C11.3092 6.70215 11.3586 5.67324 11.1762 4.67283H5.84513V6.88426H8.93254C8.87084 7.23697 8.73861 7.57361 8.54377 7.87402C8.34893 8.17444 8.09549 8.43245 7.79861 8.63264C7.4216 8.88202 6.99661 9.04982 6.55092 9.12526C6.10393 9.20837 5.64544 9.20837 5.19845 9.12526C4.7454 9.03159 4.31682 8.8446 3.94001 8.57621C3.33467 8.1477 2.88013 7.53894 2.64128 6.83679C2.39838 6.1215 2.39838 5.34603 2.64128 4.63073C2.8113 4.12934 3.09237 3.67283 3.46351 3.29527C3.88823 2.85526 4.42595 2.54075 5.01766 2.38622C5.60937 2.2317 6.2322 2.24314 6.81784 2.41929C7.27532 2.55973 7.69368 2.8051 8.03955 3.13584C8.38767 2.78951 8.73519 2.44228 9.08212 2.09416C9.26126 1.90697 9.45651 1.72872 9.63296 1.53705C9.10502 1.04575 8.48531 0.663453 7.80936 0.412073C6.57842 -0.0348806 5.23157 -0.0468921 3.99286 0.378037Z" fill="white"/>
-              <path d="M3.99243 0.37652C5.23103 -0.0486987 6.57789 -0.0370035 7.80893 0.40966C8.485 0.662747 9.10443 1.04688 9.63164 1.54001C9.4525 1.73169 9.26351 1.91082 9.08079 2.09712C8.73327 2.44405 8.38604 2.78978 8.03912 3.13432C7.69325 2.80358 7.27489 2.55821 6.81741 2.41778C6.23197 2.24101 5.60915 2.2289 5.01729 2.38279C4.42542 2.53669 3.88738 2.85063 3.46219 3.29017C3.09105 3.66773 2.80997 4.12424 2.63995 4.62563L0.783203 3.18806C1.44781 1.87012 2.59852 0.862 3.99243 0.37652Z" fill="#E33629"/>
-              <path d="M0.292703 4.61359C0.3925 4.11899 0.558186 3.64 0.785327 3.18945L2.64207 4.6306C2.39918 5.3459 2.39918 6.12137 2.64207 6.83667C2.02346 7.31436 1.40454 7.79445 0.785327 8.27692C0.216705 7.14506 0.0432846 5.85545 0.292703 4.61359Z" fill="#F8BD00"/>
-              <path d="M5.8461 4.67041H11.1772C11.3596 5.67083 11.3102 6.69973 11.033 7.67811C10.7779 8.5778 10.2825 9.39096 9.5999 10.0302C9.00069 9.56262 8.39879 9.09866 7.79958 8.63111C8.09666 8.43073 8.35022 8.17243 8.54507 7.87169C8.73991 7.57096 8.87204 7.23398 8.93351 6.88095H5.8461C5.84521 6.1447 5.8461 5.40756 5.8461 4.67041Z" fill="#587DBD"/>
-              <path d="M0.783203 8.27522C1.40242 7.79752 2.02133 7.31743 2.63995 6.83496C2.87928 7.53735 3.33447 8.14614 3.94048 8.57437C4.31846 8.84152 4.74796 9.02699 5.2016 9.11895C5.64859 9.20206 6.10708 9.20206 6.55408 9.11895C6.99976 9.04351 7.42475 8.87571 7.80176 8.62632C8.40097 9.09387 9.00287 9.55783 9.60208 10.0254C8.94634 10.6217 8.14697 11.0374 7.28227 11.2319C6.32784 11.4562 5.33319 11.4455 4.38384 11.2005C3.63299 11 2.93165 10.6466 2.32377 10.1624C1.68037 9.6516 1.15487 9.00786 0.783203 8.27522Z" fill="#319F43"/>
-            </g>
-            <rect x="58" y="167" width="70" height="11" rx="5" fill="#eef2f7"/>
-            <rect x="30" y="190" width="104" height="18" rx="9" fill="#f0f4fa"/>
-            <circle cx="41" cy="199" r="4" fill="none" stroke="#9fb0c4" stroke-width="1.8"/><line x1="44" y1="202" x2="47" y2="205" stroke="#9fb0c4" stroke-width="1.8" stroke-linecap="round"/>
-            <rect x="52" y="196" width="64" height="5" rx="2.5" fill="#d7e0ec"/>
-          </g></g></g>
-
-          <!-- stats card -->
-          <g transform="translate(-4 0)"><g class="iw-illus-found"><g class="iw-illus-found-in" filter="url(#iwSoft)">
-            <rect x="380" y="298" width="126" height="84" rx="6" fill="#ffffff"/>
-            <rect x="396" y="313" width="46" height="6" rx="3" fill="#cdd8e6"/>
-            <rect x="466" y="310" width="24" height="13" rx="6.5" fill="#eaf6dd"/>
-            <path d="M472 318 l3 -4 l3 4 z" fill="#5c9a2e"/>
-            <rect x="479" y="315" width="7" height="4" rx="2" fill="#9fce6f"/>
-            <line x1="396" y1="364" x2="490" y2="364" stroke="#e6edf5" stroke-width="1"/>
-            <path d="M398 356 L416 346 L434 350 L452 338 L470 332 L486 324 L486 364 L398 364 Z" fill="#80c34a" fill-opacity="0.14"/>
-            <path d="M398 356 L416 346 L434 350 L452 338 L470 332 L486 324" fill="none" stroke="#80c34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="398" cy="356" r="2.3" fill="#80c34a"/>
-            <circle cx="434" cy="350" r="2.3" fill="#80c34a"/>
-            <circle cx="470" cy="332" r="2.3" fill="#80c34a"/>
-            <circle cx="486" cy="324" r="3.4" fill="#ffffff" stroke="#80c34a" stroke-width="2"/>
-          </g></g></g>
-
-          <!-- add pill -->
-          <g transform="translate(18 -40)"><g class="iw-illus-trust"><g class="iw-illus-trust-in">
-            <rect x="178" y="336" width="130" height="32" rx="6" fill="#80c34a" filter="url(#iwSoftGreen)"/>
-            <path d="M196 344 v16 M188 352 h16" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
-            <rect x="214" y="349" width="72" height="6" rx="3" fill="rgba(255,255,255,.9)"/>
-          </g></g></g>
-
-          <!-- location pin -->
-          <g transform="translate(54 -26)"><g class="iw-illus-pin"><g class="iw-illus-pin-in" filter="url(#iwSoft)">
-            <circle cx="66" cy="118" r="20" fill="#ffffff"/>
-            <path d="M66 108 c-4.6 0 -8.4 3.8 -8.4 8.4 c0 5.8 8.4 14 8.4 14 s8.4 -8.2 8.4 -14 c0 -4.6 -3.8 -8.4 -8.4 -8.4 z" fill="#2f7dd1"/>
-            <circle cx="66" cy="116" r="3" fill="#ffffff"/>
-          </g></g></g>
-        </svg>
       </div>
     </div>
   </div>
