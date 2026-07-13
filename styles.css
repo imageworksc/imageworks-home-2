@@ -94,6 +94,7 @@ body {
 
 /* shared blue -> navy gradient behind "What We Do" + "Why ImageWorks" */
 .iw-blueband {
+  position: relative;
   background: linear-gradient(180deg,
     #205fa6 0%,
     #1d569a 28%,
@@ -101,6 +102,16 @@ body {
     #113659 65%,
     #0d2748 83%,
     #0a1c38 100%);
+}
+/* the dot field rides on the whole band, not on one section — laid over the
+   gradient rather than replacing it, so the grid runs unbroken from What We Do
+   straight through Why ImageWorks instead of restarting at the seam */
+.iw-blueband::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+  pointer-events: none;
 }
 
 /* ---------- HERO — navy field + animated tech mesh ---------- */
@@ -176,43 +187,117 @@ body {
   .iw-intro-grid { grid-template-columns: 1fr !important; gap: 44px !important; }
 }
 
-/* ---------- How We Do It: horizontal scroll rail ---------- */
-.iw-step { transition: transform .4s cubic-bezier(.16,.84,.44,1), box-shadow .4s ease; }
-.iw-step:hover { transform: translateY(-6px); box-shadow: 0 9px 20px rgba(20,40,80,.08); }
-.iw-hw-arrow { transition: background .25s ease, border-color .25s ease, color .25s ease; }
-.iw-hw-arrow:hover { background: #80c34a; border-color: #80c34a; color: #fff; }
-.iw-hwrail {
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;              /* Firefox: hide scrollbar */
-  -ms-overflow-style: none;           /* IE/Edge legacy */
+
+/* ---------- How We Do It: the process as a rail of four stations ---------- */
+.iw-steps {
+  max-width: 1176px; margin: 0 auto; padding: 0 40px;
 }
-.iw-hwrail::-webkit-scrollbar { width: 0; height: 0; display: none; }  /* WebKit: hide */
-/* extra vertical padding so the card shadow + hover lift aren't clipped by overflow */
-.iw-hwrail-track { display: flex; gap: 26px; width: max-content; padding: 32px 0 56px; }
-.iw-hw-card {
-  flex: none; width: 348px; scroll-snap-align: start;
-  position: relative; overflow: hidden;
-  display: flex; flex-direction: column;
-  padding: 34px 30px 30px;
-  /* white cards on a white section: the border and shadow are the only things
-     holding their edge, so they carry a little more weight than usual */
-  background: #fff; border: 1px solid #e3eaf3; border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(20,40,80,.05), 0 6px 18px rgba(20,40,80,.07);
+.iw-steps-tabs {
+  position: relative;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  /* squared off to match the What We Do cards (2px) */
+  border-radius: 2px 2px 0 0;
+  background: #f7f9fc;
+  border: 1px solid #e3eaf3;
+  /* the rail the stations sit on */
+  box-shadow: inset 0 -2px 0 #e3eaf3;
 }
-.iw-hw-num { position: absolute; top: 18px; right: 22px; font-size: 60px; font-weight: 800; line-height: 1; letter-spacing: -2px; color: #eef2f8; pointer-events: none; transition: color .4s ease; }
-.iw-step:hover .iw-hw-num { color: rgba(128,195,74,.18); }
-.iw-hw-ic { width: 50px; height: 50px; border-radius: 13px; background: #eef6e6; display: flex; align-items: center; justify-content: center; }
-.iw-hw-title { margin: 22px 0 0; font-size: 20px; font-weight: 700; line-height: 1.3; color: #143c66; position: relative; }
-.iw-hw-rule { display: block; width: 32px; height: 3px; border-radius: 2px; background: #80c34a; margin: 14px 0 16px; transition: width .4s cubic-bezier(.16,.84,.44,1); }
-.iw-step:hover .iw-hw-rule { width: 54px; }
-.iw-hw-body { margin: 0; font-size: 15px; line-height: 1.65; color: #5a6b82; }
-.iw-hw-body + .iw-hw-body { margin-top: 12px; }
-.iw-hw-dot { width: 8px; height: 8px; padding: 0; border: none; border-radius: 50%; background: #cdd8e6; cursor: pointer; transition: width .35s ease, background .35s ease, border-radius .35s ease; }
-.iw-hw-dot.is-active { width: 24px; border-radius: 4px; background: #80c34a; }
-@media (max-width: 460px) { .iw-hw-card { width: 82vw; } }
+.iw-steps-tab {
+  position: relative;
+  display: flex; flex-direction: column; gap: 7px;
+  padding: 22px 24px 24px;
+  border: 0; border-right: 1px solid #e9eef5;
+  background: transparent; cursor: pointer;
+  text-align: left; font: inherit;
+  transition: background .3s ease;
+}
+.iw-steps-tab:last-of-type { border-right: 0; }
+.iw-steps-tab:hover { background: #f1f5fa; }
+.iw-steps-tab:focus-visible { outline: 2px solid #1266b5; outline-offset: -3px; border-radius: 8px; }
+/* the station node, sitting on the rail */
+.iw-steps-tab::after {
+  content: ""; position: absolute; left: 50%; bottom: -5px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: #d3dde9; border: 2px solid #fff;
+  transform: translateX(-50%);
+  transition: background .35s ease, transform .35s cubic-bezier(.2,.8,.3,1);
+  z-index: 2;
+}
+.iw-steps-tab.is-done::after { background: #5c9a2e; }
+.iw-steps-tab.is-active::after { transform: translateX(-50%) scale(1.35); }
+.iw-steps-n { font-size: 12px; font-weight: 800; letter-spacing: 1.6px; color: #a8b6c6; transition: color .3s ease; }
+.iw-steps-l { font-size: 16px; font-weight: 700; color: #7d8ea1; transition: color .3s ease; }
+.iw-steps-tab.is-active .iw-steps-n { color: #5c9a2e; }
+.iw-steps-tab.is-active .iw-steps-l { color: #143c66; }
+.iw-steps-tab:hover .iw-steps-l { color: #143c66; }
+/* the line runs from the start of the process up to the station you're on */
+.iw-steps-fill {
+  position: absolute; left: 0; bottom: -2px; height: 2px;
+  width: 12.5%;
+  background: #5c9a2e;
+  transition: width .5s cubic-bezier(.2,.8,.3,1);
+  z-index: 1;
+}
+
+.iw-steps-panels {
+  display: grid;                      /* every panel shares one cell, so the box
+                                        never resizes when you switch steps */
+  border: 1px solid #e3eaf3; border-top: 0;
+  border-radius: 0 0 2px 2px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(20,40,80,.05), 0 10px 30px rgba(20,40,80,.06);
+}
+.iw-steps-panel {
+  grid-area: 1 / 1;
+  display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px;
+  padding: 46px 44px 48px;
+  opacity: 0; visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity .4s ease, transform .45s cubic-bezier(.2,.8,.3,1), visibility .4s;
+}
+/* the box is as tall as the longest step, so shorter steps would sit high and
+   leave a hole underneath — both columns centre in the space instead. The
+   columns still stretch, so the divider rule keeps its full height. */
+.iw-steps-copy, .iw-steps-out { display: flex; flex-direction: column; justify-content: center; }
+.iw-steps-panel.is-active { opacity: 1; visibility: visible; transform: none; }
+.iw-steps-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: #5c9a2e; }
+.iw-steps-title { margin: 14px 0 18px; font-size: 30px; line-height: 1.22; font-weight: 800; letter-spacing: -.5px; color: #143c66; text-wrap: balance; }
+.iw-steps-body { margin: 0; font-size: 16px; line-height: 1.7; color: #5a6b82; }
+.iw-steps-body + .iw-steps-body { margin-top: 14px; }
+.iw-steps-body strong { color: #143c66; font-weight: 700; }
+/* the deliverables sit behind a rule, so they read as the outcome of the copy */
+.iw-steps-out { border-left: 1px solid #eaeff6; padding-left: 40px; }
+.iw-steps-list { list-style: none; margin: 0; padding: 0; }
+.iw-steps-list li:first-child { border-top: 0; }
+.iw-steps-list li {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 0; border-top: 1px solid #eef2f7;
+  font-size: 15.5px; line-height: 1.45; font-weight: 600; color: #1f2b3e;
+}
+/* each item carries its own glyph — the icon should say something the line
+   doesn't have to repeat, so a row of identical checks is no use here */
+.iw-steps-ic {
+  flex-shrink: 0; width: 30px; height: 30px;
+  border-radius: 9px; background: #eef6e6;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .3s ease;
+}
+.iw-steps-list li:hover .iw-steps-ic { background: #dff0cc; }
+@media (max-width: 980px) {
+  .iw-steps-panel { grid-template-columns: 1fr; gap: 34px; padding: 38px 30px 40px; }
+  .iw-steps-out { border-left: 0; border-top: 1px solid #eaeff6; padding-left: 0; padding-top: 26px; }
+}
+@media (max-width: 720px) {
+  .iw-steps { padding: 0 24px; }
+  .iw-steps-tabs { grid-template-columns: repeat(2, 1fr); }
+  .iw-steps-tab { padding: 16px 18px 18px; }
+  .iw-steps-tab:nth-of-type(2) { border-right: 0; }
+  .iw-steps-tab:nth-of-type(-n+2) { border-bottom: 1px solid #e9eef5; }
+  .iw-steps-l { font-size: 15px; }
+  /* the rail only reads as a rail in one row — drop it rather than fake it */
+  .iw-steps-tab::after, .iw-steps-fill { display: none; }
+  .iw-steps-title { font-size: 25px; }
+}
 
 /* ---------- intro graphic: the page, read twice ---------- */
 .iw-sem-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; fill: #8a98a6; }

@@ -387,91 +387,54 @@ function initMesh() {
   raf = requestAnimationFrame(frame);
 }
 
+
 /* -----------------------------------------------------------
-   HOW WE DO IT — seamless infinite horizontal rail
+   HOW WE DO IT — four steps as tabs on a process rail
    ----------------------------------------------------------- */
-function initHowRail() {
-  var rail = document.querySelector('.iw-hwrail');
-  if (!rail) return;
-  var track = rail.querySelector('.iw-hwrail-track');
-  if (!track) return;
-  var originals = [].slice.call(track.children);
-  if (!originals.length) return;
+function initSteps() {
+  var root = document.querySelector('[data-steps]');
+  if (!root) return;
+  var tabs = [].slice.call(root.querySelectorAll('.iw-steps-tab'));
+  var panels = [].slice.call(root.querySelectorAll('.iw-steps-panel'));
+  var fill = root.querySelector('[data-steps-fill]');
+  if (!tabs.length || tabs.length !== panels.length) return;
 
-  // clone one full set before and after the originals so scrolling can wrap
-  var before = document.createDocumentFragment();
-  var after = document.createDocumentFragment();
-  originals.forEach(function (node) {
-    var a = node.cloneNode(true); a.setAttribute('aria-hidden', 'true'); before.appendChild(a);
-    var b = node.cloneNode(true); b.setAttribute('aria-hidden', 'true'); after.appendChild(b);
-  });
-  track.insertBefore(before, track.firstChild);
-  track.appendChild(after);
+  var current = 0;
 
-  function gapPx() {
-    var s = getComputedStyle(track);
-    return parseFloat(s.columnGap || s.gap) || 24;
-  }
-  function step() { return originals[0].getBoundingClientRect().width + gapPx(); }
-  // width of one set = exactly N card-steps, so positions land on card boundaries
-  function setWidth() { return originals.length * step(); }
-  function recenter() { rail.scrollLeft = setWidth(); }        // start on the middle (real) set
-  recenter();
-  window.addEventListener('resize', recenter, { passive: true });
-
-  // after scrolling settles, if we've drifted into a clone set, jump back one set (invisible: clones match)
-  var t;
-  rail.addEventListener('scroll', function () {
-    clearTimeout(t);
-    t = setTimeout(function () {
-      var w = setWidth();
-      if (rail.scrollLeft >= 2 * w - 2)      rail.scrollLeft -= w;
-      else if (rail.scrollLeft <= 2)         rail.scrollLeft += w;
-      syncDots();
-    }, 80);
-  }, { passive: true });
-
-  function go(dir) { rail.scrollBy({ left: dir * step(), behavior: 'smooth' }); }
-  var section = rail.closest('section');
-  var arrows = section.querySelectorAll('[data-hw]');
-  [].slice.call(arrows).forEach(function (btn) {
-    btn.addEventListener('click', function () { go(btn.getAttribute('data-hw') === 'prev' ? -1 : 1); restart(); });
-  });
-
-  // auto-advance every few seconds, pause on hover / touch / when tab hidden
-  var AUTO = 4500, timer = null;
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function start() { if (reduce || timer) return; timer = setInterval(function () { go(1); }, AUTO); }
-  function stop()  { if (timer) { clearInterval(timer); timer = null; } }
-  function restart() { stop(); start(); }
-  section.addEventListener('mouseenter', stop);
-  section.addEventListener('mouseleave', start);
-  section.addEventListener('focusin', stop);
-  section.addEventListener('focusout', start);
-  rail.addEventListener('touchstart', stop, { passive: true });
-  rail.addEventListener('pointerdown', stop);
-  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
-
-  // step indicator dots — reflect the active card and jump on click
-  var dots = [].slice.call(section.querySelectorAll('.iw-hw-dot'));
-  function activeIndex() {
-    var i = Math.round((rail.scrollLeft - setWidth()) / step());
-    return ((i % originals.length) + originals.length) % originals.length;
-  }
-  function syncDots() {
-    if (!dots.length) return;
-    var a = activeIndex();
-    dots.forEach(function (d, i) { d.classList.toggle('is-active', i === a); });
-  }
-  dots.forEach(function (d) {
-    d.addEventListener('click', function () {
-      rail.scrollTo({ left: setWidth() + (+d.getAttribute('data-i')) * step(), behavior: 'smooth' });
-      restart();
+  function select(i, focus) {
+    if (i < 0 || i >= tabs.length) return;
+    current = i;
+    tabs.forEach(function (t, k) {
+      var on = k === i;
+      t.classList.toggle('is-active', on);
+      t.classList.toggle('is-done', k <= i);   // the rail fills up to where you are
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;                // one tab stop for the whole set
+      // no [hidden] here: it would pull the panel out of the grid and let the
+      // box resize per step. CSS visibility:hidden keeps the cell — and still
+      // takes the panel out of the tab order and the accessibility tree.
+      panels[k].classList.toggle('is-active', on);
     });
-  });
-  syncDots();
+    // the line lands exactly on the active station (each station sits mid-tab)
+    if (fill) fill.style.width = (12.5 + i * 25) + '%';
+    if (focus) tabs[i].focus();
+  }
 
-  start();
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { select(i); });
+  });
+
+  root.querySelector('.iw-steps-tabs').addEventListener('keydown', function (e) {
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'ArrowDown') { select((current + 1) % tabs.length, true); }
+    else if (k === 'ArrowLeft' || k === 'ArrowUp') { select((current - 1 + tabs.length) % tabs.length, true); }
+    else if (k === 'Home') { select(0, true); }
+    else if (k === 'End') { select(tabs.length - 1, true); }
+    else return;
+    e.preventDefault();
+  });
+
+  select(0);
 }
 
 /* -----------------------------------------------------------
@@ -483,7 +446,7 @@ function boot() {
   initObservers();
   initNav();
   initMesh();
-  initHowRail();
+  initSteps();
 }
 
 if (document.readyState === 'loading') {
