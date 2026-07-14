@@ -209,325 +209,232 @@ function initNav() {
 }
 
 /* -----------------------------------------------------------
-   HERO STAGE SCALER (fixed 1920x1061 Figma stage -> viewport)
+   HERO NEURAL MESH — drifting nodes wired to their neighbours;
+   signals fire along the links, and the cursor recruits the
+   nodes around it into the network
    ----------------------------------------------------------- */
-function initHeroStage() {
+function initMesh() {
   var hero = document.querySelector('[data-hero]');
   if (!hero) return;
-  var stage = hero.querySelector('[data-hero-stage]');
-  if (!stage) return;
-  var wrap = stage.parentElement;
-
-  function fit() {
-    var w = wrap.clientWidth;
-    if (!w) return;
-    stage.style.setProperty('--iwh-s', w / 1920);
-  }
-  fit();
-  window.addEventListener('resize', fit, { passive: true });
-}
-
-/* -----------------------------------------------------------
-   HERO CARDS — staggered load-in entrance
-   ----------------------------------------------------------- */
-function initCardEntrance() {
-  var stage = document.querySelector('[data-hero-stage]');
-  if (!stage) return;
-  var cards = [].slice.call(stage.querySelectorAll('.iwh-card'));
-  if (REDUCE) {
-    cards.forEach(function (c) { c.style.transition = 'none'; });
-    stage.classList.add('is-loaded');
-    return;
-  }
-  // stagger only opacity + transform (the entrance); leave hover scale instant
-  cards.forEach(function (c, i) {
-    var d = (0.07 * i).toFixed(2) + 's';
-    c.style.transitionDelay = d + ', ' + d + ', 0s, 0s, 0s';
-  });
-  requestAnimationFrame(function () {
-    requestAnimationFrame(function () { stage.classList.add('is-loaded'); });
-  });
-}
-
-/* -----------------------------------------------------------
-   HERO CONNECTORS — one at a time per orientation, random order/speed/gaps
-   ----------------------------------------------------------- */
-function initConnectors() {
-  var stage = document.querySelector('[data-hero-stage]');
-  if (!stage) return;
-  var verticals = [].slice.call(stage.querySelectorAll('.iwh-pin:not(.iwh-pin--h)'));
-  var horizontals = [].slice.call(stage.querySelectorAll('.iwh-pin--h'));
-  if (REDUCE) {
-    verticals.concat(horizontals).forEach(function (p) { p.style.opacity = '1'; });
-    return;
-  }
-  var rand = function (min, max) { return min + Math.random() * (max - min); };
-
-  // Plays exactly one pin from `pins` at a time. When it finishes, waits a
-  // random gap, then plays another random one (never the same twice in a row,
-  // cycles through all before repeating). Guarantees no two of this group overlap.
-  function runGroup(pins, durMin, durMax, gapMin, gapMax) {
-    if (!pins.length) return;
-    var pool = [], last = null;
-    function step() {
-      if (!pool.length) pool = pins.slice();
-      var choices = pool.filter(function (p) { return p !== last; });
-      if (!choices.length) choices = pool;
-      var pin = choices[(Math.random() * choices.length) | 0];
-      pool = pool.filter(function (p) { return p !== pin; });
-      last = pin;
-
-      var dur = rand(durMin, durMax);
-      pin.style.animationDuration = dur.toFixed(2) + 's';
-      pin.classList.remove('is-moving');
-      void pin.offsetWidth;               // reflow so the animation restarts
-      pin.classList.add('is-moving');
-
-      var gap = rand(gapMin, gapMax);
-      setTimeout(function () {
-        pin.classList.remove('is-moving'); // back to hidden, ready for next turn
-        step();
-      }, (dur + gap) * 1000);
-    }
-    step(); // start immediately; subsequent turns are gapped by setTimeout
-  }
-
-  runGroup(verticals, 11, 17, 1.4, 5.5);    // vertical group
-  runGroup(horizontals, 12, 18, 2.0, 6.5);  // horizontal group (independent)
-}
-
-/* -----------------------------------------------------------
-   HERO DOT FIELD — canvas grid; dots sink inward toward the cursor
-   ----------------------------------------------------------- */
-function initDotField() {
-  var hero = document.querySelector('[data-hero]');
-  if (!hero) return;
-  var canvas = hero.querySelector('[data-dotfield]');
+  var canvas = hero.querySelector('[data-mesh]');
   if (!canvas) return;
-
   var ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  var GAP = 30;                     // dot spacing in CSS px
-  var R_DOT = 2.1;                  // base dot radius
-  var INFLUENCE = 150;              // cursor reach in px
-  var PULL = 14;                    // how far dots slide toward the cursor
-  var COLOR = 'rgba(120,140,170,';  // blue-grey; alpha appended per dot
-  var BASE_A = 0.30;
+  var DENSITY = 15000;    // one node per N square px — keeps density even at any size
+  var MAX_NODES = 120;
+  var LINK = 168;         // nodes closer than this get wired together
+  var REACH = 220;        // how far the cursor recruits
+  var DRIFT = 0.16;       // node speed in px/frame — slow enough to read as ambient
+  var FIRE = 0.008;       // chance per frame that a new signal fires
 
-  var W = 0, H = 0;                  // hero size in CSS px
+  var W = 0, H = 0;
+  var nodes = [];
+  var signals = [];       // pulses travelling along a link
+  var mx = -9999, my = -9999, tx = -9999, ty = -9999;
+  var raf = null, visible = true;
 
-  // walk an evenly-centred grid that covers the whole hero at the current size
-  function forEachDot(cb) {
-    var cols = Math.ceil(W / GAP) + 2;
-    var rows = Math.ceil(H / GAP) + 2;
-    var offX = (W - (cols - 1) * GAP) / 2;   // centre the grid so it stays even
-    var offY = (H - (rows - 1) * GAP) / 2;
-    for (var j = 0; j < rows; j++) {
-      for (var i = 0; i < cols; i++) { cb(offX + i * GAP, offY + j * GAP); }
-    }
-  }
+  function rand(a, b) { return a + Math.random() * (b - a); }
 
-  // draw the plain grid once (static / reduced-motion / rest state)
-  function drawStatic() {
-    if (!W) return;
-    ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = COLOR + BASE_A + ')';
-    forEachDot(function (x, y) {
-      ctx.beginPath();
-      ctx.arc(x, y, R_DOT, 0, Math.PI * 2);
-      ctx.fill();
-    });
-  }
-
-  // match the canvas backing store to the hero's pixel size (crisp on HiDPI)
-  function resize() {
-    if (!canvas.offsetParent) { W = 0; H = 0; return; }  // hidden (mobile)
+  function build() {
     var r = hero.getBoundingClientRect();
     W = Math.round(r.width);
     H = Math.round(r.height);
+    if (!W || !H) return;
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);   // draw in CSS px
-    drawStatic();
+
+    var want = Math.min(MAX_NODES, Math.round((W * H) / DENSITY));
+    nodes.length = 0;
+    signals.length = 0;
+    for (var i = 0; i < want; i++) {
+      var a = rand(0, Math.PI * 2);
+      nodes.push({
+        x: rand(0, W), y: rand(0, H),
+        vx: Math.cos(a) * DRIFT, vy: Math.sin(a) * DRIFT,
+        r: rand(1.1, 2.3),                    // varied node sizes read as organic
+        ph: rand(0, Math.PI * 2)              // phase, so nodes breathe out of sync
+      });
+    }
   }
 
-  resize();
-  window.addEventListener('resize', resize, { passive: true });
+  // wrap a node back in from the opposite edge so the field never empties out
+  function step(n) {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < -20) n.x = W + 20; else if (n.x > W + 20) n.x = -20;
+    if (n.y < -20) n.y = H + 20; else if (n.y > H + 20) n.y = -20;
+  }
 
-  if (REDUCE) return;               // no cursor interaction under reduced motion
+  function fire() {
+    if (nodes.length < 2) return;
+    var a = nodes[(Math.random() * nodes.length) | 0];
+    var near = [];
+    for (var i = 0; i < nodes.length; i++) {
+      var b = nodes[i];
+      if (b === a) continue;
+      var dx = b.x - a.x, dy = b.y - a.y;
+      if (dx * dx + dy * dy < LINK * LINK) near.push(b);
+    }
+    if (!near.length) return;
+    signals.push({ a: a, b: near[(Math.random() * near.length) | 0], t: 0, sp: rand(0.006, 0.014) });
+  }
 
-  var px = -9999, py = -9999;       // raw pointer (CSS px in hero)
-  var cx = -9999, cy = -9999;       // eased pointer used for drawing
-  var active = false;
-  var raf = null;
-
-  function draw() {
-    cx += (px - cx) * 0.18;         // ease so the depression glides
-    cy += (py - cy) * 0.18;
+  function paint(now) {
     ctx.clearRect(0, 0, W, H);
-    forEachDot(function (x, y) {
-      var dx = x - cx, dy = y - cy;
-      var dist = Math.sqrt(dx * dx + dy * dy);
-      var r = R_DOT, a = BASE_A, ox = 0, oy = 0;
-      if (dist < INFLUENCE) {
-        var t = 1 - dist / INFLUENCE;           // 0..1, strongest at cursor
-        var e = t * t;
-        var inv = 1 / (dist || 1);
-        ox = -dx * inv * e * PULL;              // slide toward cursor...
-        oy = -dy * inv * e * PULL;
-        r = R_DOT * (1 - e * 0.8);              // ...shrink...
-        a = BASE_A * (1 - e * 0.6);             // ...and dim => sinks inward
+    var i, j, a, b, dx, dy, d2, d, alpha;
+
+    // links — the closer two nodes are, the more solidly they're wired
+    ctx.lineWidth = 1;
+    for (i = 0; i < nodes.length; i++) {
+      a = nodes[i];
+      for (j = i + 1; j < nodes.length; j++) {
+        b = nodes[j];
+        dx = b.x - a.x; dy = b.y - a.y;
+        d2 = dx * dx + dy * dy;
+        if (d2 > LINK * LINK) continue;
+        d = Math.sqrt(d2);
+        alpha = (1 - d / LINK) * 0.26;
+        // links near the cursor light up
+        var mid = Math.sqrt(Math.pow((a.x + b.x) / 2 - mx, 2) + Math.pow((a.y + b.y) / 2 - my, 2));
+        if (mid < REACH) alpha += (1 - mid / REACH) * 0.34;
+        ctx.strokeStyle = 'rgba(124,192,247,' + alpha.toFixed(3) + ')';
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
       }
-      if (r <= 0.05) return;
+    }
+
+    // links from the cursor itself — it behaves like one more neuron
+    if (mx > -9000) {
+      for (i = 0; i < nodes.length; i++) {
+        a = nodes[i];
+        dx = a.x - mx; dy = a.y - my;
+        d = Math.sqrt(dx * dx + dy * dy);
+        if (d > REACH) continue;
+        ctx.strokeStyle = 'rgba(154,214,255,' + ((1 - d / REACH) * 0.4).toFixed(3) + ')';
+        ctx.beginPath();
+        ctx.moveTo(mx, my);
+        ctx.lineTo(a.x, a.y);
+        ctx.stroke();
+      }
+    }
+
+    // nodes — slow breathing, brighter the closer the cursor is
+    for (i = 0; i < nodes.length; i++) {
+      a = nodes[i];
+      var pulse = 0.75 + Math.sin(now * 0.0013 + a.ph) * 0.25;
+      dx = a.x - mx; dy = a.y - my;
+      d = Math.sqrt(dx * dx + dy * dy);
+      var boost = d < REACH ? (1 - d / REACH) : 0;
       ctx.beginPath();
-      ctx.arc(x + ox, y + oy, r, 0, Math.PI * 2);
-      ctx.fillStyle = COLOR + a.toFixed(3) + ')';
+      ctx.arc(a.x, a.y, a.r * (1 + boost * 0.5), 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(168,220,255,' + (0.30 * pulse + boost * 0.5).toFixed(3) + ')';
       ctx.fill();
-    });
-    var settling = Math.abs(px - cx) > 0.5 || Math.abs(py - cy) > 0.5;
-    if (active || settling) { raf = requestAnimationFrame(draw); }
-    else { raf = null; drawStatic(); }
+    }
+
+    // signals — a green spark running down a link, brand accent
+    for (i = signals.length - 1; i >= 0; i--) {
+      var s = signals[i];
+      s.t += s.sp;
+      if (s.t >= 1) { signals.splice(i, 1); continue; }
+      var x = s.a.x + (s.b.x - s.a.x) * s.t;
+      var y = s.a.y + (s.b.y - s.a.y) * s.t;
+      var fade = Math.sin(s.t * Math.PI);        // in and out, never a hard pop
+      ctx.beginPath();
+      ctx.arc(x, y, 2.2, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(128,195,74,' + (0.85 * fade).toFixed(3) + ')';
+      ctx.fill();
+    }
   }
-  function kick() { if (!raf) raf = requestAnimationFrame(draw); }
 
-  hero.addEventListener('pointermove', function (e) {
-    if (!W) return;                             // hidden (mobile) — ignore
-    var r = hero.getBoundingClientRect();
-    px = e.clientX - r.left;
-    py = e.clientY - r.top;
-    if (cx < -9000) { cx = px; cy = py; }        // first move: no glide from origin
-    active = true;
-    kick();
-  });
-  hero.addEventListener('pointerleave', function () {
-    active = false;                              // depression eases back out
-    px = -9999; py = -9999;
-    kick();
-  });
-}
-
-/* -----------------------------------------------------------
-   HERO CARDS — subtle cursor-following 3D tilt on hover
-   ----------------------------------------------------------- */
-function initCardTilt() {
-  if (REDUCE) return;               // no tilt under reduced motion
-  var stage = document.querySelector('[data-hero-stage]');
-  if (!stage) return;
-  var cards = [].slice.call(stage.querySelectorAll('.iwh-card:not(.iwh-reflection)'));
-  if (!cards.length) return;
-
-  var MAX = 6;                      // max tilt in degrees (subtle)
-  var PERS = 700;                   // perspective depth (px)
-  // fast, eased transform while tracking; smooth settle back on leave.
-  // (scale / box-shadow / border keep their existing hover transitions)
-  var trackT = 'transform .18s ease-out, scale .4s cubic-bezier(.2,.7,.3,1), box-shadow .4s ease, border-color .4s ease, opacity .6s ease';
-  var resetT = 'transform .6s cubic-bezier(.2,.8,.3,1), scale .4s cubic-bezier(.2,.7,.3,1), box-shadow .4s ease, border-color .4s ease, opacity .6s ease';
-
-  cards.forEach(function (card) {
-    card.addEventListener('pointerenter', function () { card.style.transition = trackT; });
-    card.addEventListener('pointermove', function (e) {
-      var r = card.getBoundingClientRect();
-      if (!r.width) return;
-      var fx = (e.clientX - r.left) / r.width;    // 0..1 across the card
-      var fy = (e.clientY - r.top) / r.height;
-      var ry = ((fx - 0.5) * 2 * MAX).toFixed(2); // right/left -> rotateY
-      var rx = ((0.5 - fy) * 2 * MAX).toFixed(2); // up/down    -> rotateX
-      card.style.transform = 'perspective(' + PERS + 'px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
-    });
-    card.addEventListener('pointerleave', function () {
-      card.style.transition = resetT;
-      card.style.transform = '';                  // ease back to rest (CSS `none`)
-    });
-  });
-}
-
-/* -----------------------------------------------------------
-   HOW WE DO IT — seamless infinite horizontal rail
-   ----------------------------------------------------------- */
-function initHowRail() {
-  var rail = document.querySelector('.iw-hwrail');
-  if (!rail) return;
-  var track = rail.querySelector('.iw-hwrail-track');
-  if (!track) return;
-  var originals = [].slice.call(track.children);
-  if (!originals.length) return;
-
-  // clone one full set before and after the originals so scrolling can wrap
-  var before = document.createDocumentFragment();
-  var after = document.createDocumentFragment();
-  originals.forEach(function (node) {
-    var a = node.cloneNode(true); a.setAttribute('aria-hidden', 'true'); before.appendChild(a);
-    var b = node.cloneNode(true); b.setAttribute('aria-hidden', 'true'); after.appendChild(b);
-  });
-  track.insertBefore(before, track.firstChild);
-  track.appendChild(after);
-
-  function gapPx() {
-    var s = getComputedStyle(track);
-    return parseFloat(s.columnGap || s.gap) || 24;
+  function frame(now) {
+    mx += (tx - mx) * 0.12;                      // the cursor's pull glides
+    my += (ty - my) * 0.12;
+    for (var i = 0; i < nodes.length; i++) step(nodes[i]);
+    if (signals.length < 4 && Math.random() < FIRE) fire();
+    paint(now);
+    raf = visible ? requestAnimationFrame(frame) : null;
   }
-  function step() { return originals[0].getBoundingClientRect().width + gapPx(); }
-  // width of one set = exactly N card-steps, so positions land on card boundaries
-  function setWidth() { return originals.length * step(); }
-  function recenter() { rail.scrollLeft = setWidth(); }        // start on the middle (real) set
-  recenter();
-  window.addEventListener('resize', recenter, { passive: true });
 
-  // after scrolling settles, if we've drifted into a clone set, jump back one set (invisible: clones match)
-  var t;
-  rail.addEventListener('scroll', function () {
-    clearTimeout(t);
-    t = setTimeout(function () {
-      var w = setWidth();
-      if (rail.scrollLeft >= 2 * w - 2)      rail.scrollLeft -= w;
-      else if (rail.scrollLeft <= 2)         rail.scrollLeft += w;
-      syncDots();
-    }, 80);
+  build();
+  window.addEventListener('resize', function () {
+    build();
+    if (REDUCE) paint(0);
   }, { passive: true });
 
-  function go(dir) { rail.scrollBy({ left: dir * step(), behavior: 'smooth' }); }
-  var section = rail.closest('section');
-  var arrows = section.querySelectorAll('[data-hw]');
-  [].slice.call(arrows).forEach(function (btn) {
-    btn.addEventListener('click', function () { go(btn.getAttribute('data-hw') === 'prev' ? -1 : 1); restart(); });
+  if (REDUCE) { paint(0); return; }              // a still network, no drift, no cursor
+
+  hero.addEventListener('pointermove', function (e) {
+    var r = hero.getBoundingClientRect();
+    tx = e.clientX - r.left;
+    ty = e.clientY - r.top;
+    if (mx < -9000) { mx = tx; my = ty; }        // first move: don't sweep in from the corner
+  });
+  hero.addEventListener('pointerleave', function () {
+    tx = -9999; ty = -9999;
   });
 
-  // auto-advance every few seconds, pause on hover / touch / when tab hidden
-  var AUTO = 4500, timer = null;
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function start() { if (reduce || timer) return; timer = setInterval(function () { go(1); }, AUTO); }
-  function stop()  { if (timer) { clearInterval(timer); timer = null; } }
-  function restart() { stop(); start(); }
-  section.addEventListener('mouseenter', stop);
-  section.addEventListener('mouseleave', start);
-  section.addEventListener('focusin', stop);
-  section.addEventListener('focusout', start);
-  rail.addEventListener('touchstart', stop, { passive: true });
-  rail.addEventListener('pointerdown', stop);
-  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+  // stop drawing once the hero scrolls off screen
+  if (window.IntersectionObserver) {
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      if (visible && !raf) raf = requestAnimationFrame(frame);
+    }, { threshold: 0 }).observe(hero);
+  }
+  raf = requestAnimationFrame(frame);
+}
 
-  // step indicator dots — reflect the active card and jump on click
-  var dots = [].slice.call(section.querySelectorAll('.iw-hw-dot'));
-  function activeIndex() {
-    var i = Math.round((rail.scrollLeft - setWidth()) / step());
-    return ((i % originals.length) + originals.length) % originals.length;
-  }
-  function syncDots() {
-    if (!dots.length) return;
-    var a = activeIndex();
-    dots.forEach(function (d, i) { d.classList.toggle('is-active', i === a); });
-  }
-  dots.forEach(function (d) {
-    d.addEventListener('click', function () {
-      rail.scrollTo({ left: setWidth() + (+d.getAttribute('data-i')) * step(), behavior: 'smooth' });
-      restart();
+
+/* -----------------------------------------------------------
+   HOW WE DO IT — four steps as tabs on a process rail
+   ----------------------------------------------------------- */
+function initSteps() {
+  var root = document.querySelector('[data-steps]');
+  if (!root) return;
+  var tabs = [].slice.call(root.querySelectorAll('.iw-steps-tab'));
+  var panels = [].slice.call(root.querySelectorAll('.iw-steps-panel'));
+  var fill = root.querySelector('[data-steps-fill]');
+  if (!tabs.length || tabs.length !== panels.length) return;
+
+  var current = 0;
+
+  function select(i, focus) {
+    if (i < 0 || i >= tabs.length) return;
+    current = i;
+    tabs.forEach(function (t, k) {
+      var on = k === i;
+      t.classList.toggle('is-active', on);
+      t.classList.toggle('is-done', k <= i);   // the rail fills up to where you are
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;                // one tab stop for the whole set
+      // no [hidden] here: it would pull the panel out of the grid and let the
+      // box resize per step. CSS visibility:hidden keeps the cell — and still
+      // takes the panel out of the tab order and the accessibility tree.
+      panels[k].classList.toggle('is-active', on);
     });
-  });
-  syncDots();
+    // the line lands exactly on the active station (each station sits mid-tab)
+    if (fill) fill.style.width = (12.5 + i * 25) + '%';
+    if (focus) tabs[i].focus();
+  }
 
-  start();
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { select(i); });
+  });
+
+  root.querySelector('.iw-steps-tabs').addEventListener('keydown', function (e) {
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'ArrowDown') { select((current + 1) % tabs.length, true); }
+    else if (k === 'ArrowLeft' || k === 'ArrowUp') { select((current - 1 + tabs.length) % tabs.length, true); }
+    else if (k === 'Home') { select(0, true); }
+    else if (k === 'End') { select(tabs.length - 1, true); }
+    else return;
+    e.preventDefault();
+  });
+
+  select(0);
 }
 
 /* -----------------------------------------------------------
@@ -538,12 +445,8 @@ function boot() {
   initScrollMarquee();
   initObservers();
   initNav();
-  initHeroStage();
-  initDotField();
-  initCardEntrance();
-  initCardTilt();
-  initConnectors();
-  initHowRail();
+  initMesh();
+  initSteps();
 }
 
 if (document.readyState === 'loading') {
