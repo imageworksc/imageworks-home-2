@@ -121,9 +121,15 @@ body {
   width: 100%; min-height: 600px;
   overflow: hidden;
   padding: 128px 40px 96px;   /* top pad clears the 72px nav */
+  /* a cooler, more dimensional ground: a bright cool glow off the top, an
+     electric-blue bloom to the right and a fainter counter-bloom lower-left for
+     depth, a deepened bottom, over a slightly cooler deep-navy base */
   background:
-    radial-gradient(120% 90% at 50% 0%, #1b4f86 0%, rgba(27,79,134,0) 62%),
-    linear-gradient(165deg, #12457a 0%, #0e3159 46%, #0a2342 100%);
+    radial-gradient(130% 100% at 50% -8%, #1e6bb0 0%, rgba(30,107,176,0) 52%),
+    radial-gradient(72% 62% at 82% 16%, rgba(32,132,206,0.30) 0%, rgba(32,132,206,0) 60%),
+    radial-gradient(60% 56% at 14% 78%, rgba(26,95,165,0.22) 0%, rgba(26,95,165,0) 62%),
+    radial-gradient(100% 72% at 50% 118%, rgba(5,16,33,0.66) 0%, rgba(5,16,33,0) 60%),
+    linear-gradient(165deg, #103f74 0%, #0b2c55 48%, #071a38 100%);
 }
 /* the mesh sits behind the copy and never eats pointer events */
 .iwh-mesh {
