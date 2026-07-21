@@ -213,8 +213,9 @@ function initNav() {
    hero; a shuttle crosses and lays a weft thread that passes
    over one standing thread and under the next — real interlacing,
    row by row. Rows settle into the cloth and ease to a resting
-   weight. The shuttle reverses each pass, the way a loom does,
-   and the cloth takes tension around the cursor.
+   weight. The shuttle reverses each pass, the way a loom does.
+   It runs on its own — the cursor is deliberately ignored, so the
+   cloth stays a backdrop and never competes with the copy.
    ----------------------------------------------------------- */
 function initMesh() {
   var hero = document.querySelector('[data-hero]');
@@ -227,8 +228,6 @@ function initMesh() {
   var WARP_GAP = 54;        // spacing of the standing threads
   var PASS_MS = 6200;       // one crossing of the shuttle
   var REST_MIN = 900, REST_MAX = 1800;
-  var PULL_R = 190;         // how far the cursor's tension reaches
-  var PULL_MAX = 15;        // how far a thread bows toward it
   var SEGS = 8;             // samples per warp — weft crossings reuse them
 
   var BLUE = '168,206,242';
@@ -237,7 +236,6 @@ function initMesh() {
   var W = 0, H = 0, dpr = 1;
   var warps = [], slots = [], rows = [];
   var shuttle = null, nextPass = 0, rowN = 0;
-  var mx = -9999, my = -9999;
   var raf = null, visible = true, t0 = 0, well = null;
 
   function rand(a, b) { return a + Math.random() * (b - a); }
@@ -263,7 +261,7 @@ function initMesh() {
     var n = Math.ceil(W / WARP_GAP) + 1;
     var off = (W - (n - 1) * WARP_GAP) / 2;
     for (var i = 0; i < n; i++) {
-      warps.push({ x: off + i * WARP_GAP, a: rand(0.06, 0.13), w: rand(0.8, 1.35) });
+      warps.push({ x: off + i * WARP_GAP, a: rand(0.032, 0.072), w: rand(0.8, 1.3) });
     }
 
     // rows sit inside the band the mask actually shows (14%–84%), so no row
@@ -276,23 +274,17 @@ function initMesh() {
     // empty frame and make you wait out a crossing for the first thread
     rows.length = 0;
     for (var q = 0; q < slots.length; q++) {
-      rows.push({ y: slots[q], a: 0.095, floor: 0.095, col: (q % 4 === 2) ? GREEN : BLUE, parity: q % 2 });
+      rows.push({ y: slots[q], a: 0.05, floor: 0.05, col: (q % 4 === 2) ? GREEN : BLUE, parity: q % 2 });
     }
     shuttle = null; nextPass = 0; rowN = 0;
   }
 
-  /* Where warp i actually sits at height y: its drift, plus the cursor's
-     tension. The weft calls this too, so the interlacing always lands on
-     the thread even while the cloth is being pulled. */
+  /* Where warp i actually sits at height y, once its slow drift is applied.
+     The weft calls this too, so every crossing lands on the thread rather
+     than on where the thread would be if it stood perfectly still. */
   function warpAt(i, y, t) {
     var wp = warps[i];
-    var x = wp.x + Math.sin(t * 0.00021 + i * 0.85 + y * 0.0016) * 1.4;
-    if (mx < -9000) return x;
-    var dx = mx - x, dy = my - y;
-    var d = Math.sqrt(dx * dx + dy * dy);
-    if (d >= PULL_R) return x;
-    var f = 1 - d / PULL_R;
-    return x + (dx / (d || 1)) * f * f * PULL_MAX;
+    return wp.x + Math.sin(t * 0.00021 + i * 0.85 + y * 0.0016) * 1.4;
   }
 
   /* One weft row: under a standing thread, over the next. That alternation
@@ -330,15 +322,10 @@ function initMesh() {
 
     var i, j, y, x;
 
-    // the standing threads, sampled so they bow under the cursor
+    // the standing threads, sampled along their drift
     for (i = 0; i < warps.length; i++) {
       var wp = warps[i];
-      var lit = 0;
-      if (mx > -9000) {
-        var hd = Math.abs(mx - wp.x);
-        if (hd < PULL_R) lit = (1 - hd / PULL_R) * 0.09;
-      }
-      ctx.strokeStyle = 'rgba(' + BLUE + ',' + (wp.a + lit).toFixed(3) + ')';
+      ctx.strokeStyle = 'rgba(' + BLUE + ',' + wp.a.toFixed(3) + ')';
       ctx.lineWidth = wp.w;
       ctx.beginPath();
       for (j = 0; j <= SEGS; j++) {
@@ -377,18 +364,18 @@ function initMesh() {
 
     if (shuttle) {
       shuttle.x += shuttle.v;
-      weft(shuttle.y, shuttle.from, shuttle.x, 0.3, shuttle.col, shuttle.parity, t);
+      weft(shuttle.y, shuttle.from, shuttle.x, 0.17, shuttle.col, shuttle.parity, t);
       // the shuttle head, carrying the thread across
       var g = ctx.createRadialGradient(shuttle.x, shuttle.y, 0, shuttle.x, shuttle.y, 16);
-      g.addColorStop(0, 'rgba(' + shuttle.col + ',0.26)');
+      g.addColorStop(0, 'rgba(' + shuttle.col + ',0.18)');
       g.addColorStop(1, 'rgba(' + shuttle.col + ',0)');
       ctx.fillStyle = g;
       ctx.beginPath(); ctx.arc(shuttle.x, shuttle.y, 16, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = 'rgba(' + shuttle.col + ',0.9)';
+      ctx.fillStyle = 'rgba(' + shuttle.col + ',0.62)';
       ctx.beginPath(); ctx.arc(shuttle.x, shuttle.y, 2.1, 0, Math.PI * 2); ctx.fill();
 
       if (shuttle.v > 0 ? shuttle.x > W + 40 : shuttle.x < -40) {
-        rows.push({ y: shuttle.y, a: 0.26, floor: 0.095, col: shuttle.col, parity: shuttle.parity });
+        rows.push({ y: shuttle.y, a: 0.14, floor: 0.05, col: shuttle.col, parity: shuttle.parity });
         shuttle = null;
         nextPass = t + rand(REST_MIN, REST_MAX);
       }
@@ -405,7 +392,7 @@ function initMesh() {
   function still() {
     rows.length = 0;
     for (var i = 0; i < slots.length; i++) {
-      rows.push({ y: slots[i], a: 0.105, floor: 0.105, col: (i % 4 === 2) ? GREEN : BLUE, parity: i % 2 });
+      rows.push({ y: slots[i], a: 0.055, floor: 0.055, col: (i % 4 === 2) ? GREEN : BLUE, parity: i % 2 });
     }
     shuttle = null;
     paint(0);
@@ -418,13 +405,6 @@ function initMesh() {
   }, { passive: true });
 
   if (REDUCE) { still(); return; }
-
-  hero.addEventListener('pointermove', function (e) {
-    var r = hero.getBoundingClientRect();
-    mx = e.clientX - r.left;
-    my = e.clientY - r.top;
-  });
-  hero.addEventListener('pointerleave', function () { mx = -9999; my = -9999; });
 
   // stop drawing once the hero scrolls off screen
   if (window.IntersectionObserver) {
