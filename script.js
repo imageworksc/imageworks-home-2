@@ -264,10 +264,11 @@ function initMesh() {
       warps.push({ x: off + i * WARP_GAP, a: rand(0.032, 0.072), w: rand(0.8, 1.3) });
     }
 
-    // rows sit inside the band the mask actually shows (14%–84%), so no row
-    // is woven into a part of the canvas that's being faded out
+    // rows run nearly the full height and let the canvas mask fade them out at
+    // the top and bottom. Stopping short of the mask instead leaves bare warp
+    // below the copy, which reads as unfinished cloth rather than a soft edge.
     slots.length = 0;
-    var top = H * 0.17, bot = H * 0.83, k = 11;
+    var top = H * 0.075, bot = H * 0.945, k = 14;
     for (var j = 0; j < k; j++) slots.push(top + (bot - top) * (j / (k - 1)));
 
     // the loom opens with cloth already on it — the hero should never show an
