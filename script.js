@@ -305,10 +305,11 @@ function initMesh() {
         if (b > a) { ctx.beginPath(); ctx.moveTo(a, y); ctx.lineTo(b, y); ctx.stroke(); }
         run = wx + 5.5;
       } else {
-        // rides over: the crossing catches a little more light
-        ctx.fillStyle = 'rgba(' + col + ',' + Math.min(alpha * 2.1, 0.6).toFixed(3) + ')';
+        // rides over: the crossing catches a touch more light — just enough to
+        // register as a knot, well short of reading as a row of dots
+        ctx.fillStyle = 'rgba(' + col + ',' + Math.min(alpha * 1.35, 0.3).toFixed(3) + ')';
         ctx.beginPath();
-        ctx.ellipse(wx, y, 3.4, 1.5, 0, 0, Math.PI * 2);
+        ctx.ellipse(wx, y, 2.9, 1.3, 0, 0, Math.PI * 2);
         ctx.fill();
       }
     }
