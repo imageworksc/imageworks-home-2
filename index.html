@@ -17,16 +17,14 @@
   <a href="#top" style="display:flex;align-items:center;text-decoration:none;">
     <img src="assets/logo.png" alt="ImageWorks Creative" style="height:34px;width:auto;display:block;"/>
   </a>
-  <!-- links + CTA travel together on the right -->
-  <div style="display:flex;align-items:center;gap:34px;">
-    <div style="display:flex;align-items:center;gap:30px;">
-      <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Marketing</a>
-      <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Web Plans</a>
-      <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Branding</a>
-      <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Our Work</a>
-      <a class="iw-link" href="#why" style="font-size:15px;font-weight:600;color:#3d464d;">About</a>
-    </div>
-    <a class="iw-btn" href="#cta" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 24px;border-radius:2px;background:#80c34a;color:#fff;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 1px 2px rgba(20,40,80,.14);">Contact</a>
+  <!-- every item is a plain link now, so they all sit on one evenly spaced row -->
+  <div style="display:flex;align-items:center;gap:30px;">
+    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Marketing</a>
+    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Web Plans</a>
+    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Branding</a>
+    <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Our Work</a>
+    <a class="iw-link" href="#why" style="font-size:15px;font-weight:600;color:#3d464d;">About</a>
+    <a class="iw-link" href="#cta" style="font-size:15px;font-weight:600;color:#3d464d;">Contact</a>
   </div>
 </nav>
 
@@ -37,7 +35,10 @@
   <canvas class="iwh-mesh" data-mesh aria-hidden="true"></canvas>
 
   <div class="iwh-center">
-    <h1 class="iwh-h1">Website &amp; Marketing.<br>Built to <span>Work Together.</span></h1>
+    <h1 class="iwh-h1">
+      <span class="iwh-line"><span class="iwh-up" style="--d:.08s">Website &amp; Marketing.</span></span>
+      <span class="iwh-line"><span class="iwh-up" style="--d:.26s">Built to</span> <span class="iwh-hi" data-type>Work Together.</span></span>
+    </h1>
     <p class="iwh-sub">Custom websites built for <span class="iwh-ms">Modern Search</span> — designed to impress your customers and make competitors jealous.</p>
     <a class="iw-btn iwh-cta" href="#work">Take a look under the hood<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
 
@@ -61,19 +62,19 @@
 
 <!-- ===================== INTRO STATEMENT (below hero) ===================== -->
 <section style="position:relative;background:#f2f5f9;padding:108px 40px 116px;overflow:hidden;">
-  <div class="iw-reveal" style="position:relative;max-width:1080px;margin:0 auto;">
-    <div class="iw-intro-grid" style="display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;">
+  <div class="iw-reveal" style="position:relative;max-width:1240px;margin:0 auto;">
+    <div class="iw-intro-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:center;">
       <div>
-        <h2 style="margin:0 0 30px;text-align:left;font-size:44px;line-height:1.15;font-weight:800;letter-spacing:-.8px;color:#1266b5;">Built to Be Found.<br>Designed to Be Trusted.</h2>
-        <p style="margin:0;font-size:16px;line-height:1.65;color:#52628a;text-wrap:pretty;max-width:520px;">ImageWorks Creative is a custom web design, branding, and digital marketing agency serving businesses across the U.S. We build Drupal and WordPress websites supported by content, search, and marketing systems.</p>
-        <p style="margin:16px 0 0;font-size:16px;line-height:1.65;color:#52628a;text-wrap:pretty;max-width:520px;">A modern website has to do more than look good or rank well. It has to help every audience &mdash; people, search, and AI &mdash; understand who you are, what you do, and why you are credible.</p>
+        <h2 style="margin:0 0 30px;text-align:left;font-size:44px;line-height:1.15;font-weight:800;letter-spacing:-.8px;color:#143c66;">Built to Be Found.<br>Designed to <span style="color:#5c9a2e;">Be Trusted.</span></h2>
+        <p style="margin:0;font-size:18px;line-height:1.65;color:#52628a;text-wrap:pretty;max-width:520px;">ImageWorks Creative is a custom web design, branding, and digital marketing agency serving businesses across the U.S. We build Drupal and WordPress websites supported by content, search, and marketing systems.</p>
+        <p style="margin:16px 0 0;font-size:18px;line-height:1.65;color:#52628a;text-wrap:pretty;max-width:520px;">A modern website has to do more than look good or rank well. It has to help every audience &mdash; people, search, and AI &mdash; understand who you are, what you do, and why you are credible.</p>
       </div>
       <!-- The same page, read twice: the site as a person sees it, and the
            machine-readable structure standing behind it. The dashed rungs pair
            each visible block with its structured counterpart — that pairing is
            the whole point, so nothing is drawn that doesn't serve it. -->
       <div class="iw-illus" style="display:flex;justify-content:center;align-self:center;">
-        <svg class="iw-sem" width="100%" viewBox="0 0 520 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;height:auto;display:block;overflow:visible;" role="img" aria-label="The same web page read two ways: on the left, the site as a person sees it; behind it, the same page as machines read it — structured blocks on a spine, with metadata attached above, entities branching off, and a verified trust mark at the end. Dashed lines pair each visible block with its structured counterpart.">
+        <svg class="iw-sem" width="100%" viewBox="0 0 545 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;height:auto;display:block;overflow:visible;" role="img" aria-label="The same web page read two ways: on the left, the site as a person sees it; behind it, the same page as machines read it — structured blocks on a spine, with metadata attached above, entities branching off, and a verified trust mark at the end. Dashed lines pair each visible block with its structured counterpart.">
           <defs>
             <filter id="iwSemCard" x="-30%" y="-30%" width="160%" height="180%">
               <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0d2748" flood-opacity="0.13"/>
@@ -86,37 +87,37 @@
           <!-- ---------- the machine layer, standing behind ---------- -->
           <!-- the machine-read panel: top and right eased out a touch so the caption
                and the JSON blocks aren't jammed against the edge (left/bottom fixed) -->
-          <rect x="214" y="50" width="292" height="290" rx="12" fill="#e9eff7" stroke="#d7e1ee" stroke-width="1"/>
+          <rect x="214" y="50" width="312" height="290" rx="12" fill="#e9eff7" stroke="#d7e1ee" stroke-width="1"/>
 
 
 
           <!-- technical caption: signals the stack to non-technical readers -->
-          <text x="308" y="76" font-family="ui-monospace, 'SF Mono', Consolas, monospace" font-size="8.5" font-weight="700" letter-spacing="1" fill="#5c9a2e">JSON-LD &#183; META &#183; LLM-READY</text>
+          <text x="308" y="76" font-family="ui-monospace, 'SF Mono', Consolas, monospace" font-size="11" font-weight="700" letter-spacing="1" fill="#5c9a2e">JSON-LD &#183; META &#183; LLM-READY</text>
 
           <!-- the spine: the page's structure, top to bottom -->
           <line x1="292" y1="80" x2="292" y2="288" stroke="#a9c4e3" stroke-width="1.5"/>
 
           <!-- structured blocks — each one mirrors a block of the real page -->
           <g stroke="#0f2f52" stroke-width="1.2">
-            <rect x="308" y="88" width="150" height="48" rx="5" fill="#143c66"/>
-            <rect x="308" y="148" width="150" height="44" rx="5" fill="#143c66"/>
-            <rect x="308" y="206" width="150" height="44" rx="5" fill="#143c66"/>
+            <rect x="308" y="88" width="192" height="52" rx="5" fill="#143c66"/>
+            <rect x="308" y="148" width="192" height="44" rx="5" fill="#143c66"/>
+            <rect x="308" y="206" width="192" height="44" rx="5" fill="#143c66"/>
           </g>
           <g stroke="#bfe09b" stroke-width="1.2">
-            <rect x="308" y="272" width="150" height="32" rx="5" fill="#eaf6dd"/>
+            <rect x="308" y="272" width="192" height="32" rx="5" fill="#eaf6dd"/>
           </g>
-          <g font-family="ui-monospace, 'SF Mono', Consolas, monospace" font-size="9.5">
-            <text x="316" y="102" fill="#80C34A" font-size="8.5">{ "@context": "schema.org",</text>
-            <text x="322" y="115" fill="#a8cef2" font-size="8.5">"@type": "ProfessionalService",</text>
-            <text x="322" y="128" fill="#a8cef2" font-size="8.5">"areaServed": "US" }</text>
-            <text x="316" y="164" fill="#a8cef2" font-size="9">&lt;meta name="description" &hellip;&gt;</text>
-            <text x="316" y="180" fill="#a8cef2" font-size="9">&lt;meta property="og:image" &hellip;&gt;</text>
+          <g font-family="ui-monospace, 'SF Mono', Consolas, monospace" font-size="11.5">
+            <text x="316" y="101" fill="#80C34A" font-size="11">{ "@context": "schema.org",</text>
+            <text x="322" y="116" fill="#a8cef2" font-size="11">"@type": "LocalBusiness",</text>
+            <text x="322" y="131" fill="#a8cef2" font-size="11">"areaServed": "US" }</text>
+            <text x="316" y="164" fill="#a8cef2" font-size="11">&lt;meta name="description" &hellip;&gt;</text>
+            <text x="316" y="180" fill="#a8cef2" font-size="11">&lt;meta property="og:image" &hellip;&gt;</text>
             <text x="316" y="222" fill="#80C34A">&lt;h1&gt; &lt;h2&gt; &lt;h3&gt;</text>
             <text x="316" y="238" fill="#a8cef2">&lt;section&gt; layered for LLMs</text>
           </g>
           <!-- the trust block reads green: a credible, verified page -->
-          <rect x="308" y="272" width="150" height="32" rx="5" fill="#eaf6dd" stroke="#bfe09b" stroke-width="1.2"/>
-          <text x="322" y="292" font-family="ui-monospace, 'SF Mono', Consolas, monospace" font-size="9.5" fill="#4a8628">trust rank + backlinks</text>
+          <rect x="308" y="272" width="192" height="32" rx="5" fill="#eaf6dd" stroke="#bfe09b" stroke-width="1.2"/>
+          <text x="322" y="293" font-family="ui-monospace, 'SF Mono', Consolas, monospace" font-size="12" fill="#4a8628">trust rank + backlinks</text>
 
           <!-- spine nodes -->
           <g fill="#1266b5">
@@ -132,10 +133,10 @@
 
           <!-- entities lifted out of the content -->
           <g>
-            <path d="M458 168 L482 156 M458 176 L488 188 M458 226 L480 240" stroke="#b7cee6" stroke-width="1.1"/>
-            <circle cx="484" cy="154" r="3.4" fill="#2f7dd1"/>
-            <circle cx="490" cy="190" r="3.4" fill="#2f7dd1"/>
-            <circle cx="482" cy="242" r="3.4" fill="#2f7dd1"/>
+            <path d="M500 168 L510 158 M500 176 L514 188 M500 226 L508 240" stroke="#b7cee6" stroke-width="1.1"/>
+            <circle cx="512" cy="156" r="3.4" fill="#2f7dd1"/>
+            <circle cx="516" cy="190" r="3.4" fill="#2f7dd1"/>
+            <circle cx="510" cy="242" r="3.4" fill="#2f7dd1"/>
           </g>
 
           <!-- ---------- the page itself, in front ---------- -->
@@ -161,10 +162,10 @@
             <line class="iw-sem-flow" x1="264" y1="288" x2="282" y2="288"/>
           </g>
 
-          <circle cx="76" cy="356.5" r="4" fill="#1266b5"/>
-          <text class="iw-sem-label" x="88" y="361" fill="#143c66">WHAT PEOPLE SEE</text>
-          <circle cx="302" cy="356.5" r="4" fill="#5c9a2e"/>
-          <text class="iw-sem-label" x="314" y="361" fill="#4a8628">WHAT MACHINES READ</text>
+          <circle cx="76" cy="368.5" r="4" fill="#1266b5"/>
+          <text class="iw-sem-label" x="88" y="373" fill="#1266b5">WHAT PEOPLE SEE</text>
+          <circle cx="282" cy="368.5" r="4" fill="#5c9a2e"/>
+          <text class="iw-sem-label" x="294" y="373" fill="#4a8628">WHAT MACHINES READ</text>
         </svg>
       </div>
     </div>
@@ -258,13 +259,13 @@
         <div class="iw-steps-out">
           <ul class="iw-steps-list">
             <!-- eye: being seen -->
-            <li><span class="iw-steps-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5c9a2e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg></span><span>Increases Visibility</span></li>
+            <li><span class="iw-steps-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5c9a2e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg></span><span>SEO + AI Optimization</span></li>
             <!-- megaphone: ads carrying the message out -->
-            <li><span class="iw-steps-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5c9a2e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h2.8L14 5v14l-7.2-4.5H4a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1z"/><path d="M17.5 9a4 4 0 0 1 0 6"/></svg></span><span>Generates Leads</span></li>
+            <li><span class="iw-steps-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5c9a2e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h2.8L14 5v14l-7.2-4.5H4a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1z"/><path d="M17.5 9a4 4 0 0 1 0 6"/></svg></span><span>Google &amp; Meta Ads</span></li>
             <!-- target: positioning -->
-            <li><span class="iw-steps-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5c9a2e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.2" fill="#5c9a2e" stroke="none"/></svg></span><span>Strengthens Positioning</span></li>
+            <li><span class="iw-steps-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5c9a2e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.2" fill="#5c9a2e" stroke="none"/></svg></span><span>Google Maps Optimization</span></li>
             <!-- two people: sales support and recruiting -->
-            <li><span class="iw-steps-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5c9a2e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.4"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16.5 5.2a3.4 3.4 0 0 1 0 5.6"/><path d="M18 14.4a6.5 6.5 0 0 1 3.5 5.6"/></svg></span><span>Supports Sales and Recruiting</span></li>
+            <li><span class="iw-steps-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5c9a2e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.4"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16.5 5.2a3.4 3.4 0 0 1 0 5.6"/><path d="M18 14.4a6.5 6.5 0 0 1 3.5 5.6"/></svg></span><span>Social Media &amp; Reels</span></li>
           </ul>
         </div>
       </div>
@@ -297,7 +298,7 @@
 <!-- ===================== WHAT WE DO + WHY (shared blue→navy gradient band) ===================== -->
 <div class="iw-blueband">
 <section style="position:relative;padding:104px 40px;background:transparent;overflow:hidden;">
-  <div style="position:relative;max-width:1200px;margin:0 auto;">
+  <div style="position:relative;max-width:1240px;margin:0 auto;">
     <div style="text-align:center;max-width:640px;margin:0 auto 56px;">
       <h2 class="iw-reveal" style="margin:0;font-size:44px;font-weight:800;letter-spacing:-.8px;color:#fff;">What We Do</h2>
       <p class="iw-reveal" style="margin:14px 0 0;font-size:20px;color:rgba(255,255,255,.85);font-weight:500;">We help companies get found, build trust, and win business.</p>
@@ -430,7 +431,7 @@
     <!-- Our Work -->
     <section data-screen-label="Our Work" style="position:relative;display:flex;flex-direction:column;background:#fff;padding:104px 0;overflow:hidden;">
       <div style="text-align:center;max-width:680px;margin:0 auto 48px;padding:0 40px;">
-        <h2 class="iw-reveal" style="margin:0;font-size:48px;font-weight:800;letter-spacing:-1px;color:#143c66;">Our Work</h2>
+        <h2 class="iw-reveal" style="margin:0;font-size:44px;font-weight:800;letter-spacing:-.8px;color:#143c66;">Our Work</h2>
       </div>
       <div class="iw-marq iw-reveal" style="width:100%;margin-bottom:22px;">
         <div class="iw-track" id="track-scroll-works-a" style="gap:24px;animation:iwMarquee 48s linear infinite;"></div>
@@ -443,8 +444,8 @@
     <!-- What our clients say -->
     <section data-screen-label="What our clients say" style="position:relative;display:flex;flex-direction:column;background:#f1f3f6;padding:104px 0;overflow:hidden;">
       <div style="text-align:center;max-width:720px;margin:0 auto 50px;padding:0 40px;">
-        <h2 class="iw-reveal" style="margin:0;font-size:48px;font-weight:800;letter-spacing:-1px;color:#143c66;">What our clients say</h2>
-        <p class="iw-reveal" style="margin:14px 0 0;font-size:19px;color:#5a6b82;">Our clients <strong style="color:#80c34a;font-weight:800;">love</strong> our work &amp; the results.</p>
+        <h2 class="iw-reveal" style="margin:0;font-size:44px;font-weight:800;letter-spacing:-.8px;color:#143c66;">What our clients say</h2>
+        <p class="iw-reveal" style="margin:14px 0 0;font-size:20px;font-weight:500;color:#5a6b82;">Our clients <strong style="color:#80c34a;font-weight:800;">love</strong> our work &amp; the results.</p>
       </div>
       <div class="iw-marq iw-reveal" style="width:100%;margin-bottom:22px;">
         <div class="iw-track" id="track-scroll-testi-a" data-mq="fwd" style="gap:24px;"></div>
@@ -462,8 +463,8 @@
 <section id="cta" style="position:relative;padding:112px 40px;background:linear-gradient(135deg,#1266b5,#0a2c4d);overflow:hidden;">
   <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:24px 24px;pointer-events:none;"></div>
   <div style="position:relative;max-width:820px;margin:0 auto;text-align:center;">
-    <h2 class="iw-reveal" style="margin:0;font-size:46px;font-weight:800;letter-spacing:-1px;color:#fff;">Ready to create something brilliant?</h2>
-    <p class="iw-reveal" style="margin:18px auto 0;max-width:540px;font-size:21px;line-height:1.5;color:rgba(255,255,255,.85);">Let's design a brand experience that works as hard as you do.</p>
+    <h2 class="iw-reveal" style="margin:0;font-size:44px;font-weight:800;letter-spacing:-.8px;color:#fff;">Ready to create something brilliant?</h2>
+    <p class="iw-reveal" style="margin:18px auto 0;max-width:700px;font-size:20px;font-weight:500;line-height:1.5;color:rgba(255,255,255,.85);">Let's design a brand experience that works as hard as you do.</p>
     <a class="iw-btn iw-reveal" href="#top" style="display:inline-flex;align-items:center;gap:10px;margin-top:36px;height:58px;padding:0 36px;border-radius:2px;background:#80c34a;color:#fff;font-size:17px;font-weight:700;text-decoration:none;box-shadow:0 1px 2px rgba(20,40,80,.14);">Let's get started<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
   </div>
 </section>
@@ -471,7 +472,7 @@
 <!-- ===================== PARTNERS & AWARDS (above footer) ===================== -->
 <section style="position:relative;background:#fff;padding:136px 0 140px;overflow:hidden;">
   <div style="text-align:center;max-width:700px;margin:0 auto 60px;padding:0 40px;">
-    <h2 class="iw-reveal" style="margin:0;font-size:42px;font-weight:800;letter-spacing:-1px;color:#143c66;">Partners &amp; Awards</h2>
+    <h2 class="iw-reveal" style="margin:0;font-size:44px;font-weight:800;letter-spacing:-.8px;color:#143c66;">Partners &amp; Awards</h2>
   </div>
   <div class="iw-marq iw-reveal" style="width:100%;padding:16px 0;" role="group" aria-label="Industry awards and partner certifications">
     <div class="iw-track" id="track-scroll-partners" style="gap:88px;align-items:center;animation:iwMarquee 40s linear infinite;"></div>
