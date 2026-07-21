@@ -226,9 +226,11 @@ function initMesh() {
   if (!ctx) return;
 
   var WARP_GAP = 54;        // spacing of the standing threads
-  var PASS_MS = 6200;       // one crossing of the shuttle
+  var PASS_MS = 6200;       // one crossing of the weft shuttle
   var REST_MIN = 900, REST_MAX = 1800;
-  var SEGS = 8;             // samples per warp — weft crossings reuse them
+  var VPASS_MS = 8600;      // one run of the warp shuttle, drawn down a column
+  var VREST_MIN = 2600, VREST_MAX = 4400;
+  var SEGS = 8;             // samples per warp — every crossing reuses them
 
   var BLUE = '168,206,242';
   var GREEN = '128,195,74';
@@ -236,6 +238,7 @@ function initMesh() {
   var W = 0, H = 0, dpr = 1;
   var warps = [], slots = [], rows = [];
   var shuttle = null, nextPass = 0, rowN = 0;
+  var vshuttle = null, nextVPass = 0, colN = 0;
   var raf = null, visible = true, t0 = 0, well = null;
 
   function rand(a, b) { return a + Math.random() * (b - a); }
@@ -261,7 +264,7 @@ function initMesh() {
     var n = Math.ceil(W / WARP_GAP) + 1;
     var off = (W - (n - 1) * WARP_GAP) / 2;
     for (var i = 0; i < n; i++) {
-      warps.push({ x: off + i * WARP_GAP, a: rand(0.032, 0.072), w: rand(0.8, 1.3) });
+      warps.push({ x: off + i * WARP_GAP, a: rand(0.032, 0.072), w: rand(0.8, 1.3), lit: 0 });
     }
 
     // rows run nearly the full height and let the canvas mask fade them out at
@@ -278,6 +281,8 @@ function initMesh() {
       rows.push({ y: slots[q], a: 0.05, floor: 0.05, col: (q % 4 === 2) ? GREEN : BLUE, parity: q % 2 });
     }
     shuttle = null; nextPass = 0; rowN = 0;
+    // the two shuttles start out of step, so the loom never looks metronomic
+    vshuttle = null; nextVPass = 3200; colN = 0;
   }
 
   /* Where warp i actually sits at height y, once its slow drift is applied.
@@ -318,6 +323,53 @@ function initMesh() {
     }
   }
 
+  /* A stretch of one standing thread, sampled so it follows the same drift the
+     weft crossings were placed against. */
+  function warpSeg(i, y0, y1, t) {
+    var steps = Math.max(2, Math.ceil(Math.abs(y1 - y0) / (H / SEGS)));
+    ctx.beginPath();
+    for (var s = 0; s <= steps; s++) {
+      var y = y0 + (y1 - y0) * (s / steps);
+      var x = warpAt(i, y, t);
+      if (s === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  /* One warp run: the second shuttle drawing a standing thread down through the
+     cloth already woven. Same crossing rule as weft(), read the other way —
+     where the weft passed under, this thread shows and knots; where the weft
+     rode over, this one disappears beneath it. */
+  function warpRun(i, from, to, alpha, col, t) {
+    var lo = Math.min(from, to), hi = Math.max(from, to);
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 1.35;
+    ctx.strokeStyle = 'rgba(' + col + ',' + alpha.toFixed(3) + ')';
+
+    var cuts = [];
+    for (var r = 0; r < rows.length; r++) {
+      if (rows[r].y >= lo - 10 && rows[r].y <= hi + 10) cuts.push(rows[r]);
+    }
+    cuts.sort(function (a, b) { return a.y - b.y; });
+
+    var run = lo;
+    for (var c = 0; c < cuts.length; c++) {
+      var row = cuts[c];
+      if (((i + row.parity) % 2) === 0) {
+        // the weft went under here, so this thread rides over: knot, no break
+        ctx.fillStyle = 'rgba(' + col + ',' + Math.min(alpha * 1.35, 0.3).toFixed(3) + ')';
+        ctx.beginPath();
+        ctx.ellipse(warpAt(i, row.y, t), row.y, 1.3, 2.9, 0, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        var a = Math.max(run, lo), b = Math.min(row.y - 5.5, hi);
+        if (b > a) warpSeg(i, a, b, t);
+        run = row.y + 5.5;
+      }
+    }
+    if (hi > run) warpSeg(i, Math.max(run, lo), hi, t);
+  }
+
   function paint(t) {
     ctx.clearRect(0, 0, W, H);
     if (well) { ctx.fillStyle = well; ctx.fillRect(0, 0, W, H); }
@@ -327,7 +379,9 @@ function initMesh() {
     // the standing threads, sampled along their drift
     for (i = 0; i < warps.length; i++) {
       var wp = warps[i];
-      ctx.strokeStyle = 'rgba(' + BLUE + ',' + wp.a.toFixed(3) + ')';
+      // a column the warp shuttle just drew stays a little brighter, then eases back
+      if (wp.lit > 0) wp.lit = Math.max(0, wp.lit - 0.00028);
+      ctx.strokeStyle = 'rgba(' + BLUE + ',' + (wp.a + wp.lit).toFixed(3) + ')';
       ctx.lineWidth = wp.w;
       ctx.beginPath();
       for (j = 0; j <= SEGS; j++) {
@@ -380,6 +434,40 @@ function initMesh() {
         rows.push({ y: shuttle.y, a: 0.14, floor: 0.05, col: shuttle.col, parity: shuttle.parity });
         shuttle = null;
         nextPass = t + rand(REST_MIN, REST_MAX);
+      }
+    }
+
+    // the warp shuttle: a standing thread drawn down through the cloth. Runs on
+    // its own clock and steps 5 columns at a time, so it never trails the weft
+    // shuttle or walks the hero in a straight line
+    if (!vshuttle && t > nextVPass && warps.length) {
+      var down = colN % 2 === 0;
+      vshuttle = {
+        i: (colN * 5 + 2) % warps.length,
+        y: down ? -40 : H + 40,
+        from: down ? -40 : H + 40,
+        v: (H + 80) / (VPASS_MS / 16.7) * (down ? 1 : -1),
+        col: (colN % 3 === 1) ? GREEN : BLUE
+      };
+      colN++;
+    }
+
+    if (vshuttle) {
+      vshuttle.y += vshuttle.v;
+      warpRun(vshuttle.i, vshuttle.from, vshuttle.y, 0.17, vshuttle.col, t);
+      var vx = warpAt(vshuttle.i, vshuttle.y, t);
+      var vg = ctx.createRadialGradient(vx, vshuttle.y, 0, vx, vshuttle.y, 16);
+      vg.addColorStop(0, 'rgba(' + vshuttle.col + ',0.18)');
+      vg.addColorStop(1, 'rgba(' + vshuttle.col + ',0)');
+      ctx.fillStyle = vg;
+      ctx.beginPath(); ctx.arc(vx, vshuttle.y, 16, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(' + vshuttle.col + ',0.62)';
+      ctx.beginPath(); ctx.arc(vx, vshuttle.y, 2.1, 0, Math.PI * 2); ctx.fill();
+
+      if (vshuttle.v > 0 ? vshuttle.y > H + 40 : vshuttle.y < -40) {
+        warps[vshuttle.i].lit = 0.05;   // the column it drew holds, then fades
+        vshuttle = null;
+        nextVPass = t + rand(VREST_MIN, VREST_MAX);
       }
     }
   }
