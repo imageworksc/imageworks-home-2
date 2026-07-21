@@ -238,7 +238,7 @@ function initMesh() {
   var W = 0, H = 0, dpr = 1;
   var warps = [], slots = [], rows = [];
   var shuttle = null, nextPass = 0, rowN = 0;
-  var vshuttle = null, nextVPass = 0, colN = 0;
+  var vshuttle = null, nextVPass = 0, colN = 0, colIdx = 0;
   var raf = null, visible = true, t0 = 0, well = null;
 
   function rand(a, b) { return a + Math.random() * (b - a); }
@@ -280,9 +280,14 @@ function initMesh() {
     for (var q = 0; q < slots.length; q++) {
       rows.push({ y: slots[q], a: 0.05, floor: 0.05, col: (q % 4 === 2) ? GREEN : BLUE, parity: q % 2 });
     }
-    shuttle = null; nextPass = 0; rowN = 0;
-    // the two shuttles start out of step, so the loom never looks metronomic
-    vshuttle = null; nextVPass = 3200; colN = 0;
+    // Both shuttles open mid-canvas rather than at an edge. The first pass is
+    // the one anyone actually watches, and starting at index 0 put it along the
+    // very top row — under the nav, inside the mask's fade — which read as the
+    // loom taking ages to show up. They still start out of step with each other
+    // so the two never look metronomic.
+    shuttle = null; nextPass = 0; rowN = Math.floor(slots.length / 2);
+    vshuttle = null; nextVPass = 1100; colN = 0;
+    colIdx = Math.floor(warps.length / 2);
   }
 
   /* Where warp i actually sits at height y, once its slow drift is applied.
@@ -443,12 +448,13 @@ function initMesh() {
     if (!vshuttle && t > nextVPass && warps.length) {
       var down = colN % 2 === 0;
       vshuttle = {
-        i: (colN * 5 + 2) % warps.length,
+        i: colIdx,
         y: down ? -40 : H + 40,
         from: down ? -40 : H + 40,
         v: (H + 80) / (VPASS_MS / 16.7) * (down ? 1 : -1),
         col: (colN % 3 === 1) ? GREEN : BLUE
       };
+      colIdx = (colIdx + 5) % warps.length;   // step 5 columns, never walk one at a time
       colN++;
     }
 
