@@ -71,7 +71,7 @@ function testiCardHTML(t) {
         '<span style="font-size:16px;font-weight:800;color:#1266b5;">5.0</span>' +
         '<span style="color:#ffa733;font-size:15px;letter-spacing:1px;">\u2605\u2605\u2605\u2605\u2605</span>' +
       '</div>' +
-      '<p style="margin:0 0 18px;font-size:18px;line-height:1.6;color:#3d464d;flex:1;">' + t.quote + '</p>' +
+      '<p style="margin:0 0 18px;font-size:16px;line-height:1.6;color:#3d464d;flex:1;">' + t.quote + '</p>' +
       '<div style="font-size:16px;font-weight:700;color:#1266b5;">' + t.author + '</div>' +
     '</div>';
 }
