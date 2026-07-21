@@ -120,7 +120,11 @@ body {
   display: flex; align-items: center; justify-content: center;
   width: 100%; min-height: 600px;
   overflow: hidden;
-  padding: 128px 40px 96px;   /* top pad clears the 72px nav */
+  /* The copy is flex-centred inside the content box, so the two pads decide
+     where it lands. They have to differ by the nav's 72px, or the nav eats the
+     top of the gap and the copy reads high. Total is unchanged, so the hero
+     keeps its height. */
+  padding: 148px 40px 76px;
   /* a cooler, more dimensional ground: a bright cool glow off the top, an
      electric-blue bloom to the right and a fainter counter-bloom lower-left for
      depth, a deepened bottom, over a slightly cooler deep-navy base */
@@ -187,7 +191,7 @@ body {
   .iwh-sub { font-size: 20px; margin-top: 26px; }
 }
 @media (max-width: 860px) {
-  .iw-hero { min-height: 0; padding: 108px 24px 72px; }
+  .iw-hero { min-height: 0; padding: 126px 24px 54px; }   /* same 72px offset for the nav */
   .iwh-h1 { font-size: 33px; letter-spacing: -1px; }
   .iwh-sub { font-size: 17px; margin-top: 18px; }
   .iwh-cta { margin-top: 30px; height: 52px; }
