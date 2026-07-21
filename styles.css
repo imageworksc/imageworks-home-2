@@ -166,38 +166,18 @@ body {
 .iwh-hi { color: #80c34a; }
 .iwh-line { display: block; }
 
-/* A white rule draws itself under the words, then wipes away as they arrive.
-   The line announces the text, so it leads and then gets out of the way. Each
-   element sets its own --d and everything downstream is offset from it. */
-.iwh-rule { position: relative; display: inline-block; }
-.iwh-rule::after {
-  content: "";
-  position: absolute; left: 0; right: 0; bottom: .02em;
-  height: 3px; border-radius: 2px; background: #fff;
-  transform: scaleX(0);
-  animation: iwhRule .92s cubic-bezier(.16,.84,.44,1) var(--d, 0s) backwards;
-}
-.iwh-rule > span {
-  display: inline-block;
-  animation: iwhUnveil .75s cubic-bezier(.16,.84,.44,1) calc(var(--d, 0s) + .34s) backwards;
-}
-/* origin flips at 47%, where scaleX is 1 either way — so the rule draws out from
-   the left and retracts to the right without the switch ever being visible */
-@keyframes iwhRule {
-  0%   { transform: scaleX(0); transform-origin: left; }
-  38%  { transform: scaleX(1); transform-origin: left; }
-  47%  { transform: scaleX(1); transform-origin: right; }
-  100% { transform: scaleX(0); transform-origin: right; }
-}
-@keyframes iwhUnveil { from { opacity: 0; transform: translateY(.22em); } }
+/* each phrase lifts in on its own --d; inline-block so it can take a transform */
+.iwh-up  { display: inline-block; animation: iwhUnveil .8s cubic-bezier(.16,.84,.44,1) var(--d, 0s) backwards; }
+.iwh-sub { animation: iwhUnveil .8s cubic-bezier(.16,.84,.44,1) .6s backwards; }
+@keyframes iwhUnveil { from { opacity: 0; transform: translateY(.28em); } }
 
 /* the accent lands a letter at a time — JS stamps each letter's delay */
 .iwh-ch { display: inline-block; animation: iwhChar .44s cubic-bezier(.16,.84,.44,1) backwards; }
 @keyframes iwhChar { from { opacity: 0; transform: translateY(.34em); } }
 
 /* the button and trust bar lift in once the words have all landed */
-.iwh-cta   { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) 1.62s backwards; }
-.iwh-trust { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) 1.76s backwards; }
+.iwh-cta   { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) 1.16s backwards; }
+.iwh-trust { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) 1.28s backwards; }
 /* Only a from-state: every keyframe ends at the element's natural value, and
    `backwards` drops the fill once it's done — so the CTA's hover lift still wins
    afterwards instead of being pinned by a forwards fill. */
@@ -435,5 +415,5 @@ body {
   .iw-sem-flow, .iw-sem-check { animation: none !important; }
   /* the hero entrance simply doesn't play — every keyframe ends at the
      element's natural state, so skipping it leaves the copy exactly in place */
-  .iwh-rule::after, .iwh-rule > span, .iwh-ch, .iwh-cta, .iwh-trust { animation: none !important; }
+  .iwh-up, .iwh-sub, .iwh-ch, .iwh-cta, .iwh-trust { animation: none !important; }
 }

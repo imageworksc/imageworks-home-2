@@ -528,7 +528,7 @@ function initHeroType() {
   el.setAttribute('aria-label', text);
   el.textContent = '';
 
-  var START = 0.72, STEP = 0.04;
+  var START = 0.48, STEP = 0.038;
   for (var i = 0; i < text.length; i++) {
     var c = text.charAt(i);
     var ch = document.createElement('span');
