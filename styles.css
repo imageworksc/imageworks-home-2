@@ -356,7 +356,10 @@ body {
 }
 
 /* ---------- intro graphic: the page, read twice ---------- */
-.iw-sem-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; fill: #8a98a6; }
+/* no fill here on purpose: each label carries its own fill attribute (blue for
+   the human side, green for the machine side) and a CSS fill would silently
+   override it — presentation attributes lose to CSS */
+.iw-sem-label { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; }
 /* the dashed runs read as the page being continuously ingested — slow enough
    to register as a system working, not as an animation asking for attention */
 .iw-sem-flow { stroke-dasharray: 4 5; animation: iwSemFlow 2.8s linear infinite; }
