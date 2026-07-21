@@ -231,8 +231,8 @@ function initMesh() {
   var VPASS_MS = 8600;      // one run of the warp shuttle, drawn down a column
   var VREST_MIN = 2600, VREST_MAX = 4400;
   var SEGS = 8;             // samples per warp at rest — raised while denting
-  var INFLUENCE = 165;      // how far the dent under the cursor reaches
-  var PULL = 15;            // how far the cloth slides toward it
+  var INFLUENCE = 270;      // how far the dent under the cursor reaches
+  var PULL = 25;            // how far the cloth slides toward it
 
   var BLUE = '168,206,242';
   var GREEN = '128,195,74';
@@ -245,6 +245,7 @@ function initMesh() {
   var px = -9999, py = -9999;     // raw pointer, in hero space
   var cx = -9999, cy = -9999;     // eased pointer, so the dent glides
   var over = false, str = 0;      // dent strength, eased in and out
+  var segA = 0, segC = BLUE;      // colour + alpha of the run being drawn
   var dX = 0, dY = 0, dE = 0;     // disp() writes here — thousands of calls a
                                   // frame, so no object gets allocated per point
 
@@ -329,7 +330,7 @@ function initMesh() {
     var lo = Math.min(from, to), hi = Math.max(from, to);
     ctx.lineCap = 'round';
     ctx.lineWidth = 1.35;
-    ctx.strokeStyle = 'rgba(' + col + ',' + alpha.toFixed(3) + ')';
+    segC = col; segA = alpha;
     var run = lo;
     for (var i = 0; i < warps.length; i++) {
       var wx = warpAt(i, y, t);
@@ -358,30 +359,69 @@ function initMesh() {
 
   /* A stretch of weft. Flat and cheap while the cloth is at rest; sampled
      finely once something is denting it, so the row curves rather than kinking */
+  function flat(x0, y0, x1, y1) {
+    ctx.strokeStyle = 'rgba(' + segC + ',' + segA.toFixed(3) + ')';
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+  }
+
   function weftSeg(x0, x1, y) {
-    ctx.beginPath();
-    if (str < 0.004) { ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke(); return; }
-    var steps = Math.max(1, Math.ceil((x1 - x0) / 7));
-    for (var s = 0; s <= steps; s++) {
-      var x = x0 + (x1 - x0) * (s / steps);
-      disp(x, y);
-      if (s === 0) ctx.moveTo(dX, dY); else ctx.lineTo(dX, dY);
+    // how wide the dent bites into this row, if at all
+    var half = -1;
+    if (str >= 0.004 && cx > -9000) {
+      var dy = y - cy, rad = INFLUENCE * INFLUENCE - dy * dy;
+      if (rad > 0) half = Math.sqrt(rad);
     }
-    ctx.stroke();
+    if (half < 0) { flat(x0, y, x1, y); return; }
+    var za = cx - half, zb = cx + half;
+    if (zb <= x0 || za >= x1) { flat(x0, y, x1, y); return; }
+    if (za > x0) flat(x0, y, za, y);
+    var a = Math.max(za, x0), b = Math.min(zb, x1);
+    var steps = Math.max(1, Math.ceil((b - a) / 6));
+    disp(a, y);
+    var lx = dX, ly = dY, le = dE;
+    for (var s = 1; s <= steps; s++) {
+      disp(a + (b - a) * (s / steps), y);
+      ctx.strokeStyle = 'rgba(' + segC + ',' + (segA * (1 - Math.max(le, dE) * 0.85)).toFixed(3) + ')';
+      ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(dX, dY); ctx.stroke();
+      lx = dX; ly = dY; le = dE;
+    }
+    if (zb < x1) flat(zb, y, x1, y);
   }
 
   /* A stretch of one standing thread, sampled so it follows the same drift the
      weft crossings were placed against. */
   function warpSeg(i, y0, y1, t) {
-    var span = H / (str < 0.004 ? SEGS : 26);
-    var steps = Math.max(2, Math.ceil(Math.abs(y1 - y0) / span));
-    ctx.beginPath();
-    for (var s = 0; s <= steps; s++) {
-      var y = y0 + (y1 - y0) * (s / steps);
-      disp(warpAt(i, y, t), y);
-      if (s === 0) ctx.moveTo(dX, dY); else ctx.lineTo(dX, dY);
+    var lo = Math.min(y0, y1), hi = Math.max(y0, y1);
+    // does the dent reach this thread, over this stretch?
+    var bite = false;
+    if (str >= 0.004 && cx > -9000) {
+      var dx = warps[i].x - cx, rad = INFLUENCE * INFLUENCE - dx * dx;
+      if (rad > 0) {
+        var reach = Math.sqrt(rad);
+        bite = (cy + reach > lo && cy - reach < hi);
+      }
     }
-    ctx.stroke();
+    var n = Math.max(2, Math.ceil((hi - lo) / (bite ? 6 : H / SEGS)));
+    if (!bite) {
+      ctx.strokeStyle = 'rgba(' + segC + ',' + segA.toFixed(3) + ')';
+      ctx.beginPath();
+      for (var s = 0; s <= n; s++) {
+        var y = lo + (hi - lo) * (s / n);
+        disp(warpAt(i, y, t), y);
+        if (s === 0) ctx.moveTo(dX, dY); else ctx.lineTo(dX, dY);
+      }
+      ctx.stroke();
+      return;
+    }
+    disp(warpAt(i, lo, t), lo);
+    var lx = dX, ly = dY, le = dE;
+    for (var k = 1; k <= n; k++) {
+      var yy = lo + (hi - lo) * (k / n);
+      disp(warpAt(i, yy, t), yy);
+      ctx.strokeStyle = 'rgba(' + segC + ',' + (segA * (1 - Math.max(le, dE) * 0.85)).toFixed(3) + ')';
+      ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(dX, dY); ctx.stroke();
+      lx = dX; ly = dY; le = dE;
+    }
   }
 
   /* One warp run: the second shuttle drawing a standing thread down through the
@@ -392,7 +432,7 @@ function initMesh() {
     var lo = Math.min(from, to), hi = Math.max(from, to);
     ctx.lineCap = 'round';
     ctx.lineWidth = 1.35;
-    ctx.strokeStyle = 'rgba(' + col + ',' + alpha.toFixed(3) + ')';
+    segC = col; segA = alpha;
 
     var cuts = [];
     for (var r = 0; r < rows.length; r++) {
@@ -445,16 +485,9 @@ function initMesh() {
       var wp = warps[i];
       // a column the warp shuttle just drew stays a little brighter, then eases back
       if (wp.lit > 0) wp.lit = Math.max(0, wp.lit - 0.00028);
-      ctx.strokeStyle = 'rgba(' + BLUE + ',' + (wp.a + wp.lit).toFixed(3) + ')';
       ctx.lineWidth = wp.w;
-      ctx.beginPath();
-      var n = str < 0.004 ? SEGS : 26;   // only sample finely while the cloth gives
-      for (j = 0; j <= n; j++) {
-        y = H * (j / n);
-        disp(warpAt(i, y, t), y);
-        if (j === 0) ctx.moveTo(dX, dY); else ctx.lineTo(dX, dY);
-      }
-      ctx.stroke();
+      segC = BLUE; segA = wp.a + wp.lit;
+      warpSeg(i, 0, H, t);
     }
 
     // the cloth woven so far, easing down to a resting weight
