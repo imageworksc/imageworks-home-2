@@ -514,6 +514,35 @@ function initMesh() {
 
 
 /* -----------------------------------------------------------
+   HERO HEADLINE — the green accent arrives a letter at a time,
+   picking up where the rule under "Built to" leaves off
+   ----------------------------------------------------------- */
+function initHeroType() {
+  var el = document.querySelector('[data-type]');
+  if (!el) return;
+  var text = el.textContent;
+
+  /* Some screen readers spell out text that's been split into per-character
+     elements, so the accessible name goes back on the parent and the letters
+     are hidden from the tree. */
+  el.setAttribute('aria-label', text);
+  el.textContent = '';
+
+  var START = 0.72, STEP = 0.04;
+  for (var i = 0; i < text.length; i++) {
+    var c = text.charAt(i);
+    var ch = document.createElement('span');
+    ch.className = 'iwh-ch';
+    ch.setAttribute('aria-hidden', 'true');
+    ch.textContent = c;
+    // an inline-block holding a single space would collapse to nothing
+    if (c === ' ') ch.style.whiteSpace = 'pre';
+    if (!REDUCE) ch.style.animationDelay = (START + i * STEP).toFixed(3) + 's';
+    el.appendChild(ch);
+  }
+}
+
+/* -----------------------------------------------------------
    HOW WE DO IT — four steps as tabs on a process rail
    ----------------------------------------------------------- */
 function initSteps() {
@@ -571,6 +600,7 @@ function boot() {
   initObservers();
   initNav();
   initMesh();
+  initHeroType();
   initSteps();
 }
 

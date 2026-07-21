@@ -162,28 +162,45 @@ body {
   z-index: -1;
   pointer-events: none;
 }
-/* flex column on purpose: the lines carry negative margins to cancel their mask
-   padding, and adjacent margins would otherwise collapse to the larger of the
-   two rather than summing — which quietly opened the leading by ~9px */
-.iwh-h1 { margin: 0; display: flex; flex-direction: column; font-size: 46px; line-height: 1.18; font-weight: 800; letter-spacing: -1.5px; color: #fff; }
+.iwh-h1 { margin: 0; font-size: 46px; line-height: 1.18; font-weight: 800; letter-spacing: -1.5px; color: #fff; }
 .iwh-hi { color: #80c34a; }
-/* Each line rises out from behind its own mask. The padding gives ascenders and
-   descenders room inside that mask; the matching negative margin cancels it, so
-   the lines keep their normal spacing. */
-.iwh-line { display: block; overflow: hidden; padding: .18em 0; margin: -.18em 0; }
-.iwh-in {
-  display: block;
-  animation: iwhRise .95s cubic-bezier(.16,.84,.44,1) .1s backwards;
+.iwh-line { display: block; }
+
+/* A white rule draws itself under the words, then wipes away as they arrive.
+   The line announces the text, so it leads and then gets out of the way. Each
+   element sets its own --d and everything downstream is offset from it. */
+.iwh-rule { position: relative; display: inline-block; }
+.iwh-rule::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: .02em;
+  height: 3px; border-radius: 2px; background: #fff;
+  transform: scaleX(0);
+  animation: iwhRule .92s cubic-bezier(.16,.84,.44,1) var(--d, 0s) backwards;
 }
-.iwh-line + .iwh-line .iwh-in { animation-delay: .24s; }
-/* the copy under the headline follows it up, a beat behind */
-.iwh-sub   { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) .46s backwards; }
-.iwh-cta   { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) .58s backwards; }
-.iwh-trust { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) .68s backwards; }
-/* Only a from-state: the animation ends at each element's natural transform, and
+.iwh-rule > span {
+  display: inline-block;
+  animation: iwhUnveil .75s cubic-bezier(.16,.84,.44,1) calc(var(--d, 0s) + .34s) backwards;
+}
+/* origin flips at 47%, where scaleX is 1 either way — so the rule draws out from
+   the left and retracts to the right without the switch ever being visible */
+@keyframes iwhRule {
+  0%   { transform: scaleX(0); transform-origin: left; }
+  38%  { transform: scaleX(1); transform-origin: left; }
+  47%  { transform: scaleX(1); transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; }
+}
+@keyframes iwhUnveil { from { opacity: 0; transform: translateY(.22em); } }
+
+/* the accent lands a letter at a time — JS stamps each letter's delay */
+.iwh-ch { display: inline-block; animation: iwhChar .44s cubic-bezier(.16,.84,.44,1) backwards; }
+@keyframes iwhChar { from { opacity: 0; transform: translateY(.34em); } }
+
+/* the button and trust bar lift in once the words have all landed */
+.iwh-cta   { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) 1.62s backwards; }
+.iwh-trust { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) 1.76s backwards; }
+/* Only a from-state: every keyframe ends at the element's natural value, and
    `backwards` drops the fill once it's done — so the CTA's hover lift still wins
    afterwards instead of being pinned by a forwards fill. */
-@keyframes iwhRise { from { transform: translateY(125%); } }
 @keyframes iwhFade { from { opacity: 0; transform: translateY(14px); } }
 .iwh-sub {
   margin: 22px auto 0; max-width: 580px;
@@ -418,5 +435,5 @@ body {
   .iw-sem-flow, .iw-sem-check { animation: none !important; }
   /* the hero entrance simply doesn't play — every keyframe ends at the
      element's natural state, so skipping it leaves the copy exactly in place */
-  .iwh-in, .iwh-sub, .iwh-cta, .iwh-trust { animation: none !important; }
+  .iwh-rule::after, .iwh-rule > span, .iwh-ch, .iwh-cta, .iwh-trust { animation: none !important; }
 }
