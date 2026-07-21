@@ -167,14 +167,19 @@ body {
   text-wrap: balance;
 }
 .iwh-ms { color: #7cc0f7; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+/* outlined against the navy: a green rule, the hero showing through, and the
+   site's squared 2px corner rather than a pill. No drop shadow — a shadow under
+   a see-through button reads as a mistake. It fills in on hover */
 .iwh-cta {
   display: inline-flex; align-items: center; gap: 12px;
   height: 54px; padding: 0 24px; margin-top: 40px;
-  border-radius: 4px;
-  background: #80c34a; color: #fff;
+  border-radius: 2px;
+  background: rgba(128,195,74,.10); color: #fff;
+  border: 1.5px solid #80c34a;
   font-size: 16px; font-weight: 700; text-decoration: none;
-  box-shadow: 0 18px 34px rgba(4,16,34,.38);
+  transition: background .25s ease, border-color .25s ease;
 }
+.iwh-cta:hover { background: #80c34a; border-color: #80c34a; }
 
 @media (min-width: 1441px) {
   .iw-hero { min-height: 660px; }
