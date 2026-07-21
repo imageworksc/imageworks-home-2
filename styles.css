@@ -299,7 +299,7 @@ body {
 .iw-steps-panel.is-active { opacity: 1; visibility: visible; transform: none; }
 .iw-steps-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: #5c9a2e; }
 .iw-steps-title { margin: 14px 0 18px; font-size: 30px; line-height: 1.22; font-weight: 800; letter-spacing: -.5px; color: #143c66; text-wrap: balance; }
-.iw-steps-body { margin: 0; font-size: 16px; line-height: 1.7; color: #5a6b82; }
+.iw-steps-body { margin: 0; font-size: 18px; line-height: 1.7; color: #5a6b82; }
 .iw-steps-body + .iw-steps-body { margin-top: 14px; }
 .iw-steps-body strong { color: #143c66; font-weight: 700; }
 /* the deliverables read as the outcome of the copy — a small "what you get"
