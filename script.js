@@ -209,173 +209,222 @@ function initNav() {
 }
 
 /* -----------------------------------------------------------
-   HERO NEURAL MESH — drifting nodes wired to their neighbours;
-   signals fire along the links, and the cursor recruits the
-   nodes around it into the network
+   HERO WEAVE — the web, woven. Warp threads stand across the
+   hero; a shuttle crosses and lays a weft thread that passes
+   over one standing thread and under the next — real interlacing,
+   row by row. Rows settle into the cloth and ease to a resting
+   weight. The shuttle reverses each pass, the way a loom does,
+   and the cloth takes tension around the cursor.
    ----------------------------------------------------------- */
 function initMesh() {
   var hero = document.querySelector('[data-hero]');
   if (!hero) return;
   var canvas = hero.querySelector('[data-mesh]');
   if (!canvas) return;
-  var ctx = canvas.getContext('2d');
+  var ctx = canvas.getContext && canvas.getContext('2d');
   if (!ctx) return;
 
-  var DENSITY = 15000;    // one node per N square px — keeps density even at any size
-  var MAX_NODES = 120;
-  var LINK = 168;         // nodes closer than this get wired together
-  var REACH = 220;        // how far the cursor recruits
-  var DRIFT = 0.16;       // node speed in px/frame — slow enough to read as ambient
-  var FIRE = 0.008;       // chance per frame that a new signal fires
+  var WARP_GAP = 54;        // spacing of the standing threads
+  var PASS_MS = 6200;       // one crossing of the shuttle
+  var REST_MIN = 900, REST_MAX = 1800;
+  var PULL_R = 190;         // how far the cursor's tension reaches
+  var PULL_MAX = 15;        // how far a thread bows toward it
+  var SEGS = 8;             // samples per warp — weft crossings reuse them
 
-  var W = 0, H = 0;
-  var nodes = [];
-  var signals = [];       // pulses travelling along a link
-  var mx = -9999, my = -9999, tx = -9999, ty = -9999;
-  var raf = null, visible = true;
+  var BLUE = '168,206,242';
+  var GREEN = '128,195,74';
+
+  var W = 0, H = 0, dpr = 1;
+  var warps = [], slots = [], rows = [];
+  var shuttle = null, nextPass = 0, rowN = 0;
+  var mx = -9999, my = -9999;
+  var raf = null, visible = true, t0 = 0, well = null;
 
   function rand(a, b) { return a + Math.random() * (b - a); }
 
   function build() {
     var r = hero.getBoundingClientRect();
-    W = Math.round(r.width);
-    H = Math.round(r.height);
+    W = Math.round(r.width); H = Math.round(r.height);
     if (!W || !H) return;
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);   // draw in CSS px
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    var want = Math.min(MAX_NODES, Math.round((W * H) / DENSITY));
-    nodes.length = 0;
-    signals.length = 0;
-    for (var i = 0; i < want; i++) {
-      var a = rand(0, Math.PI * 2);
-      nodes.push({
-        x: rand(0, W), y: rand(0, H),
-        vx: Math.cos(a) * DRIFT, vy: Math.sin(a) * DRIFT,
-        r: rand(1.1, 2.3),                    // varied node sizes read as organic
-        ph: rand(0, Math.PI * 2)              // phase, so nodes breathe out of sync
-      });
+    // a well of depth under the copy, so the cloth stays a backdrop
+    var cx = W / 2, cy = H * 0.46;
+    well = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.62);
+    well.addColorStop(0, 'rgba(4,14,28,0.5)');
+    well.addColorStop(0.42, 'rgba(7,22,42,0.24)');
+    well.addColorStop(1, 'rgba(10,30,55,0)');
+
+    // the loom: standing threads at uneven weights, so the cloth has depth
+    warps.length = 0;
+    var n = Math.ceil(W / WARP_GAP) + 1;
+    var off = (W - (n - 1) * WARP_GAP) / 2;
+    for (var i = 0; i < n; i++) {
+      warps.push({ x: off + i * WARP_GAP, a: rand(0.06, 0.13), w: rand(0.8, 1.35) });
+    }
+
+    // rows sit inside the band the mask actually shows (14%–84%), so no row
+    // is woven into a part of the canvas that's being faded out
+    slots.length = 0;
+    var top = H * 0.17, bot = H * 0.83, k = 11;
+    for (var j = 0; j < k; j++) slots.push(top + (bot - top) * (j / (k - 1)));
+
+    // the loom opens with cloth already on it — the hero should never show an
+    // empty frame and make you wait out a crossing for the first thread
+    rows.length = 0;
+    for (var q = 0; q < slots.length; q++) {
+      rows.push({ y: slots[q], a: 0.095, floor: 0.095, col: (q % 4 === 2) ? GREEN : BLUE, parity: q % 2 });
+    }
+    shuttle = null; nextPass = 0; rowN = 0;
+  }
+
+  /* Where warp i actually sits at height y: its drift, plus the cursor's
+     tension. The weft calls this too, so the interlacing always lands on
+     the thread even while the cloth is being pulled. */
+  function warpAt(i, y, t) {
+    var wp = warps[i];
+    var x = wp.x + Math.sin(t * 0.00021 + i * 0.85 + y * 0.0016) * 1.4;
+    if (mx < -9000) return x;
+    var dx = mx - x, dy = my - y;
+    var d = Math.sqrt(dx * dx + dy * dy);
+    if (d >= PULL_R) return x;
+    var f = 1 - d / PULL_R;
+    return x + (dx / (d || 1)) * f * f * PULL_MAX;
+  }
+
+  /* One weft row: under a standing thread, over the next. That alternation
+     is the whole point — it's what makes this cloth and not a grid. */
+  function weft(y, from, to, alpha, col, parity, t) {
+    var lo = Math.min(from, to), hi = Math.max(from, to);
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 1.35;
+    ctx.strokeStyle = 'rgba(' + col + ',' + alpha.toFixed(3) + ')';
+    var run = lo;
+    for (var i = 0; i < warps.length; i++) {
+      var wx = warpAt(i, y, t);
+      if (wx < lo - 10 || wx > hi + 10) continue;
+      if (((i + parity) % 2) === 0) {
+        // passes under: break the weft cleanly around the standing thread
+        var a = Math.max(run, lo), b = Math.min(wx - 5.5, hi);
+        if (b > a) { ctx.beginPath(); ctx.moveTo(a, y); ctx.lineTo(b, y); ctx.stroke(); }
+        run = wx + 5.5;
+      } else {
+        // rides over: the crossing catches a little more light
+        ctx.fillStyle = 'rgba(' + col + ',' + Math.min(alpha * 2.1, 0.6).toFixed(3) + ')';
+        ctx.beginPath();
+        ctx.ellipse(wx, y, 3.4, 1.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    if (hi > run) {
+      ctx.beginPath(); ctx.moveTo(Math.max(run, lo), y); ctx.lineTo(hi, y); ctx.stroke();
     }
   }
 
-  // wrap a node back in from the opposite edge so the field never empties out
-  function step(n) {
-    n.x += n.vx; n.y += n.vy;
-    if (n.x < -20) n.x = W + 20; else if (n.x > W + 20) n.x = -20;
-    if (n.y < -20) n.y = H + 20; else if (n.y > H + 20) n.y = -20;
-  }
-
-  function fire() {
-    if (nodes.length < 2) return;
-    var a = nodes[(Math.random() * nodes.length) | 0];
-    var near = [];
-    for (var i = 0; i < nodes.length; i++) {
-      var b = nodes[i];
-      if (b === a) continue;
-      var dx = b.x - a.x, dy = b.y - a.y;
-      if (dx * dx + dy * dy < LINK * LINK) near.push(b);
-    }
-    if (!near.length) return;
-    signals.push({ a: a, b: near[(Math.random() * near.length) | 0], t: 0, sp: rand(0.006, 0.014) });
-  }
-
-  function paint(now) {
+  function paint(t) {
     ctx.clearRect(0, 0, W, H);
-    var i, j, a, b, dx, dy, d2, d, alpha;
+    if (well) { ctx.fillStyle = well; ctx.fillRect(0, 0, W, H); }
 
-    // links — the closer two nodes are, the more solidly they're wired
-    ctx.lineWidth = 1;
-    for (i = 0; i < nodes.length; i++) {
-      a = nodes[i];
-      for (j = i + 1; j < nodes.length; j++) {
-        b = nodes[j];
-        dx = b.x - a.x; dy = b.y - a.y;
-        d2 = dx * dx + dy * dy;
-        if (d2 > LINK * LINK) continue;
-        d = Math.sqrt(d2);
-        alpha = (1 - d / LINK) * 0.26;
-        // links near the cursor light up
-        var mid = Math.sqrt(Math.pow((a.x + b.x) / 2 - mx, 2) + Math.pow((a.y + b.y) / 2 - my, 2));
-        if (mid < REACH) alpha += (1 - mid / REACH) * 0.34;
-        ctx.strokeStyle = 'rgba(124,192,247,' + alpha.toFixed(3) + ')';
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.stroke();
+    var i, j, y, x;
+
+    // the standing threads, sampled so they bow under the cursor
+    for (i = 0; i < warps.length; i++) {
+      var wp = warps[i];
+      var lit = 0;
+      if (mx > -9000) {
+        var hd = Math.abs(mx - wp.x);
+        if (hd < PULL_R) lit = (1 - hd / PULL_R) * 0.09;
       }
-    }
-
-    // links from the cursor itself — it behaves like one more neuron
-    if (mx > -9000) {
-      for (i = 0; i < nodes.length; i++) {
-        a = nodes[i];
-        dx = a.x - mx; dy = a.y - my;
-        d = Math.sqrt(dx * dx + dy * dy);
-        if (d > REACH) continue;
-        ctx.strokeStyle = 'rgba(154,214,255,' + ((1 - d / REACH) * 0.4).toFixed(3) + ')';
-        ctx.beginPath();
-        ctx.moveTo(mx, my);
-        ctx.lineTo(a.x, a.y);
-        ctx.stroke();
+      ctx.strokeStyle = 'rgba(' + BLUE + ',' + (wp.a + lit).toFixed(3) + ')';
+      ctx.lineWidth = wp.w;
+      ctx.beginPath();
+      for (j = 0; j <= SEGS; j++) {
+        y = H * (j / SEGS);
+        x = warpAt(i, y, t);
+        if (j === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
+      ctx.stroke();
     }
 
-    // nodes — slow breathing, brighter the closer the cursor is
-    for (i = 0; i < nodes.length; i++) {
-      a = nodes[i];
-      var pulse = 0.75 + Math.sin(now * 0.0013 + a.ph) * 0.25;
-      dx = a.x - mx; dy = a.y - my;
-      d = Math.sqrt(dx * dx + dy * dy);
-      var boost = d < REACH ? (1 - d / REACH) : 0;
-      ctx.beginPath();
-      ctx.arc(a.x, a.y, a.r * (1 + boost * 0.5), 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(168,220,255,' + (0.30 * pulse + boost * 0.5).toFixed(3) + ')';
-      ctx.fill();
+    // the cloth woven so far, easing down to a resting weight
+    for (i = 0; i < rows.length; i++) {
+      var r = rows[i];
+      if (r.a > r.floor) r.a = Math.max(r.floor, r.a - 0.00055);
+      weft(r.y, 0, W, r.a, r.col, r.parity, t);
     }
 
-    // signals — a green spark running down a link, brand accent
-    for (i = signals.length - 1; i >= 0; i--) {
-      var s = signals[i];
-      s.t += s.sp;
-      if (s.t >= 1) { signals.splice(i, 1); continue; }
-      var x = s.a.x + (s.b.x - s.a.x) * s.t;
-      var y = s.a.y + (s.b.y - s.a.y) * s.t;
-      var fade = Math.sin(s.t * Math.PI);        // in and out, never a hard pop
-      ctx.beginPath();
-      ctx.arc(x, y, 2.2, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(128,195,74,' + (0.85 * fade).toFixed(3) + ')';
-      ctx.fill();
+    // the shuttle: one crossing at a time, reversing like a loom
+    if (!shuttle && t > nextPass) {
+      var slot = slots[rowN % slots.length];
+      var ltr = rowN % 2 === 0;
+      shuttle = {
+        y: slot,
+        x: ltr ? -40 : W + 40,
+        from: ltr ? -40 : W + 40,
+        v: (W + 80) / (PASS_MS / 16.7) * (ltr ? 1 : -1),
+        col: (rowN % 4 === 2) ? GREEN : BLUE,
+        parity: rowN % 2
+      };
+      // the row it's about to lay releases whatever was in that slot
+      for (i = rows.length - 1; i >= 0; i--) {
+        if (Math.abs(rows[i].y - slot) < 2) rows.splice(i, 1);
+      }
+      rowN++;
+    }
+
+    if (shuttle) {
+      shuttle.x += shuttle.v;
+      weft(shuttle.y, shuttle.from, shuttle.x, 0.3, shuttle.col, shuttle.parity, t);
+      // the shuttle head, carrying the thread across
+      var g = ctx.createRadialGradient(shuttle.x, shuttle.y, 0, shuttle.x, shuttle.y, 16);
+      g.addColorStop(0, 'rgba(' + shuttle.col + ',0.26)');
+      g.addColorStop(1, 'rgba(' + shuttle.col + ',0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(shuttle.x, shuttle.y, 16, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(' + shuttle.col + ',0.9)';
+      ctx.beginPath(); ctx.arc(shuttle.x, shuttle.y, 2.1, 0, Math.PI * 2); ctx.fill();
+
+      if (shuttle.v > 0 ? shuttle.x > W + 40 : shuttle.x < -40) {
+        rows.push({ y: shuttle.y, a: 0.26, floor: 0.095, col: shuttle.col, parity: shuttle.parity });
+        shuttle = null;
+        nextPass = t + rand(REST_MIN, REST_MAX);
+      }
     }
   }
 
-  function frame(now) {
-    mx += (tx - mx) * 0.12;                      // the cursor's pull glides
-    my += (ty - my) * 0.12;
-    for (var i = 0; i < nodes.length; i++) step(nodes[i]);
-    if (signals.length < 4 && Math.random() < FIRE) fire();
-    paint(now);
+  function frame(t) {
+    if (!t0) t0 = t;
+    paint(t - t0);
     raf = visible ? requestAnimationFrame(frame) : null;
+  }
+
+  // reduced motion: the cloth already woven, holding still
+  function still() {
+    rows.length = 0;
+    for (var i = 0; i < slots.length; i++) {
+      rows.push({ y: slots[i], a: 0.105, floor: 0.105, col: (i % 4 === 2) ? GREEN : BLUE, parity: i % 2 });
+    }
+    shuttle = null;
+    paint(0);
   }
 
   build();
   window.addEventListener('resize', function () {
     build();
-    if (REDUCE) paint(0);
+    if (REDUCE) still();
   }, { passive: true });
 
-  if (REDUCE) { paint(0); return; }              // a still network, no drift, no cursor
+  if (REDUCE) { still(); return; }
 
   hero.addEventListener('pointermove', function (e) {
     var r = hero.getBoundingClientRect();
-    tx = e.clientX - r.left;
-    ty = e.clientY - r.top;
-    if (mx < -9000) { mx = tx; my = ty; }        // first move: don't sweep in from the corner
+    mx = e.clientX - r.left;
+    my = e.clientY - r.top;
   });
-  hero.addEventListener('pointerleave', function () {
-    tx = -9999; ty = -9999;
-  });
+  hero.addEventListener('pointerleave', function () { mx = -9999; my = -9999; });
 
   // stop drawing once the hero scrolls off screen
   if (window.IntersectionObserver) {
