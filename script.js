@@ -290,7 +290,7 @@ function initMesh() {
     var n = Math.ceil(W / WARP_GAP) + 1;
     var off = (W - (n - 1) * WARP_GAP) / 2;
     for (var i = 0; i < n; i++) {
-      warps.push({ x: off + i * WARP_GAP, a: rand(0.032, 0.072), w: rand(0.8, 1.3), lit: 0 });
+      warps.push({ x: off + i * WARP_GAP, a: rand(0.021, 0.047), w: rand(0.8, 1.3), lit: 0 });
     }
 
     // rows run nearly the full height and let the canvas mask fade them out at
@@ -304,7 +304,7 @@ function initMesh() {
     // empty frame and make you wait out a crossing for the first thread
     rows.length = 0;
     for (var q = 0; q < slots.length; q++) {
-      rows.push({ y: slots[q], a: 0.05, floor: 0.05, col: (q % 4 === 2) ? GREEN : BLUE, parity: q % 2 });
+      rows.push({ y: slots[q], a: 0.033, floor: 0.033, col: (q % 4 === 2) ? GREEN : BLUE, parity: q % 2 });
     }
     // Both shuttles open mid-canvas rather than at an edge. The first pass is
     // the one anyone actually watches, and starting at index 0 put it along the
@@ -518,7 +518,7 @@ function initMesh() {
 
     if (shuttle) {
       shuttle.x += shuttle.v;
-      weft(shuttle.y, shuttle.from, shuttle.x, 0.17, shuttle.col, shuttle.parity, t);
+      weft(shuttle.y, shuttle.from, shuttle.x, 0.14, shuttle.col, shuttle.parity, t);
       // the shuttle head, carrying the thread across
       var g = ctx.createRadialGradient(shuttle.x, shuttle.y, 0, shuttle.x, shuttle.y, 16);
       g.addColorStop(0, 'rgba(' + shuttle.col + ',0.18)');
@@ -529,7 +529,7 @@ function initMesh() {
       ctx.beginPath(); ctx.arc(shuttle.x, shuttle.y, 2.1, 0, Math.PI * 2); ctx.fill();
 
       if (shuttle.v > 0 ? shuttle.x > W + 40 : shuttle.x < -40) {
-        rows.push({ y: shuttle.y, a: 0.14, floor: 0.05, col: shuttle.col, parity: shuttle.parity });
+        rows.push({ y: shuttle.y, a: 0.1, floor: 0.033, col: shuttle.col, parity: shuttle.parity });
         shuttle = null;
         nextPass = t + rand(REST_MIN, REST_MAX);
       }
@@ -553,7 +553,7 @@ function initMesh() {
 
     if (vshuttle) {
       vshuttle.y += vshuttle.v;
-      warpRun(vshuttle.i, vshuttle.from, vshuttle.y, 0.17, vshuttle.col, t);
+      warpRun(vshuttle.i, vshuttle.from, vshuttle.y, 0.14, vshuttle.col, t);
       var vx = warpAt(vshuttle.i, vshuttle.y, t);
       var vg = ctx.createRadialGradient(vx, vshuttle.y, 0, vx, vshuttle.y, 16);
       vg.addColorStop(0, 'rgba(' + vshuttle.col + ',0.18)');
@@ -581,7 +581,7 @@ function initMesh() {
   function still() {
     rows.length = 0;
     for (var i = 0; i < slots.length; i++) {
-      rows.push({ y: slots[i], a: 0.055, floor: 0.055, col: (i % 4 === 2) ? GREEN : BLUE, parity: i % 2 });
+      rows.push({ y: slots[i], a: 0.036, floor: 0.036, col: (i % 4 === 2) ? GREEN : BLUE, parity: i % 2 });
     }
     shuttle = null;
     paint(0);
