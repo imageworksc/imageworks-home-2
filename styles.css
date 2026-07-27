@@ -410,12 +410,43 @@ body {
 
 /* ---------- phones: tablet (>=768) keeps the desktop layout, phones stack ----------
    The grids and nav are set inline in index.html, so these override with !important. */
-@media (max-width: 767px) {
-  /* the five section links don't fit a phone — hide them but keep Contact as the
-     one nav CTA, so the bar stays logo (left) + Contact (right) */
-  .iw-nav-links > .iw-link:not(.iw-nav-contact) { display: none !important; }
-  .iw-nav-contact { color: #5c9a2e !important; font-weight: 700 !important; }
+/* ---------- hamburger nav: tablet + phone (<=1024) get the menu button ---------- */
+.iw-nav-toggle { display: none; }   /* desktop keeps the inline links */
+@media (max-width: 1024px) {
+  .iw-nav-toggle {
+    display: inline-flex; flex-direction: column; justify-content: center; gap: 5px;
+    width: 44px; height: 44px; margin: 0 -10px 0 0; padding: 0 10px;
+    border: 0; background: transparent; cursor: pointer;
+  }
+  .iw-nav-toggle span {
+    display: block; width: 24px; height: 2px; border-radius: 2px; background: #143c66;
+    transition: transform .3s ease, opacity .2s ease;
+  }
+  /* bars fold into an X when open */
+  .iw-nav-open .iw-nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .iw-nav-open .iw-nav-toggle span:nth-child(2) { opacity: 0; }
+  .iw-nav-open .iw-nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+  /* the links drop out of the bar into a panel underneath it */
+  .iw-nav-links {
+    display: none !important;
+    position: absolute; top: 72px; left: 0; right: 0;
+    flex-direction: column !important; align-items: stretch !important; gap: 0 !important;
+    padding: 4px 40px 14px; background: #fff;
+    box-shadow: 0 14px 30px rgba(15,36,64,.12);
+  }
+  .iw-nav-open .iw-nav-links { display: flex !important; }
+  .iw-nav-links > .iw-link {
+    padding: 15px 2px; font-size: 16px !important;
+    border-top: 1px solid #eef2f7;
+  }
+  .iw-nav-links > .iw-link:first-child { border-top: 0; }
+  .iw-nav-links > .iw-nav-contact { color: #5c9a2e !important; font-weight: 700 !important; }
+  /* the underline hover doesn't belong on full-width rows */
+  .iw-nav-links > .iw-link::after { display: none; }
+}
+
+@media (max-width: 767px) {
   /* What We Do: three cards become one column */
   .iw-what-grid { grid-template-columns: 1fr !important; }
 

@@ -206,6 +206,34 @@ function initNav() {
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  // hamburger menu (tablet + phone): toggle the links panel
+  var toggle = nav.querySelector('.iw-nav-toggle');
+  var links = nav.querySelector('.iw-nav-links');
+  if (toggle && links) {
+    function setOpen(open) {
+      nav.classList.toggle('iw-nav-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(!nav.classList.contains('iw-nav-open'));
+    });
+    // a tap on any link, outside the bar, or Escape closes it
+    links.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setOpen(false);
+    });
+    document.addEventListener('click', function (e) {
+      if (nav.classList.contains('iw-nav-open') && !nav.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setOpen(false);
+    });
+    // if the viewport grows back to desktop, drop the open state
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 1024) setOpen(false);
+    }, { passive: true });
+  }
 }
 
 /* -----------------------------------------------------------

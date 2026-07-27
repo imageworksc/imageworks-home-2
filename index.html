@@ -18,7 +18,7 @@
     <img src="assets/logo.png" alt="ImageWorks Creative" style="height:34px;width:auto;display:block;"/>
   </a>
   <!-- every item is a plain link now, so they all sit on one evenly spaced row -->
-  <div class="iw-nav-links" style="display:flex;align-items:center;gap:30px;">
+  <div class="iw-nav-links" id="iw-nav-links" style="display:flex;align-items:center;gap:30px;">
     <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Marketing</a>
     <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Web Plans</a>
     <a class="iw-link" href="#work" style="font-size:15px;font-weight:600;color:#3d464d;">Branding</a>
@@ -26,6 +26,10 @@
     <a class="iw-link" href="#why" style="font-size:15px;font-weight:600;color:#3d464d;">About</a>
     <a class="iw-link iw-nav-contact" href="#cta" style="font-size:15px;font-weight:600;color:#3d464d;">Contact</a>
   </div>
+  <!-- hamburger: shown on tablet & phone, toggles the links panel (see initNav) -->
+  <button class="iw-nav-toggle" type="button" aria-label="Menu" aria-controls="iw-nav-links" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- ===================== HERO — navy + animated tech mesh ===================== -->
