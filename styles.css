@@ -459,6 +459,9 @@ body {
   /* reviews: one readable row instead of two, with cards that fit the screen */
   .iw-testi-row2 { display: none !important; }
   .iw-testi { width: 84vw !important; max-width: 330px !important; }
+  /* and it auto-scrolls like Our Work (the CSS animation overrides the
+     scroll-driven transform, which the marquee JS clears on phones) */
+  #track-scroll-testi-a { animation: iwMarquee 34s linear infinite; will-change: transform; }
 
   /* What We Do: three cards become one column */
   .iw-what-grid { grid-template-columns: 1fr !important; }

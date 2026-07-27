@@ -96,9 +96,13 @@ function initScrollMarquee() {
   if (!tracks.length) return;
   var SPEED = 0.35; // marquee px per px scrolled
   function update() {
+    // on phones the review row auto-plays via a CSS marquee (like Our Work),
+    // so hand control back to CSS by clearing the scroll-driven transform
+    var mobile = window.innerWidth <= 767;
     var y = window.scrollY || window.pageYOffset || 0;
     for (var i = 0; i < tracks.length; i++) {
       var t = tracks[i];
+      if (mobile) { t.style.transform = ''; continue; }
       var half = t.scrollWidth / 2;          // content is duplicated -> half = one loop
       if (!half) continue;                    // hidden/empty track
       var d = (y * SPEED) % half;             // 0..half, wraps seamlessly
