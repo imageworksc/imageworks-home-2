@@ -382,6 +382,22 @@ body {
   .iw-steps-title { font-size: 25px; }
 }
 
+/* ---------- How We Do It on phones: sticky tabs, panels you scroll through ----------
+   The panel is taller than a phone screen, so instead of pinning the whole card
+   and swapping panels, the tab strip pins and the panels flow one after another;
+   scrolling through them drives the active tab (see initSteps). */
+@media (max-width: 767px) {
+  /* the section's overflow:hidden would trap the sticky tabs inside it, so let it
+     overflow (the page wrapper still clips horizontally via overflow-x:clip) */
+  .iw-hwdi { overflow: visible !important; }
+  .iw-steps-tabs { position: sticky; top: 0; z-index: 30; box-shadow: 0 8px 20px rgba(15,36,64,.10); }
+  .iw-steps-panels { display: block; }
+  .iw-steps-panel { grid-area: auto; opacity: 1 !important; visibility: visible !important;
+    transform: none !important; scroll-margin-top: 150px; }
+  .iw-steps-panel + .iw-steps-panel { border-top: 1px solid #eef2f7; }
+  .iw-steps-copy, .iw-steps-out { justify-content: flex-start; }
+}
+
 /* ---------- intro graphic: the page, read twice ---------- */
 /* no fill here on purpose: each label carries its own fill attribute (blue for
    the human side, green for the machine side) and a CSS fill would silently

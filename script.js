@@ -707,8 +707,20 @@ function initSteps() {
     if (focus) tabs[i].focus();
   }
 
+  var mqMobile = window.matchMedia('(max-width: 767px)');
+  function tabsH() { var el = root.querySelector('.iw-steps-tabs'); return el ? el.offsetHeight : 0; }
+
   tabs.forEach(function (tab, i) {
-    tab.addEventListener('click', function () { select(i); });
+    tab.addEventListener('click', function () {
+      // phones: the panels are stacked, so jump to the one for this tab; wider
+      // screens keep the one-panel-at-a-time behaviour
+      if (mqMobile.matches) {
+        var y = panels[i].getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0) - tabsH() - 8;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      } else {
+        select(i);
+      }
+    });
   });
 
   root.querySelector('.iw-steps-tabs').addEventListener('keydown', function (e) {
@@ -721,7 +733,35 @@ function initSteps() {
     e.preventDefault();
   });
 
+  // phones: pin the tabs and let scrolling through the stacked panels pick the
+  // active tab — the panel crossing ~42% of the viewport is the one you're on
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      ticking = false;
+      if (!mqMobile.matches) return;
+      var line = (window.scrollY || window.pageYOffset || 0) + window.innerHeight * 0.42;
+      var idx = 0;
+      for (var k = 0; k < panels.length; k++) {
+        var top = panels[k].getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0);
+        if (top <= line) idx = k;
+      }
+      if (idx !== current) select(idx);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  function syncMode() {
+    if (mqMobile.matches) onScroll();   // derive the active tab from where we are
+    else select(current);               // back to the single-panel tablist
+  }
+  if (mqMobile.addEventListener) mqMobile.addEventListener('change', syncMode);
+  else if (mqMobile.addListener) mqMobile.addListener(syncMode);
+
   select(0);
+  syncMode();
 }
 
 /* -----------------------------------------------------------
