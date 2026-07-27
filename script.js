@@ -66,7 +66,7 @@ function workCardHTML(w) {
 
 function testiCardHTML(t) {
   return '' +
-    '<div style="flex:none;width:380px;padding:28px;border-radius:2px;background:#fff;box-shadow:0 1px 3px rgba(20,40,80,.1),0 12px 30px rgba(20,40,80,.12);display:flex;flex-direction:column;">' +
+    '<div class="iw-testi" style="flex:none;width:380px;padding:28px;border-radius:2px;background:#fff;box-shadow:0 1px 3px rgba(20,40,80,.1),0 12px 30px rgba(20,40,80,.12);display:flex;flex-direction:column;">' +
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">' +
         '<span style="font-size:16px;font-weight:800;color:#1266b5;">5.0</span>' +
         '<span style="color:#ffa733;font-size:15px;letter-spacing:1px;">\u2605\u2605\u2605\u2605\u2605</span>' +

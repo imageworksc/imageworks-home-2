@@ -446,7 +446,20 @@ body {
   .iw-nav-links > .iw-link::after { display: none; }
 }
 
+/* the stacked intro panels only exist for phones */
+.iw-sem-stack { display: none; }
+
 @media (max-width: 767px) {
+  /* the "read twice" diagram: swap the tiny side-by-side SVG for the two panels
+     stacked (WHAT PEOPLE SEE, then the machine panel) so each is legible */
+  .iw-sem { display: none !important; }
+  .iw-sem-stack { display: flex; flex-direction: column; align-items: center; gap: 26px; width: 100%; }
+  .iw-sem-m { width: 100%; max-width: 400px; height: auto; display: block; }
+
+  /* reviews: one readable row instead of two, with cards that fit the screen */
+  .iw-testi-row2 { display: none !important; }
+  .iw-testi { width: 84vw !important; max-width: 330px !important; }
+
   /* What We Do: three cards become one column */
   .iw-what-grid { grid-template-columns: 1fr !important; }
 
