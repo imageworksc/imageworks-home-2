@@ -455,13 +455,13 @@ body {
   .iw-sem { display: none !important; }
   .iw-sem-stack { display: flex; flex-direction: column; align-items: stretch; gap: 30px; width: 100%; }
   .iw-sem-item { width: 100%; }
-  .iw-sem-m { width: 100%; height: auto; display: block; }
-  /* labels live in HTML now (not the SVG) so both read the same size and align
-     to the left edge of their panel */
-  .iw-sem-cap { display: flex; align-items: center; gap: 9px; margin: 12px 0 0; text-align: left;
+  .iw-sem-m { width: 100%; height: auto; display: block; margin-top: 12px; }
+  /* labels live in HTML now (not the SVG): same size for both, sitting above
+     each graphic and nudged in from the left edge */
+  .iw-sem-cap { display: flex; align-items: center; gap: 9px; margin: 0; padding-left: 14px; text-align: left;
     font-size: 14px; font-weight: 700; letter-spacing: 1.4px; }
   .iw-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; display: inline-block; }
-  .iw-sem-aside { margin: 5px 0 0; text-align: left; font-size: 12.5px; font-weight: 500; color: #7d8ea1; }
+  .iw-sem-aside { margin: 4px 0 0; padding-left: 14px; text-align: left; font-size: 12.5px; font-weight: 500; color: #7d8ea1; }
 
   /* reviews: one readable row instead of two, with cards that fit the screen */
   .iw-testi-row2 { display: none !important; }
