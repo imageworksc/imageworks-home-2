@@ -208,15 +208,15 @@ body {
   .iwh-h1 { font-size: 58px; letter-spacing: -1.9px; }
   .iwh-sub { font-size: 20px; margin-top: 26px; }
 }
-@media (max-width: 860px) {
+@media (max-width: 767px) {
   .iw-hero { min-height: 0; padding: 126px 24px 54px; }   /* same 72px offset for the nav */
-  .iwh-h1 { font-size: 33px; letter-spacing: -1px; }
+  .iwh-h1 { font-size: 30px; letter-spacing: -1px; }
   .iwh-sub { font-size: 17px; margin-top: 18px; }
   .iwh-cta { margin-top: 30px; height: 52px; }
 }
 
 /* ---------- intro statement responsive ---------- */
-@media (max-width: 860px) {
+@media (max-width: 767px) {
   .iw-intro-grid { grid-template-columns: 1fr !important; gap: 44px !important; }
 }
 
@@ -396,7 +396,7 @@ body {
 
 /* ---------- footer responsive ---------- */
 /* inline styles set the desktop grid; override with !important on small screens */
-@media (max-width: 860px) {
+@media (max-width: 767px) {
   .iw-footer { padding: 72px 44px 0 !important; }
   .iw-foot-grid { grid-template-columns: 1fr !important; gap: 52px !important; justify-items: center !important; }
   /* each stacked block becomes a centered band; text inside stays left-aligned */
@@ -406,6 +406,31 @@ body {
 @media (max-width: 520px) {
   .iw-footer { padding: 60px 34px 0 !important; }
   .iw-foot-menus { grid-template-columns: 1fr !important; gap: 40px !important; }
+}
+
+/* ---------- phones: tablet (>=768) keeps the desktop layout, phones stack ----------
+   The grids and nav are set inline in index.html, so these override with !important. */
+@media (max-width: 767px) {
+  /* the five section links don't fit a phone — hide them but keep Contact as the
+     one nav CTA, so the bar stays logo (left) + Contact (right) */
+  .iw-nav-links > .iw-link:not(.iw-nav-contact) { display: none !important; }
+  .iw-nav-contact { color: #5c9a2e !important; font-weight: 700 !important; }
+
+  /* What We Do: three cards become one column */
+  .iw-what-grid { grid-template-columns: 1fr !important; }
+
+  /* Why ImageWorks: four columns divided by vertical rules become a stacked
+     list — the side rules become top rules so each item still reads as separate */
+  .iw-why-grid { grid-template-columns: 1fr !important; }
+  .iw-why-grid > div {
+    border-left: 0 !important; border-right: 0 !important;
+    border-top: 1px solid rgba(255,255,255,.12) !important;
+    padding: 30px 6px 4px !important;
+  }
+  .iw-why-grid > div:first-child { border-top: 0 !important; padding-top: 0 !important; }
+
+  /* trim the tall desktop section padding so phones don't scroll through empty bands */
+  section[style*="104px 40px"], section[style*="112px 40px"] { padding-left: 22px !important; padding-right: 22px !important; }
 }
 
 /* ---------- reduced motion ---------- */
