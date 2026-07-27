@@ -44,7 +44,7 @@
       <span class="iwh-line"><span class="iwh-up" style="--d:.26s">Built to</span> <span class="iwh-hi" data-type>Work Together.</span></span>
     </h1>
     <p class="iwh-sub">Custom websites built for <span class="iwh-ms">Modern Search</span> — designed to impress your customers and make competitors jealous.</p>
-    <a class="iw-btn iwh-cta" href="#work">Take a look under the hood<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    <a class="iw-btn iwh-cta" href="#work" data-hero-graphic aria-haspopup="dialog">Take a look under the hood<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
 
     <!-- trust mini-bar -->
     <div class="iwh-trust" style="display:flex;justify-content:center;align-items:center;gap:28px;margin-top:38px;flex-wrap:wrap;">
@@ -551,6 +551,20 @@
 </footer>
 
 
+</div>
+
+<!-- ===================== HERO GRAPHIC MODAL =====================
+     The hero CTA opens this. The interactive graphic lives in its own
+     document (hero-graphic/index.html) and loads in an iframe the first
+     time the modal is opened, so its ~260KB never touch first paint. -->
+<div class="iw-modal" data-graphic-modal hidden>
+  <div class="iw-modal__backdrop" data-graphic-close></div>
+  <div class="iw-modal__panel" role="dialog" aria-modal="true" aria-label="Website & Marketing — how it works">
+    <button class="iw-modal__close" type="button" aria-label="Close" data-graphic-close>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+    <iframe class="iw-modal__frame" title="Website &amp; Marketing — interactive graphic" data-graphic-src="hero-graphic/index.html" loading="lazy"></iframe>
+  </div>
 </div>
 
 <script src="script.js"></script>

@@ -723,6 +723,58 @@ function initSteps() {
 /* -----------------------------------------------------------
    BOOT
    ----------------------------------------------------------- */
+/* -----------------------------------------------------------
+   HERO GRAPHIC MODAL — the CTA opens the interactive graphic in
+   an overlay. The iframe stays src-less until first open, so its
+   payload never blocks the home page's first paint.
+   ----------------------------------------------------------- */
+function initHeroModal() {
+  var modal = document.querySelector('[data-graphic-modal]');
+  var openers = [].slice.call(document.querySelectorAll('[data-hero-graphic]'));
+  if (!modal || !openers.length) return;
+  var frame = modal.querySelector('[data-graphic-src]');
+  var lastFocus = null;
+
+  function open(e) {
+    if (e) e.preventDefault();
+    lastFocus = document.activeElement;
+    // load the graphic on demand, once (skipped when the frame already carries
+    // its content inline via srcdoc — e.g. the self-contained preview build)
+    var lazySrc = frame && frame.getAttribute('data-graphic-src');
+    if (frame && lazySrc && !frame.getAttribute('src')) {
+      frame.setAttribute('src', lazySrc);
+    }
+    modal.hidden = false;
+    document.body.classList.add('iw-modal-open');
+    // next frame: flip .in so the backdrop/panel transition runs
+    requestAnimationFrame(function () { modal.classList.add('in'); });
+    var closeBtn = modal.querySelector('.iw-modal__close');
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function close() {
+    if (modal.hidden) return;
+    modal.classList.remove('in');
+    document.body.classList.remove('iw-modal-open');
+    // wait out the fade before hiding so it doesn't snap shut
+    var done = function () {
+      modal.hidden = true;
+      modal.removeEventListener('transitionend', done);
+    };
+    modal.addEventListener('transitionend', done);
+    setTimeout(done, 360); // fallback if transitionend doesn't fire
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  openers.forEach(function (btn) { btn.addEventListener('click', open); });
+  [].slice.call(modal.querySelectorAll('[data-graphic-close]')).forEach(function (el) {
+    el.addEventListener('click', close);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') close();
+  });
+}
+
 function boot() {
   buildShowcase();
   initScrollMarquee();
@@ -731,6 +783,7 @@ function boot() {
   initMesh();
   initHeroType();
   initSteps();
+  initHeroModal();
 }
 
 if (document.readyState === 'loading') {
