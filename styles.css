@@ -135,6 +135,46 @@ body {
     radial-gradient(100% 72% at 50% 118%, rgba(5,16,33,0.66) 0%, rgba(5,16,33,0) 60%),
     linear-gradient(165deg, #103f74 0%, #0b2c55 48%, #071a38 100%);
 }
+/* ---------- HERO BACKGROUND: the studio's work, in duotone columns ----------
+   Seven columns of the showcase shots ride slowly up and down at their own
+   rates, greyscaled and blended to navy so they read as a wall of work seen
+   through the dark. The sprites are only fetched once idle (see initShots), and
+   never on a narrow screen — so on phones the hero is just the navy field. */
+.iwc-shots {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none; overflow: hidden;
+  isolation: isolate;               /* keeps the duotone blend off the field below */
+  opacity: 0; transition: opacity 1.4s ease;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 13%, #000 86%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0, #000 13%, #000 86%, transparent 100%);
+}
+.iwc-shots.is-on { opacity: .12; }
+.iwc-shots-in { position: absolute; inset: -6% 0; display: flex; justify-content: center; gap: 18px; }
+.iwc-col-strip { flex: none; display: flex; flex-direction: column; gap: 18px; height: max-content; will-change: transform; }
+.iwc-col-strip--0 { animation: iwcRise 68s linear infinite; }
+.iwc-col-strip--1 { animation: iwcFall 92s linear infinite; }
+.iwc-col-strip--2 { animation: iwcRise 110s linear infinite; }
+.iwc-col-strip--3 { animation: iwcFall 78s linear infinite; }
+@keyframes iwcRise { from { transform: translateY(0); }    to { transform: translateY(-50%); } }
+@keyframes iwcFall { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+.iwc-shot {
+  flex: none; width: 236px; height: 148px; border-radius: 2px;
+  background-size: 100% auto; background-repeat: no-repeat; background-color: #081f3a;
+  filter: grayscale(1) contrast(1.12) brightness(.4);
+}
+/* nothing is requested until the layer is switched on */
+.iwc-shots.is-on .iwc-shot--s1 { background-image: url("assets/work-sprite-1.png"); }
+.iwc-shots.is-on .iwc-shot--s2 { background-image: url("assets/work-2.png"); }
+/* the duotone: hue/saturation from this plate, luminosity from the shots below */
+.iwc-shots::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(150deg, #14538f 0%, #103f74 48%, #0a2748 100%);
+  mix-blend-mode: color; pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .iwc-col-strip { animation: none !important; }
+}
+
 /* the mesh sits behind the copy and never eats pointer events */
 .iwh-mesh {
   position: absolute; inset: 0;
