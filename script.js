@@ -819,33 +819,11 @@ function initHeroModal() {
   });
 }
 
-/* -----------------------------------------------------------
-   HERO BACKGROUND — the wall of work is decoration sitting on
-   ~2.9MB of sprite sheets. Switching the layer on is what puts
-   the sprite URLs into the matched CSS rules, so nothing is
-   fetched until we say so: never on a narrow screen, never on a
-   metered connection, and otherwise only once the page is idle.
-   ----------------------------------------------------------- */
-function initShots() {
-  var shots = document.querySelector('[data-shots]');
-  if (!shots) return;
-  if (window.innerWidth <= 900) return;
-  var conn = navigator.connection;
-  if (conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''))) return;
-  function on() {
-    if (window.requestIdleCallback) window.requestIdleCallback(function () { shots.classList.add('is-on'); }, { timeout: 2500 });
-    else window.setTimeout(function () { shots.classList.add('is-on'); }, 400);
-  }
-  if (document.readyState === 'complete') on();
-  else window.addEventListener('load', on, { once: true });
-}
-
 function boot() {
   buildShowcase();
   initScrollMarquee();
   initObservers();
   initNav();
-  initShots();
   initMesh();
   initHeroType();
   initSteps();
