@@ -171,6 +171,13 @@ body {
   background: linear-gradient(150deg, #14538f 0%, #103f74 48%, #0a2748 100%);
   mix-blend-mode: color; pointer-events: none;
 }
+/* phones: smaller shots so more columns and rows read behind the copy */
+@media (max-width: 767px) {
+  .iwc-shots-in { gap: 12px; }
+  .iwc-col-strip { gap: 12px; }
+  .iwc-shot { width: 128px; height: 80px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .iwc-col-strip { animation: none !important; }
 }
