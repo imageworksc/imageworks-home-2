@@ -198,7 +198,13 @@ body {
   position: absolute; left: 50%; top: 50%;
   width: 150%; height: 190%;
   transform: translate(-50%, -50%);
-  background: radial-gradient(ellipse at center, rgba(10,35,66,.5) 0%, rgba(10,35,66,.26) 45%, rgba(10,35,66,0) 74%);
+  /* a blue well of depth pooled under the copy — deep enough that the headline
+     and subtitle read cleanly over the wall of work behind them */
+  background: radial-gradient(ellipse 60% 76% at center,
+    rgba(7,22,46,.82) 0%,
+    rgba(11,45,86,.56) 40%,
+    rgba(13,52,96,.22) 62%,
+    rgba(13,52,96,0) 78%);
   z-index: -1;
   pointer-events: none;
 }
