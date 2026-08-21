@@ -784,7 +784,9 @@ function initHeroModal() {
   // size in a huge modal, scale it as a unit to fit the viewport — so it fills a
   // laptop and a 4K/5K display alike — and shrink the panel to hug it. On phones
   // the graphic uses its own vertical reflow, so we leave it fluid and scrollable.
-  var DESIGN_W = 1280, DESIGN_H = 920;
+  // the graphic canvas is 1280x920 but the actual content sits in a shorter band;
+  // crop the empty top and bottom so the popup isn't taller than it needs to be
+  var DESIGN_W = 1280, DESIGN_H = 920, CROP_TOP = 150, CROP_BOT = 862;
   function layoutFrame() {
     if (!panel || !frame || modal.hidden) return;
     if (window.matchMedia('(max-width: 767px)').matches) {
@@ -792,12 +794,13 @@ function initHeroModal() {
       frame.style.width = '100%'; frame.style.height = '100%'; frame.style.transform = 'none';
       return;
     }
-    var k = Math.min(window.innerWidth * 0.70 / DESIGN_W, window.innerHeight * 0.90 / DESIGN_H);
+    var bandH = CROP_BOT - CROP_TOP;
+    var k = Math.min(window.innerWidth * 0.70 / DESIGN_W, window.innerHeight * 0.90 / bandH);
     frame.style.width = DESIGN_W + 'px';
     frame.style.height = DESIGN_H + 'px';
-    frame.style.transform = 'scale(' + k + ')';
+    frame.style.transform = 'translateY(' + (-CROP_TOP * k) + 'px) scale(' + k + ')';
     panel.style.width = Math.round(DESIGN_W * k) + 'px';
-    panel.style.height = Math.round(DESIGN_H * k) + 'px';
+    panel.style.height = Math.round(bandH * k) + 'px';
   }
   window.addEventListener('resize', layoutFrame, { passive: true });
 
