@@ -777,7 +777,29 @@ function initHeroModal() {
   var openers = [].slice.call(document.querySelectorAll('[data-hero-graphic]'));
   if (!modal || !openers.length) return;
   var frame = modal.querySelector('[data-graphic-src]');
+  var panel = modal.querySelector('.iw-modal__panel');
   var lastFocus = null;
+
+  // The graphic is a fixed horizontal composition. Rather than let it sit at one
+  // size in a huge modal, scale it as a unit to fit the viewport — so it fills a
+  // laptop and a 4K/5K display alike — and shrink the panel to hug it. On phones
+  // the graphic uses its own vertical reflow, so we leave it fluid and scrollable.
+  var DESIGN_W = 1280, DESIGN_H = 920;
+  function layoutFrame() {
+    if (!panel || !frame || modal.hidden) return;
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      panel.style.width = ''; panel.style.height = '';
+      frame.style.width = '100%'; frame.style.height = '100%'; frame.style.transform = 'none';
+      return;
+    }
+    var k = Math.min(window.innerWidth * 0.96 / DESIGN_W, window.innerHeight * 0.92 / DESIGN_H);
+    frame.style.width = DESIGN_W + 'px';
+    frame.style.height = DESIGN_H + 'px';
+    frame.style.transform = 'scale(' + k + ')';
+    panel.style.width = Math.round(DESIGN_W * k) + 'px';
+    panel.style.height = Math.round(DESIGN_H * k) + 'px';
+  }
+  window.addEventListener('resize', layoutFrame, { passive: true });
 
   function open(e) {
     if (e) e.preventDefault();
@@ -789,6 +811,7 @@ function initHeroModal() {
       frame.setAttribute('src', lazySrc);
     }
     modal.hidden = false;
+    layoutFrame();
     document.body.classList.add('iw-modal-open');
     // next frame: flip .in so the backdrop/panel transition runs
     requestAnimationFrame(function () { modal.classList.add('in'); });
