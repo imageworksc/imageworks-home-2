@@ -792,7 +792,7 @@ function initHeroModal() {
       frame.style.width = '100%'; frame.style.height = '100%'; frame.style.transform = 'none';
       return;
     }
-    var k = Math.min(window.innerWidth * 0.96 / DESIGN_W, window.innerHeight * 0.92 / DESIGN_H);
+    var k = Math.min(window.innerWidth * 0.70 / DESIGN_W, window.innerHeight * 0.90 / DESIGN_H);
     frame.style.width = DESIGN_W + 'px';
     frame.style.height = DESIGN_H + 'px';
     frame.style.transform = 'scale(' + k + ')';
