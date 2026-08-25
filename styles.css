@@ -77,9 +77,6 @@ body {
 .iw-btn { transition: transform .25s cubic-bezier(.16,.84,.44,1), box-shadow .25s ease, filter .25s ease; }
 .iw-btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(20,40,80,.18); filter: brightness(1.04); }
 
-.iw-social { transition: background .25s ease; }
-.iw-social:hover { background: #80c34a; }
-
 .iw-ghost { transition: transform .25s ease, background .25s ease, border-color .25s ease; }
 .iw-ghost:hover { transform: translateY(-3px); background: rgba(18,102,181,.06); border-color: rgba(18,102,181,.5); }
 
@@ -121,10 +118,9 @@ body {
   width: 100%; min-height: 600px;
   overflow: hidden;
   /* The copy is flex-centred inside the content box, so the two pads decide
-     where it lands. They have to differ by the nav's 72px, or the nav eats the
-     top of the gap and the copy reads high. Total is unchanged, so the hero
-     keeps its height. */
-  padding: 148px 40px 76px;
+     where it lands. With no bar above the hero they're equal — their total is
+     the same as the old 148/76 split, so the hero keeps its height. */
+  padding: 112px 40px 112px;
   /* a cooler, more dimensional ground: a bright cool glow off the top, an
      electric-blue bloom to the right and a fainter counter-bloom lower-left for
      depth, a deepened bottom, over a slightly cooler deep-navy base */
@@ -188,7 +184,7 @@ body {
   width: 100%; height: 100%;
   z-index: 0;
   pointer-events: none;
-  /* fade out top & bottom so it slides under the nav and into the next section */
+  /* fade out top & bottom so it eases in at the top and into the next section */
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 84%, transparent 100%);
           mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 84%, transparent 100%);
 }
@@ -262,7 +258,7 @@ body {
   .iwh-sub { font-size: 20px; margin-top: 26px; }
 }
 @media (max-width: 767px) {
-  .iw-hero { min-height: 0; padding: 126px 24px 54px; }   /* same 72px offset for the nav */
+  .iw-hero { min-height: 0; padding: 90px 24px 90px; }   /* same total as the old 126/54 split */
   .iwh-h1 { font-size: 30px; letter-spacing: -1px; }
   .iwh-sub { font-size: 17px; margin-top: 18px; }
   .iwh-cta { margin-top: 30px; height: 52px; }
@@ -463,57 +459,8 @@ body {
 .iw-sem-check { transform-box: fill-box; transform-origin: center; animation: iwSemPulse 4.5s ease-in-out infinite; }
 @keyframes iwSemPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.09); } }
 
-/* ---------- footer responsive ---------- */
-/* inline styles set the desktop grid; override with !important on small screens */
-@media (max-width: 767px) {
-  .iw-footer { padding: 72px 44px 0 !important; }
-  .iw-foot-grid { grid-template-columns: 1fr !important; gap: 52px !important; justify-items: center !important; }
-  /* each stacked block becomes a centered band; text inside stays left-aligned */
-  .iw-foot-grid > * { width: 100% !important; max-width: 420px !important; margin-left: auto !important; margin-right: auto !important; text-align: left !important; }
-  .iw-foot-grid form { max-width: 100% !important; }
-}
-@media (max-width: 520px) {
-  .iw-footer { padding: 60px 34px 0 !important; }
-  .iw-foot-menus { grid-template-columns: 1fr !important; gap: 40px !important; }
-}
-
 /* ---------- phones: tablet (>=768) keeps the desktop layout, phones stack ----------
-   The grids and nav are set inline in index.html, so these override with !important. */
-/* ---------- hamburger nav: tablet + phone (<=1024) get the menu button ---------- */
-.iw-nav-toggle { display: none; }   /* desktop keeps the inline links */
-@media (max-width: 1024px) {
-  .iw-nav-toggle {
-    display: inline-flex; flex-direction: column; justify-content: center; gap: 5px;
-    width: 44px; height: 44px; margin: 0 -10px 0 0; padding: 0 10px;
-    border: 0; background: transparent; cursor: pointer;
-  }
-  .iw-nav-toggle span {
-    display: block; width: 24px; height: 2px; border-radius: 2px; background: #143c66;
-    transition: transform .3s ease, opacity .2s ease;
-  }
-  /* bars fold into an X when open */
-  .iw-nav-open .iw-nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .iw-nav-open .iw-nav-toggle span:nth-child(2) { opacity: 0; }
-  .iw-nav-open .iw-nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-  /* the links drop out of the bar into a panel underneath it */
-  .iw-nav-links {
-    display: none !important;
-    position: absolute; top: 72px; left: 0; right: 0;
-    flex-direction: column !important; align-items: stretch !important; gap: 0 !important;
-    padding: 4px 40px 14px; background: #fff;
-    box-shadow: 0 14px 30px rgba(15,36,64,.12);
-  }
-  .iw-nav-open .iw-nav-links { display: flex !important; }
-  .iw-nav-links > .iw-link {
-    padding: 15px 2px; font-size: 16px !important;
-    border-top: 1px solid #eef2f7;
-  }
-  .iw-nav-links > .iw-link:first-child { border-top: 0; }
-  .iw-nav-links > .iw-nav-contact { color: #5c9a2e !important; font-weight: 700 !important; }
-  /* the underline hover doesn't belong on full-width rows */
-  .iw-nav-links > .iw-link::after { display: none; }
-}
+   The grids are set inline in index.html, so these override with !important. */
 
 /* the stacked intro panels only exist for phones */
 .iw-sem-stack { display: none; }

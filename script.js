@@ -198,49 +198,6 @@ function initObservers() {
 }
 
 /* -----------------------------------------------------------
-   NAV SHADOW ON SCROLL
-   ----------------------------------------------------------- */
-function initNav() {
-  var nav = document.querySelector('[data-nav]');
-  if (!nav) return;
-  function onScroll() {
-    var y = window.scrollY || 0;
-    nav.style.boxShadow = y > 12 ? '0 6px 24px rgba(15,36,64,.10)' : '0 0 0 rgba(0,0,0,0)';
-    nav.style.background = y > 12 ? 'rgba(255,255,255,.94)' : 'rgba(255,255,255,.86)';
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  // hamburger menu (tablet + phone): toggle the links panel
-  var toggle = nav.querySelector('.iw-nav-toggle');
-  var links = nav.querySelector('.iw-nav-links');
-  if (toggle && links) {
-    function setOpen(open) {
-      nav.classList.toggle('iw-nav-open', open);
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
-    toggle.addEventListener('click', function (e) {
-      e.stopPropagation();
-      setOpen(!nav.classList.contains('iw-nav-open'));
-    });
-    // a tap on any link, outside the bar, or Escape closes it
-    links.addEventListener('click', function (e) {
-      if (e.target.closest('a')) setOpen(false);
-    });
-    document.addEventListener('click', function (e) {
-      if (nav.classList.contains('iw-nav-open') && !nav.contains(e.target)) setOpen(false);
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') setOpen(false);
-    });
-    // if the viewport grows back to desktop, drop the open state
-    window.addEventListener('resize', function () {
-      if (window.innerWidth > 1024) setOpen(false);
-    }, { passive: true });
-  }
-}
-
-/* -----------------------------------------------------------
    HERO WEAVE — the web, woven. Warp threads stand across the
    hero; a shuttle crosses and lays a weft thread that passes
    over one standing thread and under the next — real interlacing,
@@ -849,7 +806,6 @@ function boot() {
   buildShowcase();
   initScrollMarquee();
   initObservers();
-  initNav();
   initMesh();
   initHeroType();
   initSteps();
