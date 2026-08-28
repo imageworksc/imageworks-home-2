@@ -69,36 +69,44 @@ var TESTIMONIALS = [
 /* -----------------------------------------------------------
    RENDER HELPERS
    ----------------------------------------------------------- */
+/* class helpers — every visual is a CSS class, nothing inline */
+function pfKey(src)  { return 'pf-' + src.split('/').pop().replace(/\.\w+$/, ''); }        // portfolio image class
+function bpClass(pos){ return 'bp-' + pos.split(' ')[1].replace('%', ''); }                // sprite background-position class
+function sprClass(bg){ return bg === SPRITE_1 ? 'spr-1' : 'spr-2'; }
+
 function workCardHTML(w) {
+  var media = w.src
+    ? 'iw-work__media iw-work__media--img ' + pfKey(w.src)
+    : 'iw-work__media ' + sprClass(w.bg) + ' ' + bpClass(w.pos);
   return '' +
-    '<div class="iw-work" style="flex:none;width:300px;border-radius:2px;overflow:hidden;background:#fff;box-shadow:0 1px 3px rgba(20,40,80,.08),0 10px 26px rgba(20,40,80,.1);">' +
-      '<div style="height:30px;display:flex;align-items:center;gap:6px;padding:0 14px;background:#f3f6fb;border-bottom:1px solid #eaeff6;">' +
-        '<span style="width:9px;height:9px;border-radius:50%;background:#ff6058;"></span>' +
-        '<span style="width:9px;height:9px;border-radius:50%;background:#ffbd2e;"></span>' +
-        '<span style="width:9px;height:9px;border-radius:50%;background:#28c840;"></span>' +
+    '<div class="iw-work">' +
+      '<div class="iw-work__bar">' +
+        '<span class="iw-work__dot iw-work__dot--r"></span>' +
+        '<span class="iw-work__dot iw-work__dot--y"></span>' +
+        '<span class="iw-work__dot iw-work__dot--g"></span>' +
       '</div>' +
-      '<div style="height:192px;background-image:' + (w.src ? "url('" + w.src + "')" : w.bg) + ';background-size:' + (w.src ? 'cover' : '100% auto') + ';background-position:' + (w.src ? '50% 0%' : w.pos) + ';background-repeat:no-repeat;"></div>' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;">' +
-        '<span style="font-size:15px;font-weight:700;color:#143c66;">' + w.label + '</span>' +
-        '<span style="font-size:11px;font-weight:700;letter-spacing:.5px;color:#80c34a;background:#eef7e4;padding:4px 9px;border-radius:2px;">' + w.tag + '</span>' +
+      '<div class="' + media + '"></div>' +
+      '<div class="iw-work__meta">' +
+        '<span class="iw-work__label">' + w.label + '</span>' +
+        '<span class="iw-work__tag">' + w.tag + '</span>' +
       '</div>' +
     '</div>';
 }
 
 function testiCardHTML(t) {
   return '' +
-    '<div class="iw-testi" style="flex:none;width:380px;padding:28px;border-radius:2px;background:#fff;box-shadow:0 1px 3px rgba(20,40,80,.1),0 12px 30px rgba(20,40,80,.12);display:flex;flex-direction:column;">' +
-      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">' +
-        '<span style="font-size:16px;font-weight:800;color:#1266b5;">5.0</span>' +
-        '<span style="color:#ffa733;font-size:15px;letter-spacing:1px;">\u2605\u2605\u2605\u2605\u2605</span>' +
+    '<div class="iw-testi">' +
+      '<div class="iw-testi__head">' +
+        '<span class="iw-testi__score">5.0</span>' +
+        '<span class="iw-testi__stars">\u2605\u2605\u2605\u2605\u2605</span>' +
       '</div>' +
-      '<p style="margin:0 0 18px;font-size:16px;line-height:1.6;color:#3d464d;flex:1;">' + t.quote + '</p>' +
-      '<div style="font-size:16px;font-weight:700;color:#1266b5;">' + t.author + '</div>' +
+      '<p class="iw-testi__quote">' + t.quote + '</p>' +
+      '<div class="iw-testi__author">' + t.author + '</div>' +
     '</div>';
 }
 
 function partnerLogoHTML(p) {
-  return '<img class="iw-partner" src="' + p.src + '" alt="' + p.name + '" height="' + p.h + '" style="flex:none;width:auto;display:block;object-fit:contain;"/>';
+  return '<img class="iw-partner" src="' + p.src + '" alt="' + p.name + '" height="' + p.h + '"/>';
 }
 
 function joinHTML(list, fn) {
@@ -169,8 +177,8 @@ function buildHeroShots() {
   function id(t) { return t.img ? 'i' + t.img : 's' + t.sprite.c + t.sprite.p; }
   function span(t) {
     return t.img
-      ? '<span class="iwc-shot" style="background-image:url(\'' + t.img + '\');background-size:cover;background-position:50% 8%;filter:grayscale(1) contrast(1.05) brightness(.3)"></span>'
-      : '<span class="iwc-shot iwc-shot--' + t.sprite.c + '" style="background-position:' + t.sprite.p + '"></span>';
+      ? '<span class="iwc-shot iwc-shot--img ' + pfKey(t.img) + '"></span>'
+      : '<span class="iwc-shot iwc-shot--' + t.sprite.c + ' ' + bpClass(t.sprite.p) + '"></span>';
   }
   var COLS = 7, BASE = 6, grid = [], col, row;
   for (col = 0; col < COLS; col++) {
