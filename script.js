@@ -6,10 +6,10 @@
 /* -----------------------------------------------------------
    DATA
    ----------------------------------------------------------- */
-var SPRITE_1 = 'url(assets/work-sprite-1.png)';
-var SPRITE_2 = 'url(assets/work-2.png)';
+const SPRITE_1 = 'url(assets/work-sprite-1.png)';
+const SPRITE_2 = 'url(assets/work-2.png)';
 
-var WORKS = [
+const WORKS = [
   { bg: SPRITE_1, pos: '50% 0%',  label: 'JRC',           tag: 'Defense' },
   { bg: SPRITE_2, pos: '50% 6%',  label: "St. Michael's", tag: 'Reports' },
   { bg: SPRITE_1, pos: '50% 27%', label: 'JRC — AI',      tag: 'Automation' },
@@ -22,7 +22,7 @@ var WORKS = [
 
 /* Portfolio screenshots dropped in assets/hero-shots — mixed in with the sprites
    above across both the hero wall and the Our Work rail. */
-var PORTFOLIO = [
+const PORTFOLIO = [
   { src: 'assets/hero-shots/casey-margenau-01.jpg', label: 'Casey Margenau', tag: 'Real Estate' },
   { src: 'assets/hero-shots/highbrown.jpg',         label: 'Highbrown',      tag: 'Web Design' },
   { src: 'assets/hero-shots/asc-01.jpg',            label: 'ASC',            tag: 'Web Design' },
@@ -41,7 +41,7 @@ var PORTFOLIO = [
   { src: 'assets/hero-shots/ridgley-walsh-02.jpg',  label: 'Ridgley Walsh',  tag: 'Sections' }
 ];
 
-var PARTNERS = [
+const PARTNERS = [
   { name: 'HERMES Creative Awards',            src: 'assets/logos/hermes.jpg',   h: 76 },
   { name: 'Davey Awards',                      src: 'assets/logos/davey.png',    h: 46 },
   { name: 'Best in Search',                    src: 'assets/logos/bis.png',      h: 76 },
@@ -55,7 +55,7 @@ var PARTNERS = [
   { name: 'Vega Digital Awards',               src: 'assets/logos/winner.png',   h: 76 }
 ];
 
-var TESTIMONIALS = [
+const TESTIMONIALS = [
   { quote: '"ImageWorks\u2019 branding and marketing strategies have led to a tenfold increase in our organic website traffic."', author: 'Diakon' },
   { quote: '"We have already seen a lot more user engagement than we ever have had in the past. Scott never said no. As a result, I am a hero at work for creating this great new site."', author: 'MAG America' },
   { quote: '"Scott is the only person I\u2019ve talked to who really took the time to understand my marketing needs and helped me make the changes to my website and marketing plan."', author: 'SermonScribe' },
@@ -75,7 +75,7 @@ function bpClass(pos){ return 'bp-' + pos.split(' ')[1].replace('%', ''); }     
 function sprClass(bg){ return bg === SPRITE_1 ? 'spr-1' : 'spr-2'; }
 
 function workCardHTML(w) {
-  var media = w.src
+  const media = w.src
     ? 'iw-work__media iw-work__media--img ' + pfKey(w.src)
     : 'iw-work__media ' + sprClass(w.bg) + ' ' + bpClass(w.pos);
   return '' +
@@ -115,31 +115,31 @@ function joinHTML(list, fn) {
 
 /* fill a marquee track with two copies of the content for a seamless loop */
 function fillTrack(id, html) {
-  var el = document.getElementById(id);
+  const el = document.getElementById(id);
   if (el) el.innerHTML = html + html;
 }
 
 /* marquees move side-to-side driven by scroll position (no auto-play) */
 function initScrollMarquee() {
-  var tracks = [].slice.call(document.querySelectorAll('.iw-track[data-mq]'));
+  const tracks = [].slice.call(document.querySelectorAll('.iw-track[data-mq]'));
   if (!tracks.length) return;
-  var SPEED = 0.35; // marquee px per px scrolled
+  const SPEED = 0.35; // marquee px per px scrolled
   function update() {
     // on phones the review row auto-plays via a CSS marquee (like Our Work),
     // so hand control back to CSS by clearing the scroll-driven transform
-    var mobile = window.innerWidth <= 767;
-    var y = window.scrollY || window.pageYOffset || 0;
-    for (var i = 0; i < tracks.length; i++) {
-      var t = tracks[i];
+    const mobile = window.innerWidth <= 767;
+    const y = window.scrollY || window.pageYOffset || 0;
+    for (let i = 0; i < tracks.length; i++) {
+      const t = tracks[i];
       if (mobile) { t.style.transform = ''; continue; }
-      var half = t.scrollWidth / 2;          // content is duplicated -> half = one loop
+      const half = t.scrollWidth / 2;          // content is duplicated -> half = one loop
       if (!half) continue;                    // hidden/empty track
-      var d = (y * SPEED) % half;             // 0..half, wraps seamlessly
-      var x = t.getAttribute('data-mq') === 'rev' ? (d - half) : -d;
+      const d = (y * SPEED) % half;             // 0..half, wraps seamlessly
+      const x = t.getAttribute('data-mq') === 'rev' ? (d - half) : -d;
       t.style.transform = 'translate3d(' + x + 'px,0,0)';
     }
   }
-  var ticking = false;
+  let ticking = false;
   function onScroll() {
     if (ticking) return;
     ticking = true;
@@ -155,7 +155,9 @@ function initScrollMarquee() {
    both — 2 new to 1 original, which also keeps like next to unlike. Every tile is
    a distinct image, so nothing repeats back to back. */
 function mixWorks() {
-  var out = [], i = 0, j = 0;
+  const out = [];
+  let i = 0;
+  let j = 0;
   while (i < WORKS.length || j < PORTFOLIO.length) {
     if (j < PORTFOLIO.length) out.push(PORTFOLIO[j++]);
     if (j < PORTFOLIO.length) out.push(PORTFOLIO[j++]);
@@ -168,11 +170,11 @@ function mixWorks() {
    shots + portfolio shots), laid out so no tile repeats directly above/below
    itself, across the loop seam, or beside itself in the next column. */
 function buildHeroShots() {
-  var wrap = document.querySelector('.iwc-shots-in');
+  const wrap = document.querySelector('.iwc-shots-in');
   if (!wrap) return;
-  var sprites = ['50% 0%','50% 27%','50% 42%','50% 58%','50% 74%','50% 96%'].map(function (p) { return { c: 's1', p: p }; })
+  const sprites = ['50% 0%','50% 27%','50% 42%','50% 58%','50% 74%','50% 96%'].map(function (p) { return { c: 's1', p: p }; })
     .concat([{ c: 's2', p: '50% 6%' }, { c: 's2', p: '50% 94%' }]);
-  var pool = sprites.map(function (s) { return { sprite: s }; })
+  const pool = sprites.map(function (s) { return { sprite: s }; })
     .concat(PORTFOLIO.map(function (p) { return { img: p.src }; }));
   function id(t) { return t.img ? 'i' + t.img : 's' + t.sprite.c + t.sprite.p; }
   function span(t) {
@@ -180,23 +182,27 @@ function buildHeroShots() {
       ? '<span class="iwc-shot iwc-shot--img ' + pfKey(t.img) + '"></span>'
       : '<span class="iwc-shot iwc-shot--' + t.sprite.c + ' ' + bpClass(t.sprite.p) + '"></span>';
   }
-  var COLS = 7, BASE = 6, grid = [], col, row;
+  const COLS = 7;
+  const BASE = 6;
+  const grid = [];
+  let col;
+  let row;
   for (col = 0; col < COLS; col++) {
     // ids used anywhere in the previous column — the new column shares none of
     // them, so no two identical tiles ever touch (vertically, horizontally or
     // diagonally); and each column's own tiles are all distinct
-    var prev = {};
+    const prev = {};
     if (grid[col - 1]) grid[col - 1].forEach(function (t) { prev[id(t)] = 1; });
-    var used = {}, seq = [];
+    const used = {}, seq = [];
     for (row = 0; row < BASE; row++) {
-      var choices = pool.filter(function (t) { var k = id(t); return !used[k] && !prev[k]; });
-      var pick = choices[Math.floor(Math.random() * choices.length)];
+      const choices = pool.filter(function (t) { const k = id(t); return !used[k] && !prev[k]; });
+      const pick = choices[Math.floor(Math.random() * choices.length)];
       used[id(pick)] = 1;
       seq.push(pick);
     }
     grid.push(seq);
   }
-  var html = '';
+  let html = '';
   for (col = 0; col < COLS; col++) {
     html += '<div class="iwc-col-strip iwc-col-strip--' + (col % 4) + '">' +
             grid[col].concat(grid[col]).map(span).join('') + '</div>';
@@ -205,12 +211,12 @@ function buildHeroShots() {
 }
 
 function buildShowcase() {
-  var mixed = mixWorks();
-  var worksFwd = joinHTML(mixed, workCardHTML);
-  var worksRev = joinHTML(mixed.slice().reverse(), workCardHTML);
-  var partners = joinHTML(PARTNERS, partnerLogoHTML);
-  var testiA   = joinHTML(TESTIMONIALS.slice(0, 4), testiCardHTML);
-  var testiB   = joinHTML(TESTIMONIALS.slice(4, 8), testiCardHTML);
+  const mixed = mixWorks();
+  const worksFwd = joinHTML(mixed, workCardHTML);
+  const worksRev = joinHTML(mixed.slice().reverse(), workCardHTML);
+  const partners = joinHTML(PARTNERS, partnerLogoHTML);
+  const testiA   = joinHTML(TESTIMONIALS.slice(0, 4), testiCardHTML);
+  const testiB   = joinHTML(TESTIMONIALS.slice(4, 8), testiCardHTML);
 
   // scroll mode
   fillTrack('track-scroll-works-a', worksFwd);
@@ -223,20 +229,20 @@ function buildShowcase() {
 /* -----------------------------------------------------------
    SCROLL REVEAL + COUNT-UP (IntersectionObserver)
    ----------------------------------------------------------- */
-var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function countUp(el) {
-  var raw = el.getAttribute('data-countup');
-  var target = parseFloat(raw);
-  var dec = raw.indexOf('.') >= 0 ? 1 : 0;
-  var pre = el.getAttribute('data-prefix') || '';
-  var suf = el.getAttribute('data-suffix') || '';
-  var dur = 1500;
-  var t0 = performance.now();
+  const raw = el.getAttribute('data-countup');
+  const target = parseFloat(raw);
+  const dec = raw.indexOf('.') >= 0 ? 1 : 0;
+  const pre = el.getAttribute('data-prefix') || '';
+  const suf = el.getAttribute('data-suffix') || '';
+  const dur = 1500;
+  const t0 = performance.now();
   function fmt(n) { return dec ? n.toFixed(1) : Math.round(n).toLocaleString('en-US'); }
   function tick(t) {
-    var p = Math.min(1, (t - t0) / dur);
-    var e = 1 - Math.pow(1 - p, 3);
+    const p = Math.min(1, (t - t0) / dur);
+    const e = 1 - Math.pow(1 - p, 3);
     el.textContent = pre + fmt(target * e) + suf;
     if (p < 1) requestAnimationFrame(tick);
     else el.textContent = pre + fmt(target) + suf;
@@ -245,16 +251,16 @@ function countUp(el) {
 }
 
 function initObservers() {
-  var reveals = document.querySelectorAll('.iw-reveal');
-  var counts  = document.querySelectorAll('[data-countup]');
+  const reveals = document.querySelectorAll('.iw-reveal');
+  const counts  = document.querySelectorAll('[data-countup]');
 
   if (REDUCE || !('IntersectionObserver' in window)) {
     reveals.forEach(function (el) { el.classList.add('in'); });
     counts.forEach(function (el) {
-      var pre = el.getAttribute('data-prefix') || '';
-      var suf = el.getAttribute('data-suffix') || '';
-      var raw = el.getAttribute('data-countup');
-      var dec = raw.indexOf('.') >= 0 ? 1 : 0;
+      const pre = el.getAttribute('data-prefix') || '';
+      const suf = el.getAttribute('data-suffix') || '';
+      const raw = el.getAttribute('data-countup');
+      const dec = raw.indexOf('.') >= 0 ? 1 : 0;
       el.textContent = pre + (dec ? parseFloat(raw).toFixed(1) : Math.round(parseFloat(raw)).toLocaleString('en-US')) + suf;
     });
     return;
@@ -265,14 +271,14 @@ function initObservers() {
     el.textContent = (el.getAttribute('data-prefix') || '') + '0' + (el.getAttribute('data-suffix') || '');
   });
 
-  var revealObs = new IntersectionObserver(function (entries, obs) {
+  const revealObs = new IntersectionObserver(function (entries, obs) {
     entries.forEach(function (en) {
       if (en.isIntersecting) { en.target.classList.add('in'); obs.unobserve(en.target); }
     });
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
   reveals.forEach(function (el) { revealObs.observe(el); });
 
-  var countObs = new IntersectionObserver(function (entries, obs) {
+  const countObs = new IntersectionObserver(function (entries, obs) {
     entries.forEach(function (en) {
       if (en.isIntersecting) { countUp(en.target); obs.unobserve(en.target); }
     });
@@ -290,35 +296,35 @@ function initObservers() {
    cloth stays a backdrop and never competes with the copy.
    ----------------------------------------------------------- */
 function initMesh() {
-  var hero = document.querySelector('[data-hero]');
+  const hero = document.querySelector('[data-hero]');
   if (!hero) return;
-  var canvas = hero.querySelector('[data-mesh]');
+  const canvas = hero.querySelector('[data-mesh]');
   if (!canvas) return;
-  var ctx = canvas.getContext && canvas.getContext('2d');
+  const ctx = canvas.getContext && canvas.getContext('2d');
   if (!ctx) return;
 
-  var WARP_GAP = 54;        // spacing of the standing threads
-  var PASS_MS = 6200;       // one crossing of the weft shuttle
-  var REST_MIN = 900, REST_MAX = 1800;
-  var VPASS_MS = 8600;      // one run of the warp shuttle, drawn down a column
-  var VREST_MIN = 2600, VREST_MAX = 4400;
-  var SEGS = 8;             // samples per warp at rest — raised while denting
-  var INFLUENCE = 270;      // how far the dent under the cursor reaches
-  var PULL = 25;            // how far the cloth slides toward it
+  const WARP_GAP = 54;        // spacing of the standing threads
+  const PASS_MS = 6200;       // one crossing of the weft shuttle
+  const REST_MIN = 900, REST_MAX = 1800;
+  const VPASS_MS = 8600;      // one run of the warp shuttle, drawn down a column
+  const VREST_MIN = 2600, VREST_MAX = 4400;
+  const SEGS = 8;             // samples per warp at rest — raised while denting
+  const INFLUENCE = 270;      // how far the dent under the cursor reaches
+  const PULL = 25;            // how far the cloth slides toward it
 
-  var BLUE = '168,206,242';
-  var GREEN = '128,195,74';
+  const BLUE = '168,206,242';
+  const GREEN = '128,195,74';
 
-  var W = 0, H = 0, dpr = 1;
-  var warps = [], slots = [], rows = [];
-  var shuttle = null, nextPass = 0, rowN = 0;
-  var vshuttle = null, nextVPass = 0, colN = 0, colIdx = 0;
-  var raf = null, visible = true, t0 = 0, well = null;
-  var px = -9999, py = -9999;     // raw pointer, in hero space
-  var cx = -9999, cy = -9999;     // eased pointer, so the dent glides
-  var over = false, str = 0;      // dent strength, eased in and out
-  var segA = 0, segC = BLUE;      // colour + alpha of the run being drawn
-  var dX = 0, dY = 0, dE = 0;     // disp() writes here — thousands of calls a
+  let W = 0, H = 0, dpr = 1;
+  const warps = [], slots = [], rows = [];
+  let shuttle = null, nextPass = 0, rowN = 0;
+  let vshuttle = null, nextVPass = 0, colN = 0, colIdx = 0;
+  let raf = null, visible = true, t0 = 0, well = null;
+  let px = -9999, py = -9999;     // raw pointer, in hero space
+  let cx = -9999, cy = -9999;     // eased pointer, so the dent glides
+  let over = false, str = 0;      // dent strength, eased in and out
+  let segA = 0, segC = BLUE;      // colour + alpha of the run being drawn
+  let dX = 0, dY = 0, dE = 0;     // disp() writes here — thousands of calls a
                                   // frame, so no object gets allocated per point
 
   /* The dent: a point near the cursor slides toward it, hardest at the centre
@@ -328,12 +334,12 @@ function initMesh() {
   function disp(x, y) {
     dX = x; dY = y; dE = 0;
     if (str < 0.004 || cx < -9000) return;
-    var dx = x - cx, dy = y - cy;
-    var d = Math.sqrt(dx * dx + dy * dy);
+    const dx = x - cx, dy = y - cy;
+    const d = Math.sqrt(dx * dx + dy * dy);
     if (d >= INFLUENCE) return;
-    var f = 1 - d / INFLUENCE;
-    var e = f * f * str;
-    var inv = 1 / (d || 1);
+    const f = 1 - d / INFLUENCE;
+    const e = f * f * str;
+    const inv = 1 / (d || 1);
     dX = x - dx * inv * e * PULL;
     dY = y - dy * inv * e * PULL;
     dE = e;
@@ -342,7 +348,7 @@ function initMesh() {
   function rand(a, b) { return a + Math.random() * (b - a); }
 
   function build() {
-    var r = hero.getBoundingClientRect();
+    const r = hero.getBoundingClientRect();
     W = Math.round(r.width); H = Math.round(r.height);
     if (!W || !H) return;
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -351,7 +357,7 @@ function initMesh() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     // a well of depth under the copy, so the cloth stays a backdrop
-    var cx = W / 2, cy = H * 0.46;
+    const cx = W / 2, cy = H * 0.46;
     well = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.62);
     well.addColorStop(0, 'rgba(4,14,28,0.5)');
     well.addColorStop(0.42, 'rgba(7,22,42,0.24)');
@@ -359,9 +365,9 @@ function initMesh() {
 
     // the loom: standing threads at uneven weights, so the cloth has depth
     warps.length = 0;
-    var n = Math.ceil(W / WARP_GAP) + 1;
-    var off = (W - (n - 1) * WARP_GAP) / 2;
-    for (var i = 0; i < n; i++) {
+    const n = Math.ceil(W / WARP_GAP) + 1;
+    const off = (W - (n - 1) * WARP_GAP) / 2;
+    for (let i = 0; i < n; i++) {
       warps.push({ x: off + i * WARP_GAP, a: rand(0.021, 0.047), w: rand(0.8, 1.3), lit: 0 });
     }
 
@@ -369,13 +375,13 @@ function initMesh() {
     // the top and bottom. Stopping short of the mask instead leaves bare warp
     // below the copy, which reads as unfinished cloth rather than a soft edge.
     slots.length = 0;
-    var top = H * 0.075, bot = H * 0.945, k = 14;
-    for (var j = 0; j < k; j++) slots.push(top + (bot - top) * (j / (k - 1)));
+    const top = H * 0.075, bot = H * 0.945, k = 14;
+    for (let j = 0; j < k; j++) slots.push(top + (bot - top) * (j / (k - 1)));
 
     // the loom opens with cloth already on it — the hero should never show an
     // empty frame and make you wait out a crossing for the first thread
     rows.length = 0;
-    for (var q = 0; q < slots.length; q++) {
+    for (let q = 0; q < slots.length; q++) {
       rows.push({ y: slots[q], a: 0.033, floor: 0.033, col: (q % 4 === 2) ? GREEN : BLUE, parity: q % 2 });
     }
     // Both shuttles open mid-canvas rather than at an edge. The first pass is
@@ -392,24 +398,24 @@ function initMesh() {
      The weft calls this too, so every crossing lands on the thread rather
      than on where the thread would be if it stood perfectly still. */
   function warpAt(i, y, t) {
-    var wp = warps[i];
+    const wp = warps[i];
     return wp.x + Math.sin(t * 0.00021 + i * 0.85 + y * 0.0016) * 1.4;
   }
 
   /* One weft row: under a standing thread, over the next. That alternation
      is the whole point — it's what makes this cloth and not a grid. */
   function weft(y, from, to, alpha, col, parity, t) {
-    var lo = Math.min(from, to), hi = Math.max(from, to);
+    const lo = Math.min(from, to), hi = Math.max(from, to);
     ctx.lineCap = 'round';
     ctx.lineWidth = 1.35;
     segC = col; segA = alpha;
-    var run = lo;
-    for (var i = 0; i < warps.length; i++) {
-      var wx = warpAt(i, y, t);
+    let run = lo;
+    for (let i = 0; i < warps.length; i++) {
+      const wx = warpAt(i, y, t);
       if (wx < lo - 10 || wx > hi + 10) continue;
       if (((i + parity) % 2) === 0) {
         // passes under: break the weft cleanly around the standing thread
-        var a = Math.max(run, lo), b = Math.min(wx - 5.5, hi);
+        const a = Math.max(run, lo), b = Math.min(wx - 5.5, hi);
         if (b > a) weftSeg(a, b, y);
         run = wx + 5.5;
       } else {
@@ -417,7 +423,7 @@ function initMesh() {
         // register as a knot, well short of reading as a row of dots. Under the
         // cursor it sinks with the cloth: shrinking and dimming as it goes.
         disp(wx, y);
-        var kx = dX, ky = dY, s = 1 - dE * 0.8;
+        const kx = dX, ky = dY, s = 1 - dE * 0.8;
         if (s > 0.06) {
           ctx.fillStyle = 'rgba(' + col + ',' + Math.min(alpha * 1.35 * (1 - dE * 0.6), 0.3).toFixed(3) + ')';
           ctx.beginPath();
@@ -438,20 +444,20 @@ function initMesh() {
 
   function weftSeg(x0, x1, y) {
     // how wide the dent bites into this row, if at all
-    var half = -1;
+    let half = -1;
     if (str >= 0.004 && cx > -9000) {
-      var dy = y - cy, rad = INFLUENCE * INFLUENCE - dy * dy;
+      const dy = y - cy, rad = INFLUENCE * INFLUENCE - dy * dy;
       if (rad > 0) half = Math.sqrt(rad);
     }
     if (half < 0) { flat(x0, y, x1, y); return; }
-    var za = cx - half, zb = cx + half;
+    const za = cx - half, zb = cx + half;
     if (zb <= x0 || za >= x1) { flat(x0, y, x1, y); return; }
     if (za > x0) flat(x0, y, za, y);
-    var a = Math.max(za, x0), b = Math.min(zb, x1);
-    var steps = Math.max(1, Math.ceil((b - a) / 6));
+    const a = Math.max(za, x0), b = Math.min(zb, x1);
+    const steps = Math.max(1, Math.ceil((b - a) / 6));
     disp(a, y);
-    var lx = dX, ly = dY, le = dE;
-    for (var s = 1; s <= steps; s++) {
+    let lx = dX, ly = dY, le = dE;
+    for (let s = 1; s <= steps; s++) {
       disp(a + (b - a) * (s / steps), y);
       ctx.strokeStyle = 'rgba(' + segC + ',' + (segA * (1 - Math.max(le, dE) * 0.85)).toFixed(3) + ')';
       ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(dX, dY); ctx.stroke();
@@ -463,22 +469,22 @@ function initMesh() {
   /* A stretch of one standing thread, sampled so it follows the same drift the
      weft crossings were placed against. */
   function warpSeg(i, y0, y1, t) {
-    var lo = Math.min(y0, y1), hi = Math.max(y0, y1);
+    const lo = Math.min(y0, y1), hi = Math.max(y0, y1);
     // does the dent reach this thread, over this stretch?
-    var bite = false;
+    let bite = false;
     if (str >= 0.004 && cx > -9000) {
-      var dx = warps[i].x - cx, rad = INFLUENCE * INFLUENCE - dx * dx;
+      const dx = warps[i].x - cx, rad = INFLUENCE * INFLUENCE - dx * dx;
       if (rad > 0) {
-        var reach = Math.sqrt(rad);
+        const reach = Math.sqrt(rad);
         bite = (cy + reach > lo && cy - reach < hi);
       }
     }
-    var n = Math.max(2, Math.ceil((hi - lo) / (bite ? 6 : H / SEGS)));
+    const n = Math.max(2, Math.ceil((hi - lo) / (bite ? 6 : H / SEGS)));
     if (!bite) {
       ctx.strokeStyle = 'rgba(' + segC + ',' + segA.toFixed(3) + ')';
       ctx.beginPath();
-      for (var s = 0; s <= n; s++) {
-        var y = lo + (hi - lo) * (s / n);
+      for (let s = 0; s <= n; s++) {
+        const y = lo + (hi - lo) * (s / n);
         disp(warpAt(i, y, t), y);
         if (s === 0) ctx.moveTo(dX, dY); else ctx.lineTo(dX, dY);
       }
@@ -486,9 +492,9 @@ function initMesh() {
       return;
     }
     disp(warpAt(i, lo, t), lo);
-    var lx = dX, ly = dY, le = dE;
-    for (var k = 1; k <= n; k++) {
-      var yy = lo + (hi - lo) * (k / n);
+    let lx = dX, ly = dY, le = dE;
+    for (let k = 1; k <= n; k++) {
+      const yy = lo + (hi - lo) * (k / n);
       disp(warpAt(i, yy, t), yy);
       ctx.strokeStyle = 'rgba(' + segC + ',' + (segA * (1 - Math.max(le, dE) * 0.85)).toFixed(3) + ')';
       ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(dX, dY); ctx.stroke();
@@ -501,24 +507,24 @@ function initMesh() {
      where the weft passed under, this thread shows and knots; where the weft
      rode over, this one disappears beneath it. */
   function warpRun(i, from, to, alpha, col, t) {
-    var lo = Math.min(from, to), hi = Math.max(from, to);
+    const lo = Math.min(from, to), hi = Math.max(from, to);
     ctx.lineCap = 'round';
     ctx.lineWidth = 1.35;
     segC = col; segA = alpha;
 
-    var cuts = [];
-    for (var r = 0; r < rows.length; r++) {
+    const cuts = [];
+    for (let r = 0; r < rows.length; r++) {
       if (rows[r].y >= lo - 10 && rows[r].y <= hi + 10) cuts.push(rows[r]);
     }
     cuts.sort(function (a, b) { return a.y - b.y; });
 
-    var run = lo;
-    for (var c = 0; c < cuts.length; c++) {
-      var row = cuts[c];
+    let run = lo;
+    for (let c = 0; c < cuts.length; c++) {
+      const row = cuts[c];
       if (((i + row.parity) % 2) === 0) {
         // the weft went under here, so this thread rides over: knot, no break
         disp(warpAt(i, row.y, t), row.y);
-        var ks = 1 - dE * 0.8;
+        const ks = 1 - dE * 0.8;
         if (ks > 0.06) {
           ctx.fillStyle = 'rgba(' + col + ',' + Math.min(alpha * 1.35 * (1 - dE * 0.6), 0.3).toFixed(3) + ')';
           ctx.beginPath();
@@ -526,7 +532,7 @@ function initMesh() {
           ctx.fill();
         }
       } else {
-        var a = Math.max(run, lo), b = Math.min(row.y - 5.5, hi);
+        const a = Math.max(run, lo), b = Math.min(row.y - 5.5, hi);
         if (b > a) warpSeg(i, a, b, t);
         run = row.y + 5.5;
       }
@@ -550,11 +556,11 @@ function initMesh() {
     ctx.clearRect(0, 0, W, H);
     if (well) { ctx.fillStyle = well; ctx.fillRect(0, 0, W, H); }
 
-    var i, j, y, x;
+    let i, j, y, x;
 
     // the standing threads, sampled along their drift
     for (i = 0; i < warps.length; i++) {
-      var wp = warps[i];
+      const wp = warps[i];
       // a column the warp shuttle just drew stays a little brighter, then eases back
       if (wp.lit > 0) wp.lit = Math.max(0, wp.lit - 0.00028);
       ctx.lineWidth = wp.w;
@@ -564,15 +570,15 @@ function initMesh() {
 
     // the cloth woven so far, easing down to a resting weight
     for (i = 0; i < rows.length; i++) {
-      var r = rows[i];
+      const r = rows[i];
       if (r.a > r.floor) r.a = Math.max(r.floor, r.a - 0.00055);
       weft(r.y, 0, W, r.a, r.col, r.parity, t);
     }
 
     // the shuttle: one crossing at a time, reversing like a loom
     if (!shuttle && t > nextPass) {
-      var slot = slots[rowN % slots.length];
-      var ltr = rowN % 2 === 0;
+      const slot = slots[rowN % slots.length];
+      const ltr = rowN % 2 === 0;
       shuttle = {
         y: slot,
         x: ltr ? -40 : W + 40,
@@ -592,7 +598,7 @@ function initMesh() {
       shuttle.x += shuttle.v;
       weft(shuttle.y, shuttle.from, shuttle.x, 0.14, shuttle.col, shuttle.parity, t);
       // the shuttle head, carrying the thread across
-      var g = ctx.createRadialGradient(shuttle.x, shuttle.y, 0, shuttle.x, shuttle.y, 16);
+      const g = ctx.createRadialGradient(shuttle.x, shuttle.y, 0, shuttle.x, shuttle.y, 16);
       g.addColorStop(0, 'rgba(' + shuttle.col + ',0.18)');
       g.addColorStop(1, 'rgba(' + shuttle.col + ',0)');
       ctx.fillStyle = g;
@@ -611,7 +617,7 @@ function initMesh() {
     // its own clock and steps 5 columns at a time, so it never trails the weft
     // shuttle or walks the hero in a straight line
     if (!vshuttle && t > nextVPass && warps.length) {
-      var down = colN % 2 === 0;
+      const down = colN % 2 === 0;
       vshuttle = {
         i: colIdx,
         y: down ? -40 : H + 40,
@@ -626,8 +632,8 @@ function initMesh() {
     if (vshuttle) {
       vshuttle.y += vshuttle.v;
       warpRun(vshuttle.i, vshuttle.from, vshuttle.y, 0.14, vshuttle.col, t);
-      var vx = warpAt(vshuttle.i, vshuttle.y, t);
-      var vg = ctx.createRadialGradient(vx, vshuttle.y, 0, vx, vshuttle.y, 16);
+      const vx = warpAt(vshuttle.i, vshuttle.y, t);
+      const vg = ctx.createRadialGradient(vx, vshuttle.y, 0, vx, vshuttle.y, 16);
       vg.addColorStop(0, 'rgba(' + vshuttle.col + ',0.18)');
       vg.addColorStop(1, 'rgba(' + vshuttle.col + ',0)');
       ctx.fillStyle = vg;
@@ -652,7 +658,7 @@ function initMesh() {
   // reduced motion: the cloth already woven, holding still
   function still() {
     rows.length = 0;
-    for (var i = 0; i < slots.length; i++) {
+    for (let i = 0; i < slots.length; i++) {
       rows.push({ y: slots[i], a: 0.036, floor: 0.036, col: (i % 4 === 2) ? GREEN : BLUE, parity: i % 2 });
     }
     shuttle = null;
@@ -668,7 +674,7 @@ function initMesh() {
   if (REDUCE) { still(); return; }
 
   hero.addEventListener('pointermove', function (e) {
-    var r = hero.getBoundingClientRect();
+    const r = hero.getBoundingClientRect();
     px = e.clientX - r.left;
     py = e.clientY - r.top;
     over = true;
@@ -691,9 +697,9 @@ function initMesh() {
    picking up where the rule under "Built to" leaves off
    ----------------------------------------------------------- */
 function initHeroType() {
-  var el = document.querySelector('[data-type]');
+  const el = document.querySelector('[data-type]');
   if (!el) return;
-  var text = el.textContent;
+  const text = el.textContent;
 
   /* Some screen readers spell out text that's been split into per-character
      elements, so the accessible name goes back on the parent and the letters
@@ -701,10 +707,10 @@ function initHeroType() {
   el.setAttribute('aria-label', text);
   el.textContent = '';
 
-  var START = 0.48, STEP = 0.038;
-  for (var i = 0; i < text.length; i++) {
-    var c = text.charAt(i);
-    var ch = document.createElement('span');
+  const START = 0.48, STEP = 0.038;
+  for (let i = 0; i < text.length; i++) {
+    const c = text.charAt(i);
+    const ch = document.createElement('span');
     ch.className = 'iwh-ch';
     ch.setAttribute('aria-hidden', 'true');
     ch.textContent = c;
@@ -719,20 +725,20 @@ function initHeroType() {
    HOW WE DO IT — four steps as tabs on a process rail
    ----------------------------------------------------------- */
 function initSteps() {
-  var root = document.querySelector('[data-steps]');
+  const root = document.querySelector('[data-steps]');
   if (!root) return;
-  var tabs = [].slice.call(root.querySelectorAll('.iw-steps-tab'));
-  var panels = [].slice.call(root.querySelectorAll('.iw-steps-panel'));
-  var fill = root.querySelector('[data-steps-fill]');
+  const tabs = [].slice.call(root.querySelectorAll('.iw-steps-tab'));
+  const panels = [].slice.call(root.querySelectorAll('.iw-steps-panel'));
+  const fill = root.querySelector('[data-steps-fill]');
   if (!tabs.length || tabs.length !== panels.length) return;
 
-  var current = 0;
+  let current = 0;
 
   function select(i, focus) {
     if (i < 0 || i >= tabs.length) return;
     current = i;
     tabs.forEach(function (t, k) {
-      var on = k === i;
+      const on = k === i;
       t.classList.toggle('is-active', on);
       t.classList.toggle('is-done', k <= i);   // the rail fills up to where you are
       t.setAttribute('aria-selected', on ? 'true' : 'false');
@@ -747,15 +753,15 @@ function initSteps() {
     if (focus) tabs[i].focus();
   }
 
-  var mqMobile = window.matchMedia('(max-width: 767px)');
-  function tabsH() { var el = root.querySelector('.iw-steps-tabs'); return el ? el.offsetHeight : 0; }
+  const mqMobile = window.matchMedia('(max-width: 767px)');
+  function tabsH() { const el = root.querySelector('.iw-steps-tabs'); return el ? el.offsetHeight : 0; }
 
   tabs.forEach(function (tab, i) {
     tab.addEventListener('click', function () {
       // phones: the panels are stacked, so jump to the one for this tab; wider
       // screens keep the one-panel-at-a-time behaviour
       if (mqMobile.matches) {
-        var y = panels[i].getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0) - tabsH() - 8;
+        const y = panels[i].getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0) - tabsH() - 8;
         window.scrollTo({ top: y, behavior: 'smooth' });
       } else {
         select(i);
@@ -764,7 +770,7 @@ function initSteps() {
   });
 
   root.querySelector('.iw-steps-tabs').addEventListener('keydown', function (e) {
-    var k = e.key;
+    const k = e.key;
     if (k === 'ArrowRight' || k === 'ArrowDown') { select((current + 1) % tabs.length, true); }
     else if (k === 'ArrowLeft' || k === 'ArrowUp') { select((current - 1 + tabs.length) % tabs.length, true); }
     else if (k === 'Home') { select(0, true); }
@@ -775,17 +781,17 @@ function initSteps() {
 
   // phones: pin the tabs and let scrolling through the stacked panels pick the
   // active tab — the panel crossing ~42% of the viewport is the one you're on
-  var ticking = false;
+  let ticking = false;
   function onScroll() {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(function () {
       ticking = false;
       if (!mqMobile.matches) return;
-      var line = (window.scrollY || window.pageYOffset || 0) + window.innerHeight * 0.42;
-      var idx = 0;
-      for (var k = 0; k < panels.length; k++) {
-        var top = panels[k].getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0);
+      const line = (window.scrollY || window.pageYOffset || 0) + window.innerHeight * 0.42;
+      let idx = 0;
+      for (let k = 0; k < panels.length; k++) {
+        const top = panels[k].getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0);
         if (top <= line) idx = k;
       }
       if (idx !== current) select(idx);
@@ -813,12 +819,12 @@ function initSteps() {
    payload never blocks the home page's first paint.
    ----------------------------------------------------------- */
 function initHeroModal() {
-  var modal = document.querySelector('[data-graphic-modal]');
-  var openers = [].slice.call(document.querySelectorAll('[data-hero-graphic]'));
+  const modal = document.querySelector('[data-graphic-modal]');
+  const openers = [].slice.call(document.querySelectorAll('[data-hero-graphic]'));
   if (!modal || !openers.length) return;
-  var frame = modal.querySelector('[data-graphic-src]');
-  var panel = modal.querySelector('.iw-modal__panel');
-  var lastFocus = null;
+  const frame = modal.querySelector('[data-graphic-src]');
+  const panel = modal.querySelector('.iw-modal__panel');
+  let lastFocus = null;
 
   // The graphic is a fixed horizontal composition. Rather than let it sit at one
   // size in a huge modal, scale it as a unit to fit the viewport — so it fills a
@@ -826,7 +832,7 @@ function initHeroModal() {
   // the graphic uses its own vertical reflow, so we leave it fluid and scrollable.
   // the graphic canvas is 1280x920 but the actual content sits in a shorter band;
   // crop the empty top and bottom so the popup isn't taller than it needs to be
-  var DESIGN_W = 1280, DESIGN_H = 920, CROP_TOP = 150, CROP_BOT = 862;
+  const DESIGN_W = 1280, DESIGN_H = 920, CROP_TOP = 150, CROP_BOT = 862;
   function layoutFrame() {
     if (!panel || !frame || modal.hidden) return;
     if (window.matchMedia('(max-width: 767px)').matches) {
@@ -834,8 +840,8 @@ function initHeroModal() {
       frame.style.width = '100%'; frame.style.height = '100%'; frame.style.transform = 'none';
       return;
     }
-    var bandH = CROP_BOT - CROP_TOP;
-    var k = Math.min(window.innerWidth * 0.70 / DESIGN_W, window.innerHeight * 0.90 / bandH);
+    const bandH = CROP_BOT - CROP_TOP;
+    const k = Math.min(window.innerWidth * 0.70 / DESIGN_W, window.innerHeight * 0.90 / bandH);
     frame.style.width = DESIGN_W + 'px';
     frame.style.height = DESIGN_H + 'px';
     frame.style.transform = 'translateY(' + (-CROP_TOP * k) + 'px) scale(' + k + ')';
@@ -849,7 +855,7 @@ function initHeroModal() {
     lastFocus = document.activeElement;
     // load the graphic on demand, once (skipped when the frame already carries
     // its content inline via srcdoc — e.g. the self-contained preview build)
-    var lazySrc = frame && frame.getAttribute('data-graphic-src');
+    const lazySrc = frame && frame.getAttribute('data-graphic-src');
     if (frame && lazySrc && !frame.getAttribute('src')) {
       frame.setAttribute('src', lazySrc);
     }
@@ -858,7 +864,7 @@ function initHeroModal() {
     document.body.classList.add('iw-modal-open');
     // next frame: flip .in so the backdrop/panel transition runs
     requestAnimationFrame(function () { modal.classList.add('in'); });
-    var closeBtn = modal.querySelector('.iw-modal__close');
+    const closeBtn = modal.querySelector('.iw-modal__close');
     if (closeBtn) closeBtn.focus();
   }
 
@@ -867,7 +873,7 @@ function initHeroModal() {
     modal.classList.remove('in');
     document.body.classList.remove('iw-modal-open');
     // wait out the fade before hiding so it doesn't snap shut
-    var done = function () {
+    const done = function () {
       modal.hidden = true;
       modal.removeEventListener('transitionend', done);
     };
