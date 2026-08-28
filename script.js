@@ -169,9 +169,15 @@ function mixWorks() {
 /* The hero wall: seven columns of tiles drawn from the same mixed pool (sprite
    shots + portfolio shots), laid out so no tile repeats directly above/below
    itself, across the loop seam, or beside itself in the next column. */
-function buildHeroShots() {
+let heroCols = 0;
+function buildHeroShots(force) {
   const wrap = document.querySelector('.iwc-shots-in');
   if (!wrap) return;
+  // enough columns to fill the viewport (they overflow and clip), so large and
+  // ultrawide screens don't leave the sides of the wall empty
+  const COLS = Math.max(7, Math.ceil(window.innerWidth / 254) + 2);
+  if (!force && COLS <= heroCols) return;   // only rebuild when more are needed
+  heroCols = COLS;
   const sprites = ['50% 0%','50% 27%','50% 42%','50% 58%','50% 74%','50% 96%'].map(function (p) { return { c: 's1', p: p }; })
     .concat([{ c: 's2', p: '50% 6%' }, { c: 's2', p: '50% 94%' }]);
   const pool = sprites.map(function (s) { return { sprite: s }; })
@@ -182,7 +188,6 @@ function buildHeroShots() {
       ? '<span class="iwc-shot iwc-shot--img ' + pfKey(t.img) + '"></span>'
       : '<span class="iwc-shot iwc-shot--' + t.sprite.c + ' ' + bpClass(t.sprite.p) + '"></span>';
   }
-  const COLS = 7;
   const BASE = 6;
   const grid = [];
   let col;
@@ -893,6 +898,12 @@ function initHeroModal() {
 
 function boot() {
   buildHeroShots();
+  // grow the wall to fill wider screens (e.g. maximising or a 4K/5K monitor)
+  let heroShotsT;
+  window.addEventListener('resize', function () {
+    clearTimeout(heroShotsT);
+    heroShotsT = setTimeout(buildHeroShots, 200);
+  }, { passive: true });
   buildShowcase();
   initScrollMarquee();
   initObservers();
