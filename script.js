@@ -174,14 +174,17 @@ function buildHeroShots() {
   }
   var COLS = 7, BASE = 6, grid = [], col, row;
   for (col = 0; col < COLS; col++) {
-    var seq = [];
+    // ids used anywhere in the previous column — the new column shares none of
+    // them, so no two identical tiles ever touch (vertically, horizontally or
+    // diagonally); and each column's own tiles are all distinct
+    var prev = {};
+    if (grid[col - 1]) grid[col - 1].forEach(function (t) { prev[id(t)] = 1; });
+    var used = {}, seq = [];
     for (row = 0; row < BASE; row++) {
-      var bad = {};
-      if (row > 0) bad[id(seq[row - 1])] = 1;
-      if (row === BASE - 1) bad[id(seq[0])] = 1;                 // loop seam
-      if (grid[col - 1]) bad[id(grid[col - 1][row])] = 1;        // left neighbour
-      var choices = pool.filter(function (t) { return !bad[id(t)]; });
-      seq.push(choices[Math.floor(Math.random() * choices.length)]);
+      var choices = pool.filter(function (t) { var k = id(t); return !used[k] && !prev[k]; });
+      var pick = choices[Math.floor(Math.random() * choices.length)];
+      used[id(pick)] = 1;
+      seq.push(pick);
     }
     grid.push(seq);
   }
