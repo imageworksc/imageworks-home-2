@@ -20,6 +20,27 @@ var WORKS = [
   { bg: SPRITE_1, pos: '50% 96%', label: 'Federal',       tag: 'Government' }
 ];
 
+/* Portfolio screenshots dropped in assets/hero-shots — mixed in with the sprites
+   above across both the hero wall and the Our Work rail. */
+var PORTFOLIO = [
+  { src: 'assets/hero-shots/casey-margenau-01.jpg', label: 'Casey Margenau', tag: 'Real Estate' },
+  { src: 'assets/hero-shots/highbrown.jpg',         label: 'Highbrown',      tag: 'Web Design' },
+  { src: 'assets/hero-shots/asc-01.jpg',            label: 'ASC',            tag: 'Web Design' },
+  { src: 'assets/hero-shots/silkvision.jpg',        label: 'SilkVision',     tag: 'Web Design' },
+  { src: 'assets/hero-shots/govdata-1.jpg',         label: 'GovData',        tag: 'Platform' },
+  { src: 'assets/hero-shots/chrysalis-01.jpg',      label: 'Chrysalis',      tag: 'Web Design' },
+  { src: 'assets/hero-shots/barr-group.jpg',        label: 'Barr Group',     tag: 'Web Design' },
+  { src: 'assets/hero-shots/ridgley-walsh-01.jpg',  label: 'Ridgley Walsh',  tag: 'Branding' },
+  { src: 'assets/hero-shots/asc-02.jpg',            label: 'ASC',            tag: 'Sections' },
+  { src: 'assets/hero-shots/casey.jpg',             label: 'Casey Margenau', tag: 'Web Design' },
+  { src: 'assets/hero-shots/silkvision-2.jpg',      label: 'SilkVision',     tag: 'Sections' },
+  { src: 'assets/hero-shots/govdata-2.jpg',         label: 'GovData',        tag: 'Platform' },
+  { src: 'assets/hero-shots/chrysalis-03.jpg',      label: 'Chrysalis',      tag: 'Sections' },
+  { src: 'assets/hero-shots/asc-04.jpg',            label: 'ASC',            tag: 'Sections' },
+  { src: 'assets/hero-shots/casey-2.jpg',           label: 'Casey Margenau', tag: 'Sections' },
+  { src: 'assets/hero-shots/ridgley-walsh-02.jpg',  label: 'Ridgley Walsh',  tag: 'Sections' }
+];
+
 var PARTNERS = [
   { name: 'HERMES Creative Awards',            src: 'assets/logos/hermes.jpg',   h: 76 },
   { name: 'Davey Awards',                      src: 'assets/logos/davey.png',    h: 46 },
@@ -56,7 +77,7 @@ function workCardHTML(w) {
         '<span style="width:9px;height:9px;border-radius:50%;background:#ffbd2e;"></span>' +
         '<span style="width:9px;height:9px;border-radius:50%;background:#28c840;"></span>' +
       '</div>' +
-      '<div style="height:192px;background-image:' + w.bg + ';background-size:100% auto;background-position:' + w.pos + ';background-repeat:no-repeat;"></div>' +
+      '<div style="height:192px;background-image:' + (w.src ? "url('" + w.src + "')" : w.bg) + ';background-size:' + (w.src ? 'cover' : '100% auto') + ';background-position:' + (w.src ? '50% 0%' : w.pos) + ';background-repeat:no-repeat;"></div>' +
       '<div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;">' +
         '<span style="font-size:15px;font-weight:700;color:#143c66;">' + w.label + '</span>' +
         '<span style="font-size:11px;font-weight:700;letter-spacing:.5px;color:#80c34a;background:#eef7e4;padding:4px 9px;border-radius:2px;">' + w.tag + '</span>' +
@@ -122,9 +143,60 @@ function initScrollMarquee() {
   window.addEventListener('load', update);
 }
 
+/* Mix the originals (WORKS) with the new portfolio shots so the rail draws from
+   both — 2 new to 1 original, which also keeps like next to unlike. Every tile is
+   a distinct image, so nothing repeats back to back. */
+function mixWorks() {
+  var out = [], i = 0, j = 0;
+  while (i < WORKS.length || j < PORTFOLIO.length) {
+    if (j < PORTFOLIO.length) out.push(PORTFOLIO[j++]);
+    if (j < PORTFOLIO.length) out.push(PORTFOLIO[j++]);
+    if (i < WORKS.length) out.push(WORKS[i++]);
+  }
+  return out;
+}
+
+/* The hero wall: seven columns of tiles drawn from the same mixed pool (sprite
+   shots + portfolio shots), laid out so no tile repeats directly above/below
+   itself, across the loop seam, or beside itself in the next column. */
+function buildHeroShots() {
+  var wrap = document.querySelector('.iwc-shots-in');
+  if (!wrap) return;
+  var sprites = ['50% 0%','50% 27%','50% 42%','50% 58%','50% 74%','50% 96%'].map(function (p) { return { c: 's1', p: p }; })
+    .concat([{ c: 's2', p: '50% 6%' }, { c: 's2', p: '50% 94%' }]);
+  var pool = sprites.map(function (s) { return { sprite: s }; })
+    .concat(PORTFOLIO.map(function (p) { return { img: p.src }; }));
+  function id(t) { return t.img ? 'i' + t.img : 's' + t.sprite.c + t.sprite.p; }
+  function span(t) {
+    return t.img
+      ? '<span class="iwc-shot" style="background-image:url(\'' + t.img + '\');background-size:cover;background-position:50% 8%;filter:grayscale(1) contrast(1.05) brightness(.3)"></span>'
+      : '<span class="iwc-shot iwc-shot--' + t.sprite.c + '" style="background-position:' + t.sprite.p + '"></span>';
+  }
+  var COLS = 7, BASE = 6, grid = [], col, row;
+  for (col = 0; col < COLS; col++) {
+    var seq = [];
+    for (row = 0; row < BASE; row++) {
+      var bad = {};
+      if (row > 0) bad[id(seq[row - 1])] = 1;
+      if (row === BASE - 1) bad[id(seq[0])] = 1;                 // loop seam
+      if (grid[col - 1]) bad[id(grid[col - 1][row])] = 1;        // left neighbour
+      var choices = pool.filter(function (t) { return !bad[id(t)]; });
+      seq.push(choices[Math.floor(Math.random() * choices.length)]);
+    }
+    grid.push(seq);
+  }
+  var html = '';
+  for (col = 0; col < COLS; col++) {
+    html += '<div class="iwc-col-strip iwc-col-strip--' + (col % 4) + '">' +
+            grid[col].concat(grid[col]).map(span).join('') + '</div>';
+  }
+  wrap.innerHTML = html;
+}
+
 function buildShowcase() {
-  var worksFwd = joinHTML(WORKS, workCardHTML);
-  var worksRev = joinHTML(WORKS.slice().reverse(), workCardHTML);
+  var mixed = mixWorks();
+  var worksFwd = joinHTML(mixed, workCardHTML);
+  var worksRev = joinHTML(mixed.slice().reverse(), workCardHTML);
   var partners = joinHTML(PARTNERS, partnerLogoHTML);
   var testiA   = joinHTML(TESTIMONIALS.slice(0, 4), testiCardHTML);
   var testiB   = joinHTML(TESTIMONIALS.slice(4, 8), testiCardHTML);
@@ -803,6 +875,7 @@ function initHeroModal() {
 }
 
 function boot() {
+  buildHeroShots();
   buildShowcase();
   initScrollMarquee();
   initObservers();

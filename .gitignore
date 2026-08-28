@@ -1,1 +1,4 @@
 .DS_Store
+
+# raw portfolio source drops (only the optimized copies in assets/ are used)
+/hero-shots/
