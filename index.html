@@ -74,18 +74,20 @@
           </defs>
 
           <!-- ---------- the brand's design system: colours, type, components ---------- -->
-          <g>
+          <g class="iw-ds-tile">
             <rect x="40" y="92" width="96" height="40" rx="9" fill="#ffffff" stroke="#e0e7f1" stroke-width="1"/>
             <rect x="52" y="104" width="16" height="16" rx="4" fill="#143c66"/>
             <rect x="72" y="104" width="16" height="16" rx="4" fill="#80c34a"/>
             <rect x="92" y="104" width="16" height="16" rx="4" fill="#1266b5"/>
             <rect x="114" y="104" width="12" height="16" rx="3" fill="#eef2f7"/>
-
+          </g>
+          <g class="iw-ds-tile">
             <rect x="40" y="140" width="96" height="40" rx="9" fill="#ffffff" stroke="#e0e7f1" stroke-width="1"/>
             <text x="53" y="168" font-family="'Plus Jakarta Sans', sans-serif" font-size="23" font-weight="800" fill="#143c66">Aa</text>
             <rect x="92" y="150" width="34" height="6" rx="3" fill="#c7d5e8"/>
             <rect x="92" y="163" width="26" height="6" rx="3" fill="#dce4ee"/>
-
+          </g>
+          <g class="iw-ds-tile">
             <rect x="40" y="188" width="96" height="40" rx="9" fill="#ffffff" stroke="#e0e7f1" stroke-width="1"/>
             <rect x="52" y="200" width="72" height="16" rx="8" fill="#eaf6dd" stroke="#bfe09b" stroke-width="1"/>
             <rect x="61" y="205" width="40" height="6" rx="3" fill="#5c9a2e"/>
@@ -123,14 +125,14 @@
           <rect x="208" y="244" width="46" height="6" rx="3" fill="#ffffff" fill-opacity="0.9"/>
 
           <!-- ---------- AI-assisted editing & management ---------- -->
-          <g>
+          <g class="iw-ai">
             <path d="M418 78 L418 92" stroke="#9db8d6" stroke-width="1.4" stroke-dasharray="3 4"/>
             <rect x="388" y="48" width="66" height="27" rx="13.5" fill="#143c66"/>
             <path class="iw-sem-check" d="M404 55 l2.2 4.6 4.6 2.2 -4.6 2.2 -2.2 4.6 -2.2 -4.6 -4.6 -2.2 4.6 -2.2 z" fill="#80c34a"/>
             <text x="416" y="66" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="800" letter-spacing="1" fill="#ffffff">AI</text>
           </g>
 
-          <!-- ---------- runs on any stack ---------- -->
+          <!-- ---------- runs on any stack (real logos) ---------- -->
           <g stroke="#b7cee6" stroke-width="1.4" fill="none">
             <path d="M305 274 L305 284"/>
             <path d="M250 284 L360 284"/>
@@ -138,19 +140,38 @@
             <path d="M305 284 L305 291"/>
             <path d="M360 284 L360 291"/>
           </g>
-          <circle cx="250" cy="310" r="20" fill="#ffffff" stroke="#dbe4f0" stroke-width="1.4"/>
-          <text x="250" y="316" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="17" font-weight="800" fill="#1266b5">W</text>
-          <circle cx="305" cy="310" r="20" fill="#ffffff" stroke="#dbe4f0" stroke-width="1.4"/>
-          <path d="M305 299 c 7 7, 10 10.5, 10 15.5 a 10 10 0 0 1 -20 0 c 0 -5 3 -8.5 10 -15.5 z" fill="#1266b5"/>
-          <circle cx="360" cy="310" r="20" fill="#ffffff" stroke="#dbe4f0" stroke-width="1.4"/>
-          <text x="360" y="315" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Consolas, monospace" font-size="13.5" font-weight="700" fill="#143c66">&lt;/&gt;</text>
 
-          <!-- ---------- labels ---------- -->
-          <circle cx="46" cy="360" r="4" fill="#1266b5"/>
-          <text class="iw-sem-label" x="58" y="364" fill="#1266b5">BUILT FOR YOUR BRAND</text>
-          <circle cx="300" cy="360" r="4" fill="#5c9a2e"/>
-          <text class="iw-sem-label" x="312" y="364" fill="#4a8628">RUNS ON ANY STACK</text>
-          <text class="ix-16" x="58" y="384" font-size="9.4" font-weight="500" fill="#7d8ea1">One design system, deployed anywhere and managed with AI.</text>
+          <g class="iw-stack-badge">
+            <circle cx="250" cy="310" r="20" fill="#ffffff" stroke="#dbe4f0" stroke-width="1.4"/>
+            <g transform="translate(238.4,298.4) scale(0.966)" fill="#21759b">
+              <path d="M21.469 6.825c.84 1.537 1.318 3.3 1.318 5.175 0 3.979-2.156 7.456-5.363 9.325l3.295-9.527c.615-1.54.82-2.771.82-3.864 0-.405-.026-.78-.07-1.11m-7.981.105c.647-.03 1.232-.105 1.232-.105.582-.075.514-.93-.067-.899 0 0-1.755.135-2.88.135-1.064 0-2.85-.15-2.85-.15-.585-.03-.661.855-.075.885 0 0 .54.061 1.125.09l1.68 4.605-2.37 7.08L5.354 7.03c.649-.03 1.234-.1 1.234-.1.585-.075.516-.93-.065-.896 0 0-1.746.138-2.874.138-.2 0-.438-.008-.69-.015C4.911 3.15 8.235 1.215 12 1.215c2.809 0 5.365 1.072 7.286 2.833-.046-.003-.091-.009-.141-.009-1.06 0-1.812.923-1.812 1.914 0 .89.513 1.643 1.06 2.531.411.72.89 1.643.89 2.977 0 .923-.354 1.994-.821 3.479l-1.075 3.585-3.9-11.61.001.014zM12 22.784c-1.059 0-2.081-.153-3.048-.437l3.237-9.406 3.315 9.087c.024.053.05.101.078.149-1.12.393-2.325.609-3.582.609M1.211 12c0-1.564.336-3.05.935-4.39L7.29 21.709C3.694 19.96 1.212 16.271 1.211 12M12 0C5.385 0 0 5.385 0 12s5.385 12 12 12 12-5.385 12-12S18.615 0 12 0"/>
+            </g>
+          </g>
+
+          <g class="iw-stack-badge">
+            <circle cx="305" cy="310" r="20" fill="#ffffff" stroke="#dbe4f0" stroke-width="1.4"/>
+            <g transform="translate(293.4,298.4) scale(0.966)" fill="#0678be">
+              <path d="M15.78 5.113C14.09 3.425 12.48 1.815 11.998 0c-.48 1.815-2.09 3.425-3.778 5.113-2.534 2.53-5.405 5.4-5.405 9.702a9.184 9.18 0 1 0 18.368 0c0-4.302-2.871-7.17-5.404-9.702M6.72 16.954c-.563-.019-2.64-3.582.86-7.041l2.316 2.523a.195.195 0 0 1-.014.276c-.54.556-2.529 2.361-2.879 3.855-.072.309-.216.436-.283.386m5.246 4.366a2.679 2.679 0 0 1-2.679-2.679 2.696 2.696 0 0 1 .749-1.848c.539-.585 2.128-2.318 2.128-2.318s1.562 1.761 2.121 2.311a2.622 2.622 0 0 1 .766 1.855 2.679 2.679 0 0 1-2.679 2.679m6.564-5.677c-.08.176-.26.469-.505.478-.44.016-.487-.209-.812-.692-.715-1.062-6.94-7.559-8.1-8.812-1.018-1.106-.143-1.885.264-2.293C9.916 3.502 12 1.418 12 1.418s6.24 5.921 8.856 9.006c.03.033 1.62 2.196.234 5.219"/>
+            </g>
+          </g>
+
+          <g class="iw-stack-badge">
+            <circle cx="360" cy="310" r="20" fill="#ffffff" stroke="#dbe4f0" stroke-width="1.4"/>
+            <path d="M354 304 l-5 6 5 6 M366 304 l5 6 -5 6" stroke="#143c66" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+
+          <!-- ---------- labels, as chips ---------- -->
+          <g class="iw-glabel">
+            <rect x="38" y="348" width="188" height="27" rx="13.5" fill="#e8f1fb"/>
+            <circle cx="56" cy="361.5" r="4" fill="#1266b5"/>
+            <text class="iw-chip-txt" x="68" y="365" fill="#1266b5">BUILT FOR YOUR BRAND</text>
+          </g>
+          <g class="iw-glabel">
+            <rect x="288" y="348" width="170" height="27" rx="13.5" fill="#eef7e4"/>
+            <circle cx="306" cy="361.5" r="4" fill="#5c9a2e"/>
+            <text class="iw-chip-txt" x="318" y="365" fill="#4a8628">RUNS ON ANY STACK</text>
+          </g>
+          <text class="ix-16" x="40" y="394" font-size="9.6" font-weight="500" fill="#7d8ea1">One design system, deployed anywhere and managed with AI.</text>
         </svg>
       </div>
     </div>
