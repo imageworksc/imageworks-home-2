@@ -700,3 +700,9 @@ body.iw-modal-open { overflow: hidden; }
 .pf-asc-04 { background-image: url("assets/hero-shots/asc-04.jpg"); }
 .pf-casey-2 { background-image: url("assets/hero-shots/casey-2.jpg"); }
 .pf-ridgley-walsh-02 { background-image: url("assets/hero-shots/ridgley-walsh-02.jpg"); }
+
+
+/* ---------- intro section CTA (Built to Stand Out) ---------- */
+.iw-intro-cta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 30px; }
+.iw-intro-btn { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 28px; border-radius: 2px; background: #80c34a; color: #fff; font-size: 16px; font-weight: 700; text-decoration: none; box-shadow: 0 1px 2px rgba(20,40,80,.14); }
+.iw-intro-note { font-size: 14.5px; font-weight: 500; color: #7d8ea1; }
