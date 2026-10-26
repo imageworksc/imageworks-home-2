@@ -624,7 +624,10 @@ body.iw-modal-open { overflow: hidden; }
 
 /* Meet ImageWorks: the Why band, now with a lede and a title + line per column */
 .iw-meet-head { max-width:780px; margin-bottom:80px; }
-.iw-meet-lede { margin:18px auto 0; max-width:700px; font-size:16.5px; line-height:1.65; color:rgba(226,238,252,.72); font-weight:400; }
+/* subtitle and lede share one measure and balance their lines, so the two
+   paragraphs read as one even block instead of a wide line over a ragged one */
+.iw-meet-head .ix-29 { max-width:680px; margin-left:auto; margin-right:auto; text-wrap:balance; }
+.iw-meet-lede { margin:18px auto 0; max-width:680px; font-size:16.5px; line-height:1.65; color:rgba(226,238,252,.72); font-weight:400; text-wrap:balance; }
 .iw-why-t { font-weight:700; font-size:18.5px; line-height:1.35; }
 .iw-why-d { margin:10px 0 0; font-size:15.5px; line-height:1.55; color:rgba(226,238,252,.72); }
 
