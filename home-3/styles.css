@@ -1,0 +1,738 @@
+/* ===========================================================
+   ImageWorks Creative — Home
+   Plain CSS. No build step. Edit freely.
+   =========================================================== */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: #fff;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #1f2b3e;
+}
+::selection { background: rgba(128, 195, 74, .28); }
+
+/* ---------- keyframes ---------- */
+@keyframes iwFloat   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+@keyframes iwFloatB  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(12px)} }
+@keyframes iwDrift   { 0%{transform:translate(0,0) scale(1)} 33%{transform:translate(46px,-34px) scale(1.12)} 66%{transform:translate(-34px,26px) scale(.94)} 100%{transform:translate(0,0) scale(1)} }
+@keyframes iwDriftB  { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-40px,30px) scale(1.1)} 100%{transform:translate(0,0) scale(1)} }
+@keyframes iwMarquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+@keyframes iwMarqueeR{ from{transform:translateX(-50%)} to{transform:translateX(0)} }
+@keyframes iwPulse   { 0%{transform:scale(.6);opacity:.6} 100%{transform:scale(2.4);opacity:0} }
+@keyframes iwSpin    { to{transform:rotate(360deg)} }
+@keyframes iwFlow    { from{background-position:0 0} to{background-position:0 12px} }
+@keyframes iwNodePulse { 0%,100%{opacity:1;transform:translateX(-50%) scale(1)} 50%{opacity:.35;transform:translateX(-50%) scale(1.5)} }
+@keyframes iwBob     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+@keyframes iwBobB    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+@keyframes iwTileA   { 0%,100%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(0,-14px) rotate(-.7deg)} }
+@keyframes iwTileB   { 0%,100%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(0,13px) rotate(.7deg)} }
+@keyframes iwTileC   { 0%,100%{transform:translate(0,0)} 50%{transform:translate(0,-11px)} }
+@keyframes iwTileD   { 0%,100%{transform:translate(0,0)} 50%{transform:translate(0,12px)} }
+@keyframes iwAmb1    { 0%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(34px,-30px) rotate(4deg)} 100%{transform:translate(0,0) rotate(0deg)} }
+@keyframes iwAmb2    { 0%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(-40px,28px) rotate(-5deg)} 100%{transform:translate(0,0) rotate(0deg)} }
+@keyframes iwAmb3    { 0%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(26px,32px) rotate(3deg)} 100%{transform:translate(0,0) rotate(0deg)} }
+@keyframes iwBlob    { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-26px) scale(1.12)} 100%{transform:translate(0,0) scale(1)} }
+@keyframes iwBlobB   { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-34px,30px) scale(1.1)} 100%{transform:translate(0,0) scale(1)} }
+@keyframes iwGlowPulse { 0%,100%{opacity:.35} 50%{opacity:.85} }
+@keyframes iwPanelFade { 0%,100%{opacity:.5} 50%{opacity:.95} }
+@keyframes iwPart1   { 0%{transform:translate(0,0);opacity:.2} 50%{transform:translate(18px,-46px);opacity:.9} 100%{transform:translate(0,0);opacity:.2} }
+@keyframes iwPart2   { 0%{transform:translate(0,0);opacity:.25} 50%{transform:translate(-22px,-38px);opacity:.85} 100%{transform:translate(0,0);opacity:.25} }
+@keyframes iwGridShift { 0%{background-position:0 0} 100%{background-position:46px 46px} }
+
+/* ---------- scroll reveal ---------- */
+.iw-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity .85s cubic-bezier(.16,.84,.44,1), transform .85s cubic-bezier(.16,.84,.44,1);
+}
+.iw-reveal.in { opacity: 1; transform: none; }
+
+/* ---------- marquee ---------- */
+.iw-marq {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.iw-track { display: flex; width: max-content; }
+.iw-marq:hover .iw-track { animation-play-state: paused; }
+
+/* ---------- links & hovers ---------- */
+.iw-link { position: relative; text-decoration: none; }
+.iw-link::after {
+  content: ""; position: absolute; left: 0; bottom: -4px;
+  height: 2px; width: 100%; background: #80c34a;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .3s cubic-bezier(.16,.84,.44,1);
+}
+.iw-link:hover::after { transform: scaleX(1); }
+/* CTA links: underline matches the text color instead of the default green */
+.iw-cta-link::after { background: currentColor; }
+
+.iw-card { transition: transform .4s cubic-bezier(.16,.84,.44,1), box-shadow .4s cubic-bezier(.16,.84,.44,1); }
+.iw-work { transition: transform .45s cubic-bezier(.16,.84,.44,1), box-shadow .45s cubic-bezier(.16,.84,.44,1); }
+.iw-work:hover { transform: translateY(-8px); box-shadow: 0 14px 36px rgba(20,40,80,.16); }
+
+.iw-btn { transition: transform .25s cubic-bezier(.16,.84,.44,1), box-shadow .25s ease, filter .25s ease; }
+.iw-btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(20,40,80,.18); filter: brightness(1.04); }
+
+.iw-ghost { transition: transform .25s ease, background .25s ease, border-color .25s ease; }
+.iw-ghost:hover { transform: translateY(-3px); background: rgba(18,102,181,.06); border-color: rgba(18,102,181,.5); }
+
+.iw-partner { opacity: .92; transition: opacity .4s ease, transform .4s ease; }
+.iw-partner:hover { opacity: 1; transform: scale(1.06); }
+
+.iw-seg { transition: color .3s ease; }
+
+/* tabbed panels: shown/hidden by JS via [hidden] */
+[hidden] { display: none !important; }
+
+
+/* shared blue -> navy gradient behind "What We Do" + "Why ImageWorks" */
+.iw-blueband {
+  position: relative;
+  background: linear-gradient(180deg,
+    #205fa6 0%,
+    #1d569a 28%,
+    #164784 47%,
+    #113659 65%,
+    #0d2748 83%,
+    #0a1c38 100%);
+}
+/* the dot field rides on the whole band, not on one section — laid over the
+   gradient rather than replacing it, so the grid runs unbroken from What We Do
+   straight through Why ImageWorks instead of restarting at the seam */
+.iw-blueband::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+  pointer-events: none;
+}
+
+/* ---------- HERO — navy field + animated tech mesh ---------- */
+.iw-hero {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; min-height: 600px;
+  overflow: hidden;
+  /* The copy is flex-centred inside the content box, so the two pads decide
+     where it lands. With no bar above the hero they're equal — their total is
+     the same as the old 148/76 split, so the hero keeps its height. */
+  padding: 112px 40px 112px;
+  /* a cooler, more dimensional ground: a bright cool glow off the top, an
+     electric-blue bloom to the right and a fainter counter-bloom lower-left for
+     depth, a deepened bottom, over a slightly cooler deep-navy base */
+  background:
+    radial-gradient(130% 100% at 50% -8%, #1e6bb0 0%, rgba(30,107,176,0) 52%),
+    radial-gradient(72% 62% at 82% 16%, rgba(32,132,206,0.30) 0%, rgba(32,132,206,0) 60%),
+    radial-gradient(60% 56% at 14% 78%, rgba(26,95,165,0.22) 0%, rgba(26,95,165,0) 62%),
+    radial-gradient(100% 72% at 50% 118%, rgba(5,16,33,0.66) 0%, rgba(5,16,33,0) 60%),
+    linear-gradient(165deg, #103f74 0%, #0b2c55 48%, #071a38 100%);
+}
+/* ---------- HERO BACKGROUND: the studio's work, in duotone columns ----------
+   Seven columns of the showcase shots ride slowly up and down at their own
+   rates, greyscaled and blended to navy so they read as a wall of work seen
+   through the dark. The sprites are only fetched once idle (see initShots), and
+   never on a narrow screen — so on phones the hero is just the navy field. */
+.iwc-shots {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none; overflow: hidden;
+  isolation: isolate;               /* keeps the duotone blend off the field below */
+  opacity: 0; transition: opacity 1.4s ease;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 13%, #000 86%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0, #000 13%, #000 86%, transparent 100%);
+}
+.iwc-shots.is-on { opacity: .12; }
+.iwc-shots-in { position: absolute; inset: -6% 0; display: flex; justify-content: center; gap: 18px; }
+.iwc-col-strip { flex: none; display: flex; flex-direction: column; gap: 18px; height: max-content; will-change: transform; }
+.iwc-col-strip--0 { animation: iwcRise 68s linear infinite; }
+.iwc-col-strip--1 { animation: iwcFall 92s linear infinite; }
+.iwc-col-strip--2 { animation: iwcRise 110s linear infinite; }
+.iwc-col-strip--3 { animation: iwcFall 78s linear infinite; }
+@keyframes iwcRise { from { transform: translateY(0); }    to { transform: translateY(-50%); } }
+@keyframes iwcFall { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+.iwc-shot {
+  flex: none; width: 236px; height: 148px; border-radius: 2px;
+  background-size: 100% auto; background-repeat: no-repeat; background-color: #081f3a;
+  filter: grayscale(1) contrast(1.12) brightness(.4);
+}
+/* nothing is requested until the layer is switched on */
+.iwc-shots.is-on .iwc-shot--s1 { background-image: url("assets/work-sprite-1.png"); }
+.iwc-shots.is-on .iwc-shot--s2 { background-image: url("assets/work-2.png"); }
+/* the duotone: hue/saturation from this plate, luminosity from the shots below */
+.iwc-shots::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(150deg, #14538f 0%, #103f74 48%, #0a2748 100%);
+  mix-blend-mode: color; pointer-events: none;
+}
+/* phones: smaller shots so more columns and rows read behind the copy */
+@media (max-width: 767px) {
+  .iwc-shots-in { gap: 12px; }
+  .iwc-col-strip { gap: 12px; }
+  .iwc-shot { width: 128px; height: 80px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iwc-col-strip { animation: none !important; }
+}
+
+/* the mesh sits behind the copy and never eats pointer events */
+.iwh-mesh {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  /* fade out top & bottom so it eases in at the top and into the next section */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 84%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 84%, transparent 100%);
+}
+
+.iwh-center {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 820px;
+  text-align: center;
+}
+/* soft scrim behind the copy — enough to hold contrast, light enough that the
+   network still reads through the middle of the hero */
+.iwh-center::before {
+  content: "";
+  position: absolute; left: 50%; top: 50%;
+  width: 150%; height: 190%;
+  transform: translate(-50%, -50%);
+  /* a blue well of depth pooled under the copy — deep enough that the headline
+     and subtitle read cleanly over the wall of work behind them */
+  background: radial-gradient(ellipse 60% 76% at center,
+    rgba(7,22,46,.82) 0%,
+    rgba(11,45,86,.56) 40%,
+    rgba(13,52,96,.22) 62%,
+    rgba(13,52,96,0) 78%);
+  z-index: -1;
+  pointer-events: none;
+}
+.iwh-h1 { margin: 0; font-size: 46px; line-height: 1.18; font-weight: 800; letter-spacing: -1.5px; color: #fff; }
+.iwh-hi { color: #80c34a; }
+.iwh-line { display: block; }
+
+/* each phrase lifts in on its own --d; inline-block so it can take a transform */
+.iwh-up  { display: inline-block; animation: iwhUnveil .8s cubic-bezier(.16,.84,.44,1) var(--d, 0s) backwards; }
+.iwh-sub { animation: iwhUnveil .8s cubic-bezier(.16,.84,.44,1) .6s backwards; }
+@keyframes iwhUnveil { from { opacity: 0; transform: translateY(.28em); } }
+
+/* the accent lands a letter at a time — JS stamps each letter's delay */
+.iwh-ch { display: inline-block; animation: iwhChar .44s cubic-bezier(.16,.84,.44,1) backwards; }
+@keyframes iwhChar { from { opacity: 0; transform: translateY(.34em); } }
+
+/* the button and trust bar lift in once the words have all landed */
+.iwh-cta   { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) 1.16s backwards; }
+.iwh-trust { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) 1.28s backwards; }
+/* Only a from-state: every keyframe ends at the element's natural value, and
+   `backwards` drops the fill once it's done — so the CTA's hover lift still wins
+   afterwards instead of being pinned by a forwards fill. */
+@keyframes iwhFade { from { opacity: 0; transform: translateY(14px); } }
+.iwh-sub {
+  margin: 22px auto 0; max-width: 580px;
+  font-size: 18px; line-height: 1.6; font-weight: 500;
+  color: rgba(226,238,252,.78);
+  text-wrap: balance;
+}
+.iwh-tag {
+  margin: 14px auto 0; max-width: 680px;
+  font-size: 15px; line-height: 1.55; font-weight: 700; letter-spacing: .01em;
+  color: #fff;
+  text-wrap: pretty;
+  animation: iwhUnveil .8s cubic-bezier(.16,.84,.44,1) .8s backwards;
+}
+.iwh-ms { color: #7cc0f7; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+/* outlined against the navy: a green rule, the hero showing through, and the
+   site's squared 2px corner rather than a pill. No drop shadow — a shadow under
+   a see-through button reads as a mistake. It fills in on hover */
+.iwh-cta {
+  display: inline-flex; align-items: center; gap: 12px;
+  height: 54px; padding: 0 24px; margin-top: 40px;
+  border-radius: 2px;
+  background: rgba(128,195,74,.10); color: #fff;
+  border: 1.5px solid #80c34a;
+  font-size: 16px; font-weight: 700; text-decoration: none;
+  transition: background .25s ease, border-color .25s ease;
+}
+.iwh-cta:hover { background: #80c34a; border-color: #80c34a; }
+
+@media (min-width: 1441px) {
+  .iw-hero { min-height: 660px; }
+  .iwh-h1 { font-size: 58px; letter-spacing: -1.9px; }
+  .iwh-sub { font-size: 20px; margin-top: 26px; }
+}
+@media (max-width: 767px) {
+  .iw-hero { min-height: 0; padding: 90px 24px 90px; }   /* same total as the old 126/54 split */
+  .iwh-h1 { font-size: 30px; letter-spacing: -1px; }
+  .iwh-sub { font-size: 17px; margin-top: 18px; }
+  .iwh-tag { font-size: 14px; margin-top: 12px; }
+  .iwh-cta { margin-top: 30px; height: 52px; }
+}
+
+/* ---------- intro statement responsive ---------- */
+@media (max-width: 767px) {
+  .iw-intro-grid { grid-template-columns: 1fr !important; gap: 44px !important; }
+}
+
+
+/* ---------- How We Do It: the process as a rail of four stations ---------- */
+.iw-steps {
+  max-width: 1176px; margin: 0 auto; padding: 0 40px;
+}
+.iw-steps-tabs {
+  position: relative;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  /* squared off to match the What We Do cards (2px) */
+  border-radius: 2px 2px 0 0;
+  background: #f7f9fc;
+  border: 1px solid #e3eaf3;
+  /* the rail the stations sit on */
+  box-shadow: inset 0 -2px 0 #e3eaf3;
+}
+.iw-steps-tab {
+  position: relative;
+  display: flex; align-items: center; gap: 13px;
+  padding: 18px 22px;
+  border: 0; border-right: 1px solid #e9eef5;
+  background: transparent; cursor: pointer;
+  text-align: left; font: inherit;
+  transition: background .3s ease;
+}
+.iw-steps-tab:last-of-type { border-right: 0; }
+.iw-steps-tab:hover { background: #f1f5fa; }
+.iw-steps-tab:focus-visible { outline: 2px solid #1266b5; outline-offset: -3px; border-radius: 8px; }
+.iw-steps-tab.is-active { background: #ffffff; }
+
+/* the tech tile: a module that powers up — brand blue with a glow ring — when
+   it's the step you're on. The icon inherits currentColor, so the tile is the
+   only thing that decides its colour */
+.iw-steps-tile {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: #eef1f6; color: #9aa9bc;
+  transition: background .4s ease, color .4s ease,
+              transform .4s cubic-bezier(.2,.8,.3,1), box-shadow .4s ease;
+}
+.iw-steps-tile svg { width: 20px; height: 20px; }
+.iw-steps-tab:hover .iw-steps-tile { background: #e5edf7; color: #5a6b82; }
+.iw-steps-tab.is-active .iw-steps-tile {
+  background: #1266b5; color: #fff; transform: scale(1.04);
+  box-shadow: 0 0 0 4px rgba(18,102,181,.14), 0 8px 18px rgba(18,102,181,.30);
+}
+
+.iw-steps-txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+/* the number stays in the site face (Plus Jakarta Sans) */
+.iw-steps-n {
+  font-size: 11px; font-weight: 800; letter-spacing: 1.4px; color: #a8b6c6;
+  transition: color .3s ease;
+}
+.iw-steps-l { font-size: 15px; font-weight: 700; letter-spacing: -.1px; color: #7d8ea1; transition: color .3s ease; }
+.iw-steps-tab.is-active .iw-steps-n { color: #5c9a2e; }
+.iw-steps-tab.is-active .iw-steps-l { color: #143c66; }
+.iw-steps-tab:hover .iw-steps-l { color: #143c66; }
+
+/* the station node on the rail: green once a step is done, brand-blue with a ring
+   for the one you're on — so it echoes the powered-up tile above it */
+.iw-steps-tab::after {
+  content: ""; position: absolute; left: 50%; bottom: -5px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: #d3dde9; border: 2px solid #fff;
+  transform: translateX(-50%);
+  transition: background .35s ease, transform .35s cubic-bezier(.2,.8,.3,1), box-shadow .35s ease;
+  z-index: 2;
+}
+.iw-steps-tab.is-done::after { background: #5c9a2e; }
+.iw-steps-tab.is-active::after {
+  background: #1266b5;
+  transform: translateX(-50%) scale(1.3);
+  box-shadow: 0 0 0 4px rgba(18,102,181,.16);
+}
+/* the rail fills from the start of the process up to the station you're on;
+   the blue→green run reads as "current, over everything already done" */
+.iw-steps-fill {
+  position: absolute; left: 0; bottom: -2px; height: 2px;
+  width: 12.5%;
+  background: linear-gradient(90deg, #1266b5, #5c9a2e);
+  transition: width .5s cubic-bezier(.2,.8,.3,1);
+  z-index: 1;
+}
+
+.iw-steps-panels {
+  display: grid;                      /* every panel shares one cell, so the box
+                                        never resizes when you switch steps */
+  border: 1px solid #e3eaf3; border-top: 0;
+  border-radius: 0 0 2px 2px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(20,40,80,.05), 0 10px 30px rgba(20,40,80,.06);
+}
+.iw-steps-panel {
+  grid-area: 1 / 1;
+  display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px;
+  padding: 46px 44px 48px;
+  opacity: 0; visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity .4s ease, transform .45s cubic-bezier(.2,.8,.3,1), visibility .4s;
+}
+/* the box is as tall as the longest step, so shorter steps would sit high and
+   leave a hole underneath — both columns centre in the space instead. The
+   columns still stretch, so the divider rule keeps its full height. */
+.iw-steps-copy, .iw-steps-out { display: flex; flex-direction: column; justify-content: center; }
+.iw-steps-panel.is-active { opacity: 1; visibility: visible; transform: none; }
+.iw-steps-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: #5c9a2e; }
+.iw-steps-title { margin: 14px 0 18px; font-size: 30px; line-height: 1.22; font-weight: 800; letter-spacing: -.5px; color: #143c66; text-wrap: balance; }
+.iw-steps-body { margin: 0; font-size: 18px; line-height: 1.7; color: #5a6b82; }
+.iw-steps-body + .iw-steps-body { margin-top: 14px; }
+.iw-steps-body strong { color: #143c66; font-weight: 700; }
+/* the deliverables read as the outcome of the copy — a small "what you get"
+   panel of tidy cards, set behind a rule so they hang off the step's story.
+   Green here on purpose: blue is the current step, green is what it delivers */
+.iw-steps-out { border-left: 1px solid #eaeff6; padding-left: 40px; }
+.iw-steps-out::before {
+  content: "What you get";
+  display: block;
+  font-size: 12px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;
+  color: #5c9a2e; margin-bottom: 16px;
+}
+.iw-steps-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.iw-steps-list li {
+  display: flex; align-items: center; gap: 13px;
+  padding: 12px 14px;
+  border: 1px solid #e9eef4; border-radius: 12px;
+  background: #fbfcfe;
+  font-size: 14.5px; line-height: 1.4; font-weight: 600; color: #143c66;
+  transition: border-color .3s ease, background .3s ease,
+              box-shadow .3s ease, transform .35s cubic-bezier(.2,.8,.3,1);
+}
+.iw-steps-list li:hover {
+  border-color: #cfe0f2; background: #ffffff;
+  box-shadow: 0 8px 20px rgba(20,40,80,.08);
+  transform: translateX(3px);
+}
+/* each item carries its own glyph — the icon should say something the line
+   doesn't have to repeat, so a row of identical checks is no use here */
+.iw-steps-ic {
+  flex-shrink: 0; width: 34px; height: 34px;
+  border-radius: 9px; background: #eef6e6;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .3s ease, transform .35s cubic-bezier(.2,.8,.3,1);
+}
+.iw-steps-ic svg { width: 18px; height: 18px; }
+.iw-steps-list li:hover .iw-steps-ic { background: #e2f0d3; transform: scale(1.07); }
+@media (max-width: 980px) {
+  .iw-steps-panel { grid-template-columns: 1fr; gap: 34px; padding: 38px 30px 40px; }
+  .iw-steps-out { border-left: 0; border-top: 1px solid #eaeff6; padding-left: 0; padding-top: 26px; }
+}
+@media (max-width: 720px) {
+  .iw-steps { padding: 0 24px; }
+  .iw-steps-tabs { grid-template-columns: repeat(2, 1fr); }
+  .iw-steps-tab { padding: 14px 14px; gap: 11px; }
+  .iw-steps-tile { width: 34px; height: 34px; border-radius: 9px; }
+  .iw-steps-tile svg { width: 18px; height: 18px; }
+  .iw-steps-tab:nth-of-type(2) { border-right: 0; }
+  .iw-steps-tab:nth-of-type(-n+2) { border-bottom: 1px solid #e9eef5; }
+  .iw-steps-l { font-size: 14px; }
+  /* the rail only reads as a rail in one row — drop it rather than fake it */
+  .iw-steps-tab::after, .iw-steps-fill { display: none; }
+  .iw-steps-title { font-size: 25px; }
+}
+
+/* ---------- How We Do It on phones: sticky tabs, panels you scroll through ----------
+   The panel is taller than a phone screen, so instead of pinning the whole card
+   and swapping panels, the tab strip pins and the panels flow one after another;
+   scrolling through them drives the active tab (see initSteps). */
+@media (max-width: 767px) {
+  /* the section's overflow:hidden would trap the sticky tabs inside it, so let it
+     overflow (the page wrapper still clips horizontally via overflow-x:clip) */
+  .iw-hwdi { overflow: visible !important; }
+  .iw-steps-tabs { position: sticky; top: 0; z-index: 30; box-shadow: 0 8px 20px rgba(15,36,64,.10); }
+  .iw-steps-panels { display: block; }
+  .iw-steps-panel { grid-area: auto; opacity: 1 !important; visibility: visible !important;
+    transform: none !important; scroll-margin-top: 150px; }
+  .iw-steps-panel + .iw-steps-panel { border-top: 1px solid #eef2f7; }
+  .iw-steps-copy, .iw-steps-out { justify-content: flex-start; }
+}
+
+/* ---------- intro graphic: the page, read twice ---------- */
+/* no fill here on purpose: each label carries its own fill attribute (blue for
+   the human side, green for the machine side) and a CSS fill would silently
+   override it — presentation attributes lose to CSS */
+.iw-sem-label { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; }
+/* the dashed runs read as the page being continuously ingested — slow enough
+   to register as a system working, not as an animation asking for attention */
+.iw-sem-flow { stroke-dasharray: 4 5; animation: iwSemFlow 2.8s linear infinite; }
+@keyframes iwSemFlow { to { stroke-dashoffset: -18; } }
+.iw-sem-check { transform-box: fill-box; transform-origin: center; animation: iwSemPulse 4.5s ease-in-out infinite; }
+@keyframes iwSemPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.09); } }
+
+/* ---------- phones: tablet (>=768) keeps the desktop layout, phones stack ----------
+   The grids are set inline in index.html, so these override with !important. */
+
+@media (max-width: 767px) {
+  /* reviews: one readable row instead of two, with cards that fit the screen */
+  .iw-testi-row2 { display: none !important; }
+  .iw-testi { width: 84vw !important; max-width: 330px !important; }
+  /* and it auto-scrolls like Our Work (the CSS animation overrides the
+     scroll-driven transform, which the marquee JS clears on phones) */
+  #track-scroll-testi-a { animation: iwMarquee 34s linear infinite; will-change: transform; }
+
+  /* What We Do: three cards become one column */
+  .iw-what-grid { grid-template-columns: 1fr !important; }
+
+  /* Why ImageWorks: four columns divided by vertical rules become a stacked
+     list — the side rules become top rules so each item still reads as separate */
+  .iw-why-grid { grid-template-columns: 1fr !important; }
+  .iw-why-grid > div {
+    border-left: 0 !important; border-right: 0 !important;
+    border-top: 1px solid rgba(255,255,255,.12) !important;
+    padding: 30px 6px 4px !important;
+  }
+  .iw-why-grid > div:first-child { border-top: 0 !important; padding-top: 0 !important; }
+  .iw-meet-head { margin-bottom: 48px; }
+  .iw-meet-lede, .iw-super-body { font-size: 15.5px; }
+  .iw-super { margin-top: 64px; padding-top: 52px; }
+  .iw-super-lead { font-size: 18px; }
+
+  /* trim the tall desktop section padding so phones don't scroll through empty bands */
+  section[style*="104px 40px"], section[style*="112px 40px"], section[style*="108px 40px"] { padding-left: 20px !important; padding-right: 20px !important; }
+}
+
+/* ---------- hero graphic modal ---------- */
+.iw-modal {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 28px;
+}
+.iw-modal[hidden] { display: none; }
+.iw-modal__backdrop {
+  position: absolute; inset: 0;
+  background: rgba(9, 24, 44, .62);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  opacity: 0; transition: opacity .3s ease;
+}
+.iw-modal__panel {
+  position: relative;
+  /* JS sizes this to hug the scaled graphic on tablet/desktop; this is the
+     fallback before it runs */
+  width: 96vw; height: 92vh;
+  background: #f4f7fb; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(9, 24, 44, .45);
+  opacity: 0; transform: translateY(14px) scale(.985);
+  transition: opacity .3s ease, transform .3s cubic-bezier(.16,.84,.44,1);
+}
+/* .in is added a frame after unhide so the entrance animates */
+.iw-modal.in .iw-modal__backdrop { opacity: 1; }
+.iw-modal.in .iw-modal__panel { opacity: 1; transform: none; }
+/* the graphic scales from its top-left corner; JS sets the scale factor */
+.iw-modal__frame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; display: block; transform-origin: 0 0; }
+.iw-modal__close {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  width: 40px; height: 40px; border-radius: 50%; border: 0; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #143c66; background: rgba(255, 255, 255, .9);
+  box-shadow: 0 2px 10px rgba(9, 24, 44, .18);
+  transition: background .2s ease, transform .2s ease;
+}
+.iw-modal__close:hover { background: #fff; transform: scale(1.06); }
+body.iw-modal-open { overflow: hidden; }
+@media (max-width: 767px) {
+  .iw-modal { padding: 0; }
+  /* phones: full-screen panel, graphic fluid + scrollable (its own reflow) */
+  .iw-modal__panel { width: 100% !important; height: 100% !important; max-width: none; border-radius: 0; }
+  .iw-modal__frame { transform: none !important; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .iw-reveal { transition: none; opacity: 1; transform: none; }
+  .iw-track { animation: none !important; }
+  .iw-sem-flow, .iw-sem-check { animation: none !important; }
+  /* the hero entrance simply doesn't play — every keyframe ends at the
+     element's natural state, so skipping it leaves the copy exactly in place */
+  .iwh-up, .iwh-sub, .iwh-tag, .iwh-ch, .iwh-cta, .iwh-trust { animation: none !important; }
+}
+
+
+/* ============================================================
+   Utility classes extracted from index.html inline styles.
+   One class per unique declaration set; placed last so they win
+   ties the way the inline styles did.
+   ============================================================ */
+.ix-1 { position:relative; width:100%; overflow-x:clip; background:#fff; }
+.ix-2 { --d:.08s; }
+.ix-3 { --d:.26s; }
+.ix-4 { display:flex; justify-content:center; align-items:center; gap:28px; margin-top:38px; flex-wrap:wrap; }
+.ix-5 { display:flex; align-items:center; gap:9px; }
+.ix-6 { font-size:13.5px; font-weight:600; color:#c9ddf2; letter-spacing:.01em; }
+.ix-7 { position:relative; background:#f2f5f9; padding:108px 40px 116px; overflow:hidden; }
+.ix-8 { position:relative; max-width:1240px; margin:0 auto; }
+.ix-9 { display:grid; grid-template-columns:1fr 1.2fr; gap:60px; align-items:center; }
+.ix-10 { margin:0 0 30px; text-align:left; font-size:44px; line-height:1.15; font-weight:800; letter-spacing:-.8px; color:#143c66; }
+.ix-11 { color:#5c9a2e; }
+.ix-12 { margin:0; font-size:18px; line-height:1.65; color:#52628a; text-wrap:pretty; max-width:520px; }
+.ix-13 { margin:16px 0 0; font-size:18px; line-height:1.65; color:#52628a; text-wrap:pretty; max-width:520px; }
+.ix-14 { display:flex; justify-content:center; align-self:center; }
+.ix-15 { max-width:640px; height:auto; display:block; overflow:visible; }
+.ix-16 { letter-spacing:.1px; }
+.ix-17 { background:#1266b5; }
+.ix-18 { color:#1266b5; }
+.ix-19 { background:#5c9a2e; }
+.ix-20 { color:#4a8628; }
+.ix-21 { position:relative; background:#ffffff; padding:112px 0 100px; overflow:hidden; }
+.ix-22 { max-width:1176px; margin:0 auto 42px; padding:0 40px; display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+.ix-23 { margin:0; font-size:44px; font-weight:800; letter-spacing:-.8px; color:#143c66; text-wrap:balance; }
+.ix-24 { margin:14px 0 0; font-size:20px; font-weight:500; color:#5a6b82; }
+.ix-25 { font-weight:600; color:#143c66; }
+.ix-26 { position:relative; padding:104px 40px; background:transparent; overflow:hidden; }
+.ix-27 { text-align:center; max-width:640px; margin:0 auto 56px; }
+.ix-28 { margin:0; font-size:44px; font-weight:800; letter-spacing:-.8px; color:#fff; }
+.ix-29 { margin:14px 0 0; font-size:20px; color:rgba(255,255,255,.85); font-weight:500; }
+.ix-30 { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+.ix-31 { display:flex; flex-direction:column; transition-delay:0ms; padding:34px 30px; border-radius:2px; background:linear-gradient(180deg,#fff,#fcfdff); box-shadow:0 1px 3px rgba(20,40,80,.08),0 14px 34px rgba(20,40,80,.1); }
+.ix-32 { width:54px; height:54px; display:flex; align-items:center; justify-content:flex-start; }
+.ix-33 { margin:22px 0 6px; font-size:25px; font-weight:700; color:#143c66; }
+.ix-34 { margin:0 0 20px; font-size:15px; color:#5a6b82; }
+.ix-35 { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0; }
+.ix-36 { display:flex; align-items:center; gap:12px; padding:13px 0; border-top:1px solid #eaeff6; }
+.ix-37 { width:22px; height:22px; border-radius:50%; background:#c1daff; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.ix-38 { font-size:15px; font-weight:700; color:#143c66; }
+.ix-39 { font-size:15px; color:#1f2b3e; }
+.ix-40 { display:inline-flex; align-items:center; gap:7px; margin-top:auto; padding-top:22px; font-size:15px; font-weight:700; color:#007cf0; text-decoration:none; width:fit-content; }
+.ix-41 { display:flex; flex-direction:column; transition-delay:120ms; padding:34px 30px; border-radius:2px; background:linear-gradient(180deg,#fff,#fcfdff); box-shadow:0 1px 3px rgba(20,40,80,.08),0 14px 34px rgba(20,40,80,.1); }
+.ix-42 { list-style:none; margin:0; padding:0; }
+.ix-43 { width:22px; height:22px; border-radius:50%; background:#eaf6dd; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.ix-44 { display:inline-flex; align-items:center; gap:7px; margin-top:auto; padding-top:22px; font-size:15px; font-weight:700; color:#5c9a2e; text-decoration:none; width:fit-content; }
+.ix-45 { display:flex; flex-direction:column; transition-delay:240ms; padding:34px 30px; border-radius:2px; background:linear-gradient(180deg,#fff,#fcfdff); box-shadow:0 1px 3px rgba(20,40,80,.08),0 14px 34px rgba(20,40,80,.1); }
+.ix-46 { width:22px; height:22px; border-radius:50%; background:rgba(24,73,125,.14); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.ix-47 { display:inline-flex; align-items:center; gap:7px; margin-top:auto; padding-top:22px; font-size:15px; font-weight:700; color:#18497d; text-decoration:none; width:fit-content; }
+.ix-48 { position:relative; padding:56px 40px 104px; background:transparent; overflow:hidden; }
+.ix-49 { position:relative; max-width:1100px; margin:0 auto; }
+.ix-50 { text-align:center; max-width:640px; margin:0 auto 96px; }
+.ix-51 { display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
+.ix-52 { transition-delay:120ms; padding:0 30px; border-left:1px solid rgba(255,255,255,.12); }
+.ix-53 { width:44px; height:44px; display:flex; align-items:center; justify-content:flex-start; }
+.ix-54 { margin:22px 0 0; font-size:19px; font-weight:500; line-height:1.45; color:#fff; }
+.ix-55 { transition-delay:240ms; padding:0 30px; border-left:1px solid rgba(255,255,255,.12); }
+.ix-56 { transition-delay:360ms; padding:0 30px; border-left:1px solid rgba(255,255,255,.12); }
+.ix-57 { transition-delay:480ms; padding:0 30px; border-left:1px solid rgba(255,255,255,.12); border-right:1px solid rgba(255,255,255,.12); }
+
+/* Meet ImageWorks: the Why band, now with a lede and a title + line per column */
+.iw-meet-head { max-width:780px; margin-bottom:80px; }
+.iw-meet-lede { margin:18px auto 0; max-width:700px; font-size:16.5px; line-height:1.65; color:rgba(226,238,252,.72); font-weight:400; }
+.iw-why-t { font-weight:700; font-size:18.5px; line-height:1.35; }
+.iw-why-d { margin:10px 0 0; font-size:15.5px; line-height:1.55; color:rgba(226,238,252,.72); }
+
+/* Our Superpower: closes the band, centred under the columns */
+.iw-super { max-width:760px; margin:104px auto 0; padding-top:72px; border-top:1px solid rgba(255,255,255,.12); text-align:center; }
+.iw-super-k { display:block; font-size:15px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#80c34a; }
+.iw-super-h { margin-top:10px; }
+.iw-super-lead { margin:18px 0 0; font-size:20px; font-weight:600; line-height:1.5; color:#fff; text-wrap:balance; }
+.iw-super-body { margin:16px auto 0; max-width:680px; font-size:16.5px; line-height:1.65; color:rgba(226,238,252,.72); }
+.iw-super-end { margin:26px 0 0; font-size:17px; font-weight:700; color:#fff; }
+.ix-58 { position:relative; }
+.ix-59 { position:relative; display:flex; flex-direction:column; background:#fff; padding:104px 0; overflow:hidden; }
+.ix-60 { text-align:center; max-width:680px; margin:0 auto 48px; padding:0 40px; }
+.ix-61 { margin:0; font-size:44px; font-weight:800; letter-spacing:-.8px; color:#143c66; }
+.ix-62 { width:100%; margin-bottom:22px; }
+.ix-63 { gap:24px; animation:iwMarquee 144s linear infinite; }
+.ix-64 { width:100%; }
+.ix-65 { gap:24px; animation:iwMarqueeR 162s linear infinite; }
+.ix-66 { position:relative; display:flex; flex-direction:column; background:#f1f3f6; padding:104px 0; overflow:hidden; }
+.ix-67 { text-align:center; max-width:720px; margin:0 auto 50px; padding:0 40px; }
+.ix-68 { color:#80c34a; font-weight:800; }
+.ix-69 { gap:24px; }
+.ix-70 { position:relative; padding:112px 40px; background:linear-gradient(135deg,#1266b5,#0a2c4d); overflow:hidden; }
+.ix-71 { position:absolute; inset:0; background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px); background-size:24px 24px; pointer-events:none; }
+.ix-72 { position:relative; max-width:820px; margin:0 auto; text-align:center; }
+.ix-73 { margin:18px auto 0; max-width:700px; font-size:20px; font-weight:500; line-height:1.5; color:rgba(255,255,255,.85); }
+.ix-74 { display:inline-flex; align-items:center; gap:10px; margin-top:36px; height:58px; padding:0 36px; border-radius:2px; background:#80c34a; color:#fff; font-size:17px; font-weight:700; text-decoration:none; box-shadow:0 1px 2px rgba(20,40,80,.14); }
+.ix-75 { position:relative; background:#fff; padding:136px 0 140px; overflow:hidden; }
+.ix-76 { text-align:center; max-width:700px; margin:0 auto 60px; padding:0 40px; }
+.ix-77 { width:100%; padding:16px 0; }
+.ix-78 { gap:88px; align-items:center; animation:iwMarquee 40s linear infinite; }
+
+
+/* ============================================================
+   Components built in script.js (Our Work cards, testimonial
+   cards, partner logos, hero-wall tiles). No inline styles.
+   ============================================================ */
+.iw-work { flex: none; width: 300px; border-radius: 2px; overflow: hidden; background: #fff; box-shadow: 0 1px 3px rgba(20,40,80,.08), 0 10px 26px rgba(20,40,80,.1); }
+.iw-work__bar { height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 14px; background: #f3f6fb; border-bottom: 1px solid #eaeff6; }
+.iw-work__dot { width: 9px; height: 9px; border-radius: 50%; }
+.iw-work__dot--r { background: #ff6058; }
+.iw-work__dot--y { background: #ffbd2e; }
+.iw-work__dot--g { background: #28c840; }
+.iw-work__media { height: 192px; background-repeat: no-repeat; background-size: 100% auto; }
+.iw-work__media--img { background-size: cover; background-position: 50% 0%; }
+.iw-work__meta { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; }
+.iw-work__label { font-size: 15px; font-weight: 700; color: #143c66; }
+.iw-work__tag { font-size: 11px; font-weight: 700; letter-spacing: .5px; color: #80c34a; background: #eef7e4; padding: 4px 9px; border-radius: 2px; }
+
+.iw-testi { flex: none; width: 380px; padding: 28px; border-radius: 2px; background: #fff; box-shadow: 0 1px 3px rgba(20,40,80,.1), 0 12px 30px rgba(20,40,80,.12); display: flex; flex-direction: column; }
+.iw-testi__head { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.iw-testi__score { font-size: 16px; font-weight: 800; color: #1266b5; }
+.iw-testi__stars { color: #ffa733; font-size: 15px; letter-spacing: 1px; }
+.iw-testi__quote { margin: 0 0 18px; font-size: 16px; line-height: 1.6; color: #3d464d; flex: 1; }
+.iw-testi__author { font-size: 16px; font-weight: 700; color: #1266b5; }
+
+.iw-partner { flex: none; width: auto; display: block; object-fit: contain; }
+
+/* sprite sheets + shared background positions (hero tiles and work cards) */
+.spr-1 { background-image: url("assets/work-sprite-1.png"); }
+.spr-2 { background-image: url("assets/work-2.png"); }
+.bp-0 { background-position: 50% 0%; }
+.bp-6 { background-position: 50% 6%; }
+.bp-27 { background-position: 50% 27%; }
+.bp-42 { background-position: 50% 42%; }
+.bp-58 { background-position: 50% 58%; }
+.bp-74 { background-position: 50% 74%; }
+.bp-94 { background-position: 50% 94%; }
+.bp-96 { background-position: 50% 96%; }
+
+/* hero-wall portfolio tiles darken to match the moody sprite tiles */
+.iwc-shot--img { background-size: cover; background-position: 50% 8%; filter: grayscale(1) contrast(1.05) brightness(.3); }
+/* portfolio image backgrounds (shared by the wall and the Our Work rail) */
+.pf-casey-margenau-01 { background-image: url("assets/hero-shots/casey-margenau-01.jpg"); }
+.pf-highbrown { background-image: url("assets/hero-shots/highbrown.jpg"); }
+.pf-asc-01 { background-image: url("assets/hero-shots/asc-01.jpg"); }
+.pf-silkvision { background-image: url("assets/hero-shots/silkvision.jpg"); }
+.pf-govdata-1 { background-image: url("assets/hero-shots/govdata-1.jpg"); }
+.pf-chrysalis-01 { background-image: url("assets/hero-shots/chrysalis-01.jpg"); }
+.pf-barr-group { background-image: url("assets/hero-shots/barr-group.jpg"); }
+.pf-ridgley-walsh-01 { background-image: url("assets/hero-shots/ridgley-walsh-01.jpg"); }
+.pf-asc-02 { background-image: url("assets/hero-shots/asc-02.jpg"); }
+.pf-casey { background-image: url("assets/hero-shots/casey.jpg"); }
+.pf-silkvision-2 { background-image: url("assets/hero-shots/silkvision-2.jpg"); }
+.pf-govdata-2 { background-image: url("assets/hero-shots/govdata-2.jpg"); }
+.pf-chrysalis-03 { background-image: url("assets/hero-shots/chrysalis-03.jpg"); }
+.pf-asc-04 { background-image: url("assets/hero-shots/asc-04.jpg"); }
+.pf-casey-2 { background-image: url("assets/hero-shots/casey-2.jpg"); }
+.pf-ridgley-walsh-02 { background-image: url("assets/hero-shots/ridgley-walsh-02.jpg"); }
+
+
+/* ---------- shared green CTA button (matches "Let's get started") ---------- */
+.iw-cta-btn { display: inline-flex; align-items: center; gap: 10px; height: 58px; padding: 0 36px; border-radius: 2px; background: #80c34a; color: #fff; font-size: 17px; font-weight: 700; text-decoration: none; box-shadow: 0 1px 2px rgba(20,40,80,.14); }
+.iw-intro-cta { margin-top: 30px; }
+.iw-hwdi-cta { display: flex; justify-content: flex-start; margin-top: 44px; }
+
+
+/* ---------- intro graphic: chip labels + hover interactions ---------- */
+.iw-chip-txt { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; }
+.iw-ds-tile, .iw-stack-badge, .iw-glabel, .iw-ai {
+  transform-box: fill-box; transform-origin: center;
+  transition: transform .3s cubic-bezier(.2,.8,.3,1);
+}
+.iw-ds-tile:hover { transform: translateY(-3px); }
+.iw-stack-badge { cursor: pointer; }
+.iw-stack-badge:hover { transform: translateY(-4px) scale(1.1); }
+.iw-glabel:hover { transform: scale(1.05); }
+.iw-ai:hover { transform: scale(1.06); }
+@media (prefers-reduced-motion: reduce) {
+  .iw-ds-tile, .iw-stack-badge, .iw-glabel, .iw-ai { transition: none; }
+}
+
+
+/* green underline accent for key phrases in body copy */
+.iw-uline { text-decoration: underline; text-decoration-color: #80c34a; text-decoration-thickness: 2px; text-underline-offset: 3px; }

@@ -1,0 +1,920 @@
+/* ===========================================================
+   ImageWorks Creative — Home
+   Plain vanilla JS. No framework, no build step.
+   =========================================================== */
+
+/* -----------------------------------------------------------
+   DATA
+   ----------------------------------------------------------- */
+const SPRITE_1 = 'url(assets/work-sprite-1.png)';
+const SPRITE_2 = 'url(assets/work-2.png)';
+
+const WORKS = [
+  { bg: SPRITE_1, pos: '50% 0%',  label: 'JRC',           tag: 'Defense' },
+  { bg: SPRITE_2, pos: '50% 6%',  label: "St. Michael's", tag: 'Reports' },
+  { bg: SPRITE_1, pos: '50% 27%', label: 'JRC — AI',      tag: 'Automation' },
+  { bg: SPRITE_1, pos: '50% 42%', label: 'JRC',           tag: 'Web Design' },
+  { bg: SPRITE_1, pos: '50% 58%', label: 'JRC',           tag: 'Case Study' },
+  { bg: SPRITE_2, pos: '50% 94%', label: "St. Michael's", tag: 'Branding' },
+  { bg: SPRITE_1, pos: '50% 74%', label: 'JRC',           tag: 'Culture' },
+  { bg: SPRITE_1, pos: '50% 96%', label: 'Federal',       tag: 'Government' }
+];
+
+/* Portfolio screenshots dropped in assets/hero-shots — mixed in with the sprites
+   above across both the hero wall and the Our Work rail. */
+const PORTFOLIO = [
+  { src: 'assets/hero-shots/casey-margenau-01.jpg', label: 'Casey Margenau', tag: 'Real Estate' },
+  { src: 'assets/hero-shots/highbrown.jpg',         label: 'Highbrown',      tag: 'Web Design' },
+  { src: 'assets/hero-shots/asc-01.jpg',            label: 'ASC',            tag: 'Web Design' },
+  { src: 'assets/hero-shots/silkvision.jpg',        label: 'SilkVision',     tag: 'Web Design' },
+  { src: 'assets/hero-shots/govdata-1.jpg',         label: 'GovData',        tag: 'Platform' },
+  { src: 'assets/hero-shots/chrysalis-01.jpg',      label: 'Chrysalis',      tag: 'Web Design' },
+  { src: 'assets/hero-shots/barr-group.jpg',        label: 'Barr Group',     tag: 'Web Design' },
+  { src: 'assets/hero-shots/ridgley-walsh-01.jpg',  label: 'Ridgley Walsh',  tag: 'Branding' },
+  { src: 'assets/hero-shots/asc-02.jpg',            label: 'ASC',            tag: 'Sections' },
+  { src: 'assets/hero-shots/casey.jpg',             label: 'Casey Margenau', tag: 'Web Design' },
+  { src: 'assets/hero-shots/silkvision-2.jpg',      label: 'SilkVision',     tag: 'Sections' },
+  { src: 'assets/hero-shots/govdata-2.jpg',         label: 'GovData',        tag: 'Platform' },
+  { src: 'assets/hero-shots/chrysalis-03.jpg',      label: 'Chrysalis',      tag: 'Sections' },
+  { src: 'assets/hero-shots/asc-04.jpg',            label: 'ASC',            tag: 'Sections' },
+  { src: 'assets/hero-shots/casey-2.jpg',           label: 'Casey Margenau', tag: 'Sections' },
+  { src: 'assets/hero-shots/ridgley-walsh-02.jpg',  label: 'Ridgley Walsh',  tag: 'Sections' }
+];
+
+const PARTNERS = [
+  { name: 'HERMES Creative Awards',            src: 'assets/logos/hermes.jpg',   h: 76 },
+  { name: 'Davey Awards',                      src: 'assets/logos/davey.png',    h: 46 },
+  { name: 'Best in Search',                    src: 'assets/logos/bis.png',      h: 76 },
+  { name: 'Best Web Design Agencies',          src: 'assets/logos/bwda.png',     h: 54 },
+  { name: 'Google Partner',                    src: 'assets/logos/google.jpg',   h: 46 },
+  { name: 'Mailchimp',                         src: 'assets/logos/mailchimp.png', h: 68 },
+  { name: 'IMA Interactive Media Awards',      src: 'assets/logos/ima.png',      h: 36 },
+  { name: 'W3 Awards',                         src: 'assets/logos/w3.png',       h: 76 },
+  { name: 'Expertise',                         src: 'assets/logos/expertise.jpg', h: 76 },
+  { name: 'Summit International Awards',        src: 'assets/logos/sia.png',      h: 40 },
+  { name: 'Vega Digital Awards',               src: 'assets/logos/winner.png',   h: 76 }
+];
+
+const TESTIMONIALS = [
+  { quote: '"ImageWorks\u2019 branding and marketing strategies have led to a tenfold increase in our organic website traffic."', author: 'Diakon' },
+  { quote: '"We have already seen a lot more user engagement than we ever have had in the past. Scott never said no. As a result, I am a hero at work for creating this great new site."', author: 'MAG America' },
+  { quote: '"Scott is the only person I\u2019ve talked to who really took the time to understand my marketing needs and helped me make the changes to my website and marketing plan."', author: 'SermonScribe' },
+  { quote: '"ImageWorks knew exactly what I needed and provided it quickly and economically."', author: 'The People\u2019s Chemist' },
+  { quote: '"Thanks to the IWC team for creating a brand for us which consistently receives rave reviews!"', author: 'BeanTree Learning' },
+  { quote: '"We have been extremely happy with their creativeness and are very proud of what they have done for us on our web presence."', author: 'Rosoka' },
+  { quote: '"This design is phenomenal! Your team has blown me and my expectations away at every phase! I can hardly wait to start marketing."', author: 'Launch Paw' },
+  { quote: '"A big thank you for an amazing website! I absolutely love it! Fabulous work \u2014 I have been bragging about it to everyone!"', author: 'Lowes Island' }
+];
+
+/* -----------------------------------------------------------
+   RENDER HELPERS
+   ----------------------------------------------------------- */
+/* class helpers — every visual is a CSS class, nothing inline */
+function pfKey(src)  { return 'pf-' + src.split('/').pop().replace(/\.\w+$/, ''); }        // portfolio image class
+function bpClass(pos){ return 'bp-' + pos.split(' ')[1].replace('%', ''); }                // sprite background-position class
+function sprClass(bg){ return bg === SPRITE_1 ? 'spr-1' : 'spr-2'; }
+
+function workCardHTML(w) {
+  const media = w.src
+    ? 'iw-work__media iw-work__media--img ' + pfKey(w.src)
+    : 'iw-work__media ' + sprClass(w.bg) + ' ' + bpClass(w.pos);
+  return '' +
+    '<div class="iw-work">' +
+      '<div class="iw-work__bar">' +
+        '<span class="iw-work__dot iw-work__dot--r"></span>' +
+        '<span class="iw-work__dot iw-work__dot--y"></span>' +
+        '<span class="iw-work__dot iw-work__dot--g"></span>' +
+      '</div>' +
+      '<div class="' + media + '"></div>' +
+      '<div class="iw-work__meta">' +
+        '<span class="iw-work__label">' + w.label + '</span>' +
+        '<span class="iw-work__tag">' + w.tag + '</span>' +
+      '</div>' +
+    '</div>';
+}
+
+function testiCardHTML(t) {
+  return '' +
+    '<div class="iw-testi">' +
+      '<div class="iw-testi__head">' +
+        '<span class="iw-testi__score">5.0</span>' +
+        '<span class="iw-testi__stars">\u2605\u2605\u2605\u2605\u2605</span>' +
+      '</div>' +
+      '<p class="iw-testi__quote">' + t.quote + '</p>' +
+      '<div class="iw-testi__author">' + t.author + '</div>' +
+    '</div>';
+}
+
+function partnerLogoHTML(p) {
+  return '<img class="iw-partner" src="' + p.src + '" alt="' + p.name + '" height="' + p.h + '"/>';
+}
+
+function joinHTML(list, fn) {
+  return list.map(fn).join('');
+}
+
+/* fill a marquee track with two copies of the content for a seamless loop */
+function fillTrack(id, html) {
+  const el = document.getElementById(id);
+  if (el) el.innerHTML = html + html;
+}
+
+/* marquees move side-to-side driven by scroll position (no auto-play) */
+function initScrollMarquee() {
+  const tracks = [].slice.call(document.querySelectorAll('.iw-track[data-mq]'));
+  if (!tracks.length) return;
+  const SPEED = 0.35; // marquee px per px scrolled
+  function update() {
+    // on phones the review row auto-plays via a CSS marquee (like Our Work),
+    // so hand control back to CSS by clearing the scroll-driven transform
+    const mobile = window.innerWidth <= 767;
+    const y = window.scrollY || window.pageYOffset || 0;
+    for (let i = 0; i < tracks.length; i++) {
+      const t = tracks[i];
+      if (mobile) { t.style.transform = ''; continue; }
+      const half = t.scrollWidth / 2;          // content is duplicated -> half = one loop
+      if (!half) continue;                    // hidden/empty track
+      const d = (y * SPEED) % half;             // 0..half, wraps seamlessly
+      const x = t.getAttribute('data-mq') === 'rev' ? (d - half) : -d;
+      t.style.transform = 'translate3d(' + x + 'px,0,0)';
+    }
+  }
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  window.addEventListener('load', update);
+}
+
+/* Mix the originals (WORKS) with the new portfolio shots so the rail draws from
+   both — 2 new to 1 original, which also keeps like next to unlike. Every tile is
+   a distinct image, so nothing repeats back to back. */
+function mixWorks() {
+  const out = [];
+  let i = 0;
+  let j = 0;
+  while (i < WORKS.length || j < PORTFOLIO.length) {
+    if (j < PORTFOLIO.length) out.push(PORTFOLIO[j++]);
+    if (j < PORTFOLIO.length) out.push(PORTFOLIO[j++]);
+    if (i < WORKS.length) out.push(WORKS[i++]);
+  }
+  return out;
+}
+
+/* The hero wall: seven columns of tiles drawn from the same mixed pool (sprite
+   shots + portfolio shots), laid out so no tile repeats directly above/below
+   itself, across the loop seam, or beside itself in the next column. */
+let heroCols = 0;
+function buildHeroShots(force) {
+  const wrap = document.querySelector('.iwc-shots-in');
+  if (!wrap) return;
+  // enough columns to fill the viewport (they overflow and clip), so large and
+  // ultrawide screens don't leave the sides of the wall empty
+  const COLS = Math.max(7, Math.ceil(window.innerWidth / 254) + 2);
+  if (!force && COLS <= heroCols) return;   // only rebuild when more are needed
+  heroCols = COLS;
+  const sprites = ['50% 0%','50% 27%','50% 42%','50% 58%','50% 74%','50% 96%'].map(function (p) { return { c: 's1', p: p }; })
+    .concat([{ c: 's2', p: '50% 6%' }, { c: 's2', p: '50% 94%' }]);
+  const pool = sprites.map(function (s) { return { sprite: s }; })
+    .concat(PORTFOLIO.map(function (p) { return { img: p.src }; }));
+  function id(t) { return t.img ? 'i' + t.img : 's' + t.sprite.c + t.sprite.p; }
+  function span(t) {
+    return t.img
+      ? '<span class="iwc-shot iwc-shot--img ' + pfKey(t.img) + '"></span>'
+      : '<span class="iwc-shot iwc-shot--' + t.sprite.c + ' ' + bpClass(t.sprite.p) + '"></span>';
+  }
+  const BASE = 6;
+  const grid = [];
+  let col;
+  let row;
+  for (col = 0; col < COLS; col++) {
+    // ids used anywhere in the previous column — the new column shares none of
+    // them, so no two identical tiles ever touch (vertically, horizontally or
+    // diagonally); and each column's own tiles are all distinct
+    const prev = {};
+    if (grid[col - 1]) grid[col - 1].forEach(function (t) { prev[id(t)] = 1; });
+    const used = {}, seq = [];
+    for (row = 0; row < BASE; row++) {
+      const choices = pool.filter(function (t) { const k = id(t); return !used[k] && !prev[k]; });
+      const pick = choices[Math.floor(Math.random() * choices.length)];
+      used[id(pick)] = 1;
+      seq.push(pick);
+    }
+    grid.push(seq);
+  }
+  let html = '';
+  for (col = 0; col < COLS; col++) {
+    html += '<div class="iwc-col-strip iwc-col-strip--' + (col % 4) + '">' +
+            grid[col].concat(grid[col]).map(span).join('') + '</div>';
+  }
+  wrap.innerHTML = html;
+}
+
+function buildShowcase() {
+  const mixed = mixWorks();
+  const worksFwd = joinHTML(mixed, workCardHTML);
+  const worksRev = joinHTML(mixed.slice().reverse(), workCardHTML);
+  const partners = joinHTML(PARTNERS, partnerLogoHTML);
+  const testiA   = joinHTML(TESTIMONIALS.slice(0, 4), testiCardHTML);
+  const testiB   = joinHTML(TESTIMONIALS.slice(4, 8), testiCardHTML);
+
+  // scroll mode
+  fillTrack('track-scroll-works-a', worksFwd);
+  fillTrack('track-scroll-works-b', worksRev);
+  fillTrack('track-scroll-partners', partners);
+  fillTrack('track-scroll-testi-a', testiA);
+  fillTrack('track-scroll-testi-b', testiB);
+}
+
+/* -----------------------------------------------------------
+   SCROLL REVEAL + COUNT-UP (IntersectionObserver)
+   ----------------------------------------------------------- */
+const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function countUp(el) {
+  const raw = el.getAttribute('data-countup');
+  const target = parseFloat(raw);
+  const dec = raw.indexOf('.') >= 0 ? 1 : 0;
+  const pre = el.getAttribute('data-prefix') || '';
+  const suf = el.getAttribute('data-suffix') || '';
+  const dur = 1500;
+  const t0 = performance.now();
+  function fmt(n) { return dec ? n.toFixed(1) : Math.round(n).toLocaleString('en-US'); }
+  function tick(t) {
+    const p = Math.min(1, (t - t0) / dur);
+    const e = 1 - Math.pow(1 - p, 3);
+    el.textContent = pre + fmt(target * e) + suf;
+    if (p < 1) requestAnimationFrame(tick);
+    else el.textContent = pre + fmt(target) + suf;
+  }
+  requestAnimationFrame(tick);
+}
+
+function initObservers() {
+  const reveals = document.querySelectorAll('.iw-reveal');
+  const counts  = document.querySelectorAll('[data-countup]');
+
+  if (REDUCE || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+    counts.forEach(function (el) {
+      const pre = el.getAttribute('data-prefix') || '';
+      const suf = el.getAttribute('data-suffix') || '';
+      const raw = el.getAttribute('data-countup');
+      const dec = raw.indexOf('.') >= 0 ? 1 : 0;
+      el.textContent = pre + (dec ? parseFloat(raw).toFixed(1) : Math.round(parseFloat(raw)).toLocaleString('en-US')) + suf;
+    });
+    return;
+  }
+
+  // prime count-up displays to zero
+  counts.forEach(function (el) {
+    el.textContent = (el.getAttribute('data-prefix') || '') + '0' + (el.getAttribute('data-suffix') || '');
+  });
+
+  const revealObs = new IntersectionObserver(function (entries, obs) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add('in'); obs.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  reveals.forEach(function (el) { revealObs.observe(el); });
+
+  const countObs = new IntersectionObserver(function (entries, obs) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { countUp(en.target); obs.unobserve(en.target); }
+    });
+  }, { threshold: 0.4 });
+  counts.forEach(function (el) { countObs.observe(el); });
+}
+
+/* -----------------------------------------------------------
+   HERO WEAVE — the web, woven. Warp threads stand across the
+   hero; a shuttle crosses and lays a weft thread that passes
+   over one standing thread and under the next — real interlacing,
+   row by row. Rows settle into the cloth and ease to a resting
+   weight. The shuttle reverses each pass, the way a loom does.
+   It runs on its own — the cursor is deliberately ignored, so the
+   cloth stays a backdrop and never competes with the copy.
+   ----------------------------------------------------------- */
+function initMesh() {
+  const hero = document.querySelector('[data-hero]');
+  if (!hero) return;
+  const canvas = hero.querySelector('[data-mesh]');
+  if (!canvas) return;
+  const ctx = canvas.getContext && canvas.getContext('2d');
+  if (!ctx) return;
+
+  const WARP_GAP = 54;        // spacing of the standing threads
+  const PASS_MS = 6200;       // one crossing of the weft shuttle
+  const REST_MIN = 900, REST_MAX = 1800;
+  const VPASS_MS = 8600;      // one run of the warp shuttle, drawn down a column
+  const VREST_MIN = 2600, VREST_MAX = 4400;
+  const SEGS = 8;             // samples per warp at rest — raised while denting
+  const INFLUENCE = 270;      // how far the dent under the cursor reaches
+  const PULL = 25;            // how far the cloth slides toward it
+
+  const BLUE = '168,206,242';
+  const GREEN = '128,195,74';
+
+  let W = 0, H = 0, dpr = 1;
+  const warps = [], slots = [], rows = [];
+  let shuttle = null, nextPass = 0, rowN = 0;
+  let vshuttle = null, nextVPass = 0, colN = 0, colIdx = 0;
+  let raf = null, visible = true, t0 = 0, well = null;
+  let px = -9999, py = -9999;     // raw pointer, in hero space
+  let cx = -9999, cy = -9999;     // eased pointer, so the dent glides
+  let over = false, str = 0;      // dent strength, eased in and out
+  let segA = 0, segC = BLUE;      // colour + alpha of the run being drawn
+  let dX = 0, dY = 0, dE = 0;     // disp() writes here — thousands of calls a
+                                  // frame, so no object gets allocated per point
+
+  /* The dent: a point near the cursor slides toward it, hardest at the centre
+     and fading to nothing at INFLUENCE. Everything drawn — threads and knots —
+     is plotted through this, so the whole cloth gives at once instead of one
+     layer sliding over another. */
+  function disp(x, y) {
+    dX = x; dY = y; dE = 0;
+    if (str < 0.004 || cx < -9000) return;
+    const dx = x - cx, dy = y - cy;
+    const d = Math.sqrt(dx * dx + dy * dy);
+    if (d >= INFLUENCE) return;
+    const f = 1 - d / INFLUENCE;
+    const e = f * f * str;
+    const inv = 1 / (d || 1);
+    dX = x - dx * inv * e * PULL;
+    dY = y - dy * inv * e * PULL;
+    dE = e;
+  }
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function build() {
+    const r = hero.getBoundingClientRect();
+    W = Math.round(r.width); H = Math.round(r.height);
+    if (!W || !H) return;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // a well of depth under the copy, so the cloth stays a backdrop
+    const cx = W / 2, cy = H * 0.46;
+    well = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.62);
+    well.addColorStop(0, 'rgba(4,14,28,0.5)');
+    well.addColorStop(0.42, 'rgba(7,22,42,0.24)');
+    well.addColorStop(1, 'rgba(10,30,55,0)');
+
+    // the loom: standing threads at uneven weights, so the cloth has depth
+    warps.length = 0;
+    const n = Math.ceil(W / WARP_GAP) + 1;
+    const off = (W - (n - 1) * WARP_GAP) / 2;
+    for (let i = 0; i < n; i++) {
+      warps.push({ x: off + i * WARP_GAP, a: rand(0.021, 0.047), w: rand(0.8, 1.3), lit: 0 });
+    }
+
+    // rows run nearly the full height and let the canvas mask fade them out at
+    // the top and bottom. Stopping short of the mask instead leaves bare warp
+    // below the copy, which reads as unfinished cloth rather than a soft edge.
+    slots.length = 0;
+    const top = H * 0.075, bot = H * 0.945, k = 14;
+    for (let j = 0; j < k; j++) slots.push(top + (bot - top) * (j / (k - 1)));
+
+    // the loom opens with cloth already on it — the hero should never show an
+    // empty frame and make you wait out a crossing for the first thread
+    rows.length = 0;
+    for (let q = 0; q < slots.length; q++) {
+      rows.push({ y: slots[q], a: 0.033, floor: 0.033, col: (q % 4 === 2) ? GREEN : BLUE, parity: q % 2 });
+    }
+    // Both shuttles open mid-canvas rather than at an edge. The first pass is
+    // the one anyone actually watches, and starting at index 0 put it along the
+    // very top row — under the nav, inside the mask's fade — which read as the
+    // loom taking ages to show up. They still start out of step with each other
+    // so the two never look metronomic.
+    shuttle = null; nextPass = 0; rowN = Math.floor(slots.length / 2);
+    vshuttle = null; nextVPass = 1100; colN = 0;
+    colIdx = Math.floor(warps.length / 2);
+  }
+
+  /* Where warp i actually sits at height y, once its slow drift is applied.
+     The weft calls this too, so every crossing lands on the thread rather
+     than on where the thread would be if it stood perfectly still. */
+  function warpAt(i, y, t) {
+    const wp = warps[i];
+    return wp.x + Math.sin(t * 0.00021 + i * 0.85 + y * 0.0016) * 1.4;
+  }
+
+  /* One weft row: under a standing thread, over the next. That alternation
+     is the whole point — it's what makes this cloth and not a grid. */
+  function weft(y, from, to, alpha, col, parity, t) {
+    const lo = Math.min(from, to), hi = Math.max(from, to);
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 1.35;
+    segC = col; segA = alpha;
+    let run = lo;
+    for (let i = 0; i < warps.length; i++) {
+      const wx = warpAt(i, y, t);
+      if (wx < lo - 10 || wx > hi + 10) continue;
+      if (((i + parity) % 2) === 0) {
+        // passes under: break the weft cleanly around the standing thread
+        const a = Math.max(run, lo), b = Math.min(wx - 5.5, hi);
+        if (b > a) weftSeg(a, b, y);
+        run = wx + 5.5;
+      } else {
+        // rides over: the crossing catches a touch more light — just enough to
+        // register as a knot, well short of reading as a row of dots. Under the
+        // cursor it sinks with the cloth: shrinking and dimming as it goes.
+        disp(wx, y);
+        const kx = dX, ky = dY, s = 1 - dE * 0.8;
+        if (s > 0.06) {
+          ctx.fillStyle = 'rgba(' + col + ',' + Math.min(alpha * 1.35 * (1 - dE * 0.6), 0.3).toFixed(3) + ')';
+          ctx.beginPath();
+          ctx.ellipse(kx, ky, 2.9 * s, 1.3 * s, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+    if (hi > run) weftSeg(Math.max(run, lo), hi, y);
+  }
+
+  /* A stretch of weft. Flat and cheap while the cloth is at rest; sampled
+     finely once something is denting it, so the row curves rather than kinking */
+  function flat(x0, y0, x1, y1) {
+    ctx.strokeStyle = 'rgba(' + segC + ',' + segA.toFixed(3) + ')';
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+  }
+
+  function weftSeg(x0, x1, y) {
+    // how wide the dent bites into this row, if at all
+    let half = -1;
+    if (str >= 0.004 && cx > -9000) {
+      const dy = y - cy, rad = INFLUENCE * INFLUENCE - dy * dy;
+      if (rad > 0) half = Math.sqrt(rad);
+    }
+    if (half < 0) { flat(x0, y, x1, y); return; }
+    const za = cx - half, zb = cx + half;
+    if (zb <= x0 || za >= x1) { flat(x0, y, x1, y); return; }
+    if (za > x0) flat(x0, y, za, y);
+    const a = Math.max(za, x0), b = Math.min(zb, x1);
+    const steps = Math.max(1, Math.ceil((b - a) / 6));
+    disp(a, y);
+    let lx = dX, ly = dY, le = dE;
+    for (let s = 1; s <= steps; s++) {
+      disp(a + (b - a) * (s / steps), y);
+      ctx.strokeStyle = 'rgba(' + segC + ',' + (segA * (1 - Math.max(le, dE) * 0.85)).toFixed(3) + ')';
+      ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(dX, dY); ctx.stroke();
+      lx = dX; ly = dY; le = dE;
+    }
+    if (zb < x1) flat(zb, y, x1, y);
+  }
+
+  /* A stretch of one standing thread, sampled so it follows the same drift the
+     weft crossings were placed against. */
+  function warpSeg(i, y0, y1, t) {
+    const lo = Math.min(y0, y1), hi = Math.max(y0, y1);
+    // does the dent reach this thread, over this stretch?
+    let bite = false;
+    if (str >= 0.004 && cx > -9000) {
+      const dx = warps[i].x - cx, rad = INFLUENCE * INFLUENCE - dx * dx;
+      if (rad > 0) {
+        const reach = Math.sqrt(rad);
+        bite = (cy + reach > lo && cy - reach < hi);
+      }
+    }
+    const n = Math.max(2, Math.ceil((hi - lo) / (bite ? 6 : H / SEGS)));
+    if (!bite) {
+      ctx.strokeStyle = 'rgba(' + segC + ',' + segA.toFixed(3) + ')';
+      ctx.beginPath();
+      for (let s = 0; s <= n; s++) {
+        const y = lo + (hi - lo) * (s / n);
+        disp(warpAt(i, y, t), y);
+        if (s === 0) ctx.moveTo(dX, dY); else ctx.lineTo(dX, dY);
+      }
+      ctx.stroke();
+      return;
+    }
+    disp(warpAt(i, lo, t), lo);
+    let lx = dX, ly = dY, le = dE;
+    for (let k = 1; k <= n; k++) {
+      const yy = lo + (hi - lo) * (k / n);
+      disp(warpAt(i, yy, t), yy);
+      ctx.strokeStyle = 'rgba(' + segC + ',' + (segA * (1 - Math.max(le, dE) * 0.85)).toFixed(3) + ')';
+      ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(dX, dY); ctx.stroke();
+      lx = dX; ly = dY; le = dE;
+    }
+  }
+
+  /* One warp run: the second shuttle drawing a standing thread down through the
+     cloth already woven. Same crossing rule as weft(), read the other way —
+     where the weft passed under, this thread shows and knots; where the weft
+     rode over, this one disappears beneath it. */
+  function warpRun(i, from, to, alpha, col, t) {
+    const lo = Math.min(from, to), hi = Math.max(from, to);
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 1.35;
+    segC = col; segA = alpha;
+
+    const cuts = [];
+    for (let r = 0; r < rows.length; r++) {
+      if (rows[r].y >= lo - 10 && rows[r].y <= hi + 10) cuts.push(rows[r]);
+    }
+    cuts.sort(function (a, b) { return a.y - b.y; });
+
+    let run = lo;
+    for (let c = 0; c < cuts.length; c++) {
+      const row = cuts[c];
+      if (((i + row.parity) % 2) === 0) {
+        // the weft went under here, so this thread rides over: knot, no break
+        disp(warpAt(i, row.y, t), row.y);
+        const ks = 1 - dE * 0.8;
+        if (ks > 0.06) {
+          ctx.fillStyle = 'rgba(' + col + ',' + Math.min(alpha * 1.35 * (1 - dE * 0.6), 0.3).toFixed(3) + ')';
+          ctx.beginPath();
+          ctx.ellipse(dX, dY, 1.3 * ks, 2.9 * ks, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else {
+        const a = Math.max(run, lo), b = Math.min(row.y - 5.5, hi);
+        if (b > a) warpSeg(i, a, b, t);
+        run = row.y + 5.5;
+      }
+    }
+    if (hi > run) warpSeg(i, Math.max(run, lo), hi, t);
+  }
+
+  function paint(t) {
+    /* The dent eases in and out in place rather than chasing the pointer off
+       screen — cloth relaxes where it was pressed, it doesn't drag away. */
+    if (over && px > -9000) {
+      if (cx < -9000) { cx = px; cy = py; }
+      cx += (px - cx) * 0.18;
+      cy += (py - cy) * 0.18;
+      str += (1 - str) * 0.12;
+    } else if (str > 0) {
+      str += (0 - str) * 0.09;
+      if (str < 0.004) { str = 0; cx = -9999; cy = -9999; }
+    }
+
+    ctx.clearRect(0, 0, W, H);
+    if (well) { ctx.fillStyle = well; ctx.fillRect(0, 0, W, H); }
+
+    let i, j, y, x;
+
+    // the standing threads, sampled along their drift
+    for (i = 0; i < warps.length; i++) {
+      const wp = warps[i];
+      // a column the warp shuttle just drew stays a little brighter, then eases back
+      if (wp.lit > 0) wp.lit = Math.max(0, wp.lit - 0.00028);
+      ctx.lineWidth = wp.w;
+      segC = BLUE; segA = wp.a + wp.lit;
+      warpSeg(i, 0, H, t);
+    }
+
+    // the cloth woven so far, easing down to a resting weight
+    for (i = 0; i < rows.length; i++) {
+      const r = rows[i];
+      if (r.a > r.floor) r.a = Math.max(r.floor, r.a - 0.00055);
+      weft(r.y, 0, W, r.a, r.col, r.parity, t);
+    }
+
+    // the shuttle: one crossing at a time, reversing like a loom
+    if (!shuttle && t > nextPass) {
+      const slot = slots[rowN % slots.length];
+      const ltr = rowN % 2 === 0;
+      shuttle = {
+        y: slot,
+        x: ltr ? -40 : W + 40,
+        from: ltr ? -40 : W + 40,
+        v: (W + 80) / (PASS_MS / 16.7) * (ltr ? 1 : -1),
+        col: (rowN % 4 === 2) ? GREEN : BLUE,
+        parity: rowN % 2
+      };
+      // the row it's about to lay releases whatever was in that slot
+      for (i = rows.length - 1; i >= 0; i--) {
+        if (Math.abs(rows[i].y - slot) < 2) rows.splice(i, 1);
+      }
+      rowN++;
+    }
+
+    if (shuttle) {
+      shuttle.x += shuttle.v;
+      weft(shuttle.y, shuttle.from, shuttle.x, 0.14, shuttle.col, shuttle.parity, t);
+      // the shuttle head, carrying the thread across
+      const g = ctx.createRadialGradient(shuttle.x, shuttle.y, 0, shuttle.x, shuttle.y, 16);
+      g.addColorStop(0, 'rgba(' + shuttle.col + ',0.18)');
+      g.addColorStop(1, 'rgba(' + shuttle.col + ',0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(shuttle.x, shuttle.y, 16, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(' + shuttle.col + ',0.62)';
+      ctx.beginPath(); ctx.arc(shuttle.x, shuttle.y, 2.1, 0, Math.PI * 2); ctx.fill();
+
+      if (shuttle.v > 0 ? shuttle.x > W + 40 : shuttle.x < -40) {
+        rows.push({ y: shuttle.y, a: 0.1, floor: 0.033, col: shuttle.col, parity: shuttle.parity });
+        shuttle = null;
+        nextPass = t + rand(REST_MIN, REST_MAX);
+      }
+    }
+
+    // the warp shuttle: a standing thread drawn down through the cloth. Runs on
+    // its own clock and steps 5 columns at a time, so it never trails the weft
+    // shuttle or walks the hero in a straight line
+    if (!vshuttle && t > nextVPass && warps.length) {
+      const down = colN % 2 === 0;
+      vshuttle = {
+        i: colIdx,
+        y: down ? -40 : H + 40,
+        from: down ? -40 : H + 40,
+        v: (H + 80) / (VPASS_MS / 16.7) * (down ? 1 : -1),
+        col: (colN % 3 === 1) ? GREEN : BLUE
+      };
+      colIdx = (colIdx + 5) % warps.length;   // step 5 columns, never walk one at a time
+      colN++;
+    }
+
+    if (vshuttle) {
+      vshuttle.y += vshuttle.v;
+      warpRun(vshuttle.i, vshuttle.from, vshuttle.y, 0.14, vshuttle.col, t);
+      const vx = warpAt(vshuttle.i, vshuttle.y, t);
+      const vg = ctx.createRadialGradient(vx, vshuttle.y, 0, vx, vshuttle.y, 16);
+      vg.addColorStop(0, 'rgba(' + vshuttle.col + ',0.18)');
+      vg.addColorStop(1, 'rgba(' + vshuttle.col + ',0)');
+      ctx.fillStyle = vg;
+      ctx.beginPath(); ctx.arc(vx, vshuttle.y, 16, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(' + vshuttle.col + ',0.62)';
+      ctx.beginPath(); ctx.arc(vx, vshuttle.y, 2.1, 0, Math.PI * 2); ctx.fill();
+
+      if (vshuttle.v > 0 ? vshuttle.y > H + 40 : vshuttle.y < -40) {
+        warps[vshuttle.i].lit = 0.05;   // the column it drew holds, then fades
+        vshuttle = null;
+        nextVPass = t + rand(VREST_MIN, VREST_MAX);
+      }
+    }
+  }
+
+  function frame(t) {
+    if (!t0) t0 = t;
+    paint(t - t0);
+    raf = visible ? requestAnimationFrame(frame) : null;
+  }
+
+  // reduced motion: the cloth already woven, holding still
+  function still() {
+    rows.length = 0;
+    for (let i = 0; i < slots.length; i++) {
+      rows.push({ y: slots[i], a: 0.036, floor: 0.036, col: (i % 4 === 2) ? GREEN : BLUE, parity: i % 2 });
+    }
+    shuttle = null;
+    paint(0);
+  }
+
+  build();
+  window.addEventListener('resize', function () {
+    build();
+    if (REDUCE) still();
+  }, { passive: true });
+
+  if (REDUCE) { still(); return; }
+
+  hero.addEventListener('pointermove', function (e) {
+    const r = hero.getBoundingClientRect();
+    px = e.clientX - r.left;
+    py = e.clientY - r.top;
+    over = true;
+  });
+  hero.addEventListener('pointerleave', function () { over = false; });
+
+  // stop drawing once the hero scrolls off screen
+  if (window.IntersectionObserver) {
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      if (visible && !raf) raf = requestAnimationFrame(frame);
+    }, { threshold: 0 }).observe(hero);
+  }
+  raf = requestAnimationFrame(frame);
+}
+
+
+/* -----------------------------------------------------------
+   HERO HEADLINE — the green accent arrives a letter at a time,
+   picking up where the rule under "Built to" leaves off
+   ----------------------------------------------------------- */
+function initHeroType() {
+  const el = document.querySelector('[data-type]');
+  if (!el) return;
+  const text = el.textContent;
+
+  /* Some screen readers spell out text that's been split into per-character
+     elements, so the accessible name goes back on the parent and the letters
+     are hidden from the tree. */
+  el.setAttribute('aria-label', text);
+  el.textContent = '';
+
+  const START = 0.48, STEP = 0.038;
+  for (let i = 0; i < text.length; i++) {
+    const c = text.charAt(i);
+    const ch = document.createElement('span');
+    ch.className = 'iwh-ch';
+    ch.setAttribute('aria-hidden', 'true');
+    ch.textContent = c;
+    // an inline-block holding a single space would collapse to nothing
+    if (c === ' ') ch.style.whiteSpace = 'pre';
+    if (!REDUCE) ch.style.animationDelay = (START + i * STEP).toFixed(3) + 's';
+    el.appendChild(ch);
+  }
+}
+
+/* -----------------------------------------------------------
+   HOW WE DO IT — four steps as tabs on a process rail
+   ----------------------------------------------------------- */
+function initSteps() {
+  const root = document.querySelector('[data-steps]');
+  if (!root) return;
+  const tabs = [].slice.call(root.querySelectorAll('.iw-steps-tab'));
+  const panels = [].slice.call(root.querySelectorAll('.iw-steps-panel'));
+  const fill = root.querySelector('[data-steps-fill]');
+  if (!tabs.length || tabs.length !== panels.length) return;
+
+  let current = 0;
+
+  function select(i, focus) {
+    if (i < 0 || i >= tabs.length) return;
+    current = i;
+    tabs.forEach(function (t, k) {
+      const on = k === i;
+      t.classList.toggle('is-active', on);
+      t.classList.toggle('is-done', k <= i);   // the rail fills up to where you are
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;                // one tab stop for the whole set
+      // no [hidden] here: it would pull the panel out of the grid and let the
+      // box resize per step. CSS visibility:hidden keeps the cell — and still
+      // takes the panel out of the tab order and the accessibility tree.
+      panels[k].classList.toggle('is-active', on);
+    });
+    // the line lands exactly on the active station (each station sits mid-tab)
+    if (fill) fill.style.width = (12.5 + i * 25) + '%';
+    if (focus) tabs[i].focus();
+  }
+
+  const mqMobile = window.matchMedia('(max-width: 767px)');
+  function tabsH() { const el = root.querySelector('.iw-steps-tabs'); return el ? el.offsetHeight : 0; }
+
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () {
+      // phones: the panels are stacked, so jump to the one for this tab; wider
+      // screens keep the one-panel-at-a-time behaviour
+      if (mqMobile.matches) {
+        const y = panels[i].getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0) - tabsH() - 8;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      } else {
+        select(i);
+      }
+    });
+  });
+
+  root.querySelector('.iw-steps-tabs').addEventListener('keydown', function (e) {
+    const k = e.key;
+    if (k === 'ArrowRight' || k === 'ArrowDown') { select((current + 1) % tabs.length, true); }
+    else if (k === 'ArrowLeft' || k === 'ArrowUp') { select((current - 1 + tabs.length) % tabs.length, true); }
+    else if (k === 'Home') { select(0, true); }
+    else if (k === 'End') { select(tabs.length - 1, true); }
+    else return;
+    e.preventDefault();
+  });
+
+  // phones: pin the tabs and let scrolling through the stacked panels pick the
+  // active tab — the panel crossing ~42% of the viewport is the one you're on
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      ticking = false;
+      if (!mqMobile.matches) return;
+      const line = (window.scrollY || window.pageYOffset || 0) + window.innerHeight * 0.42;
+      let idx = 0;
+      for (let k = 0; k < panels.length; k++) {
+        const top = panels[k].getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0);
+        if (top <= line) idx = k;
+      }
+      if (idx !== current) select(idx);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  function syncMode() {
+    if (mqMobile.matches) onScroll();   // derive the active tab from where we are
+    else select(current);               // back to the single-panel tablist
+  }
+  if (mqMobile.addEventListener) mqMobile.addEventListener('change', syncMode);
+  else if (mqMobile.addListener) mqMobile.addListener(syncMode);
+
+  select(0);
+  syncMode();
+}
+
+/* -----------------------------------------------------------
+   BOOT
+   ----------------------------------------------------------- */
+/* -----------------------------------------------------------
+   HERO GRAPHIC MODAL — the CTA opens the interactive graphic in
+   an overlay. The iframe stays src-less until first open, so its
+   payload never blocks the home page's first paint.
+   ----------------------------------------------------------- */
+function initHeroModal() {
+  const modal = document.querySelector('[data-graphic-modal]');
+  const openers = [].slice.call(document.querySelectorAll('[data-hero-graphic]'));
+  if (!modal || !openers.length) return;
+  const frame = modal.querySelector('[data-graphic-src]');
+  const panel = modal.querySelector('.iw-modal__panel');
+  let lastFocus = null;
+
+  // The graphic is a fixed horizontal composition. Rather than let it sit at one
+  // size in a huge modal, scale it as a unit to fit the viewport — so it fills a
+  // laptop and a 4K/5K display alike — and shrink the panel to hug it. On phones
+  // the graphic uses its own vertical reflow, so we leave it fluid and scrollable.
+  // the graphic canvas is 1280x920 but the actual content sits in a shorter band;
+  // crop the empty top and bottom so the popup isn't taller than it needs to be
+  const DESIGN_W = 1280, DESIGN_H = 920, CROP_TOP = 150, CROP_BOT = 862;
+  function layoutFrame() {
+    if (!panel || !frame || modal.hidden) return;
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      panel.style.width = ''; panel.style.height = '';
+      frame.style.width = '100%'; frame.style.height = '100%'; frame.style.transform = 'none';
+      return;
+    }
+    const bandH = CROP_BOT - CROP_TOP;
+    const k = Math.min(window.innerWidth * 0.70 / DESIGN_W, window.innerHeight * 0.90 / bandH);
+    frame.style.width = DESIGN_W + 'px';
+    frame.style.height = DESIGN_H + 'px';
+    frame.style.transform = 'translateY(' + (-CROP_TOP * k) + 'px) scale(' + k + ')';
+    panel.style.width = Math.round(DESIGN_W * k) + 'px';
+    panel.style.height = Math.round(bandH * k) + 'px';
+  }
+  window.addEventListener('resize', layoutFrame, { passive: true });
+
+  function open(e) {
+    if (e) e.preventDefault();
+    lastFocus = document.activeElement;
+    // load the graphic on demand, once (skipped when the frame already carries
+    // its content inline via srcdoc — e.g. the self-contained preview build)
+    const lazySrc = frame && frame.getAttribute('data-graphic-src');
+    if (frame && lazySrc && !frame.getAttribute('src')) {
+      frame.setAttribute('src', lazySrc);
+    }
+    modal.hidden = false;
+    layoutFrame();
+    document.body.classList.add('iw-modal-open');
+    // next frame: flip .in so the backdrop/panel transition runs
+    requestAnimationFrame(function () { modal.classList.add('in'); });
+    const closeBtn = modal.querySelector('.iw-modal__close');
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function close() {
+    if (modal.hidden) return;
+    modal.classList.remove('in');
+    document.body.classList.remove('iw-modal-open');
+    // wait out the fade before hiding so it doesn't snap shut
+    const done = function () {
+      modal.hidden = true;
+      modal.removeEventListener('transitionend', done);
+    };
+    modal.addEventListener('transitionend', done);
+    setTimeout(done, 360); // fallback if transitionend doesn't fire
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  openers.forEach(function (btn) { btn.addEventListener('click', open); });
+  [].slice.call(modal.querySelectorAll('[data-graphic-close]')).forEach(function (el) {
+    el.addEventListener('click', close);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') close();
+  });
+}
+
+function boot() {
+  buildHeroShots();
+  // grow the wall to fill wider screens (e.g. maximising or a 4K/5K monitor)
+  let heroShotsT;
+  window.addEventListener('resize', function () {
+    clearTimeout(heroShotsT);
+    heroShotsT = setTimeout(buildHeroShots, 200);
+  }, { passive: true });
+  buildShowcase();
+  initScrollMarquee();
+  initObservers();
+  initMesh();
+  initHeroType();
+  initSteps();
+  initHeroModal();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
