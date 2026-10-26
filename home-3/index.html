@@ -7,18 +7,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=7">
+<link rel="stylesheet" href="styles.css?v=8">
 </head>
 <body>
 <div class="ix-1">
 
-<!-- ===================== HERO — navy + animated tech mesh ===================== -->
-<header id="top" data-hero class="iw-hero">
+<!-- ===================== HERO ===================== -->
+<header id="top" class="iw-hero">
 
   <!-- Background: the studio's own work, greyscaled and tinted navy, in columns
-       that ride past at four different rates. Sprite offsets are the eight shots
-       from the showcase. Sprites are only fetched once idle — see initShots. -->
-  <div class="iwc-shots is-on" data-shots aria-hidden="true">
+       that ride past at four different rates. script.js fills it. -->
+  <div class="iwc-shots" aria-hidden="true">
     <div class="iwc-shots-in"></div>
   </div>
 
@@ -585,38 +584,32 @@
 
 <!-- ===================== SHOWCASE ===================== -->
 <div class="ix-58" id="work">
+  <!-- Our Work -->
+  <section class="ix-59">
+    <div class="ix-60">
+      <h2 class="iw-reveal ix-61">Our Work</h2>
+    </div>
+    <div class="iw-marq iw-reveal ix-62">
+      <div class="iw-track ix-63" id="track-scroll-works-a"></div>
+    </div>
+    <div class="iw-marq iw-reveal ix-64">
+      <div class="iw-track ix-65" id="track-scroll-works-b"></div>
+    </div>
+  </section>
 
-  <!-- MODE A: SCROLL / PINNED -->
-  <div id="showcase-scroll">
-    <!-- Our Work -->
-    <section class="ix-59" data-screen-label="Our Work">
-      <div class="ix-60">
-        <h2 class="iw-reveal ix-61">Our Work</h2>
-      </div>
-      <div class="iw-marq iw-reveal ix-62">
-        <div class="iw-track ix-63" id="track-scroll-works-a"></div>
-      </div>
-      <div class="iw-marq iw-reveal ix-64">
-        <div class="iw-track ix-65" id="track-scroll-works-b"></div>
-      </div>
-    </section>
-
-    <!-- What our clients say -->
-    <section class="ix-66" data-screen-label="What our clients say">
-      <div class="ix-67">
-        <h2 class="iw-reveal ix-61">What our clients say</h2>
-        <p class="iw-reveal ix-24">Our clients <strong class="ix-68">love</strong> our work &amp; the results.</p>
-      </div>
-      <div class="iw-marq iw-reveal ix-62">
-        <div class="iw-track ix-69" id="track-scroll-testi-a" data-mq="fwd"></div>
-      </div>
-      <div class="iw-marq iw-reveal iw-testi-row2 ix-64">
-        <div class="iw-track ix-69" id="track-scroll-testi-b" data-mq="rev"></div>
-      </div>
-    </section>
-  </div>
-
-
+  <!-- What our clients say -->
+  <section class="ix-66">
+    <div class="ix-67">
+      <h2 class="iw-reveal ix-61">What our clients say</h2>
+      <p class="iw-reveal ix-24">Our clients <strong class="ix-68">love</strong> our work &amp; the results.</p>
+    </div>
+    <div class="iw-marq iw-reveal ix-62">
+      <div class="iw-track ix-69" id="track-scroll-testi-a" data-mq="fwd"></div>
+    </div>
+    <div class="iw-marq iw-reveal iw-testi-row2 ix-64">
+      <div class="iw-track ix-69" id="track-scroll-testi-b" data-mq="rev"></div>
+    </div>
+  </section>
 </div>
 
 <!-- ===================== PARTNERS & AWARDS ===================== -->
@@ -656,6 +649,6 @@
   </div>
 </div>
 
-<script src="script.js?v=7"></script>
+<script src="script.js?v=8"></script>
 </body>
 </html>

@@ -1,0 +1,888 @@
+/* ============ Desktop hero graphic ============ */
+:root {
+    --bg-color: #FAFBFD;
+    --title-color: #263A62;
+    --accent-color: #80C34A;
+    --body-text-color: #616876;
+    --base-font-size: 16px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: var(--base-font-size);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.hero {
+    background-color: var(--bg-color);
+    width: 100%;
+    height: 920px;
+    padding-top: 80px;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('bg.png');
+    background-size: cover;
+    background-position: center;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-static-mask {
+    mask-image: url('mask.svg');
+    mask-repeat: no-repeat;
+    mask-position: center 15px;
+    -webkit-mask-image: url('mask.svg');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center 15px;
+}
+
+.hero-cursor-mask {
+    --cursor-x: 50%;
+    --cursor-y: 50%;
+    /* Glass effect */
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    /* Organic blurred mask */
+    mask-image: radial-gradient(circle 150px at var(--cursor-x) var(--cursor-y), black 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle 150px at var(--cursor-x) var(--cursor-y), black 20%, transparent 80%);
+
+    z-index: 1;
+    /* Remove clip-path as we are using mask-image now */
+    clip-path: none;
+}
+
+@keyframes centerSvgEntrance {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+.hero-center-svg {
+    position: absolute;
+    top: 408px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    animation: centerSvgEntrance 320ms ease-out forwards;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+/* Invisible hit target over center gear — does not move the graphic */
+.hero-hub-hit {
+    position: absolute;
+    top: calc(408px + 110px);
+    left: 50%;
+    width: 94px;
+    height: 94px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    cursor: default;
+    z-index: 7;
+}
+
+/* Hub hover: full diagram stays vivid (no grayscale) */
+.hero.hover-hub .hero-center-svg,
+.hero.hover-hub .hero-tag,
+.hero.hover-hub .hero-tag-right,
+.hero.hover-hub .hero-tag-svg,
+.hero.hover-hub .hero-tag-icon,
+.hero.hover-hub .hero-tag-icon-label,
+.hero.hover-hub .hero-stack {
+    filter: none !important;
+    opacity: 1 !important;
+}
+
+.hero-tag {
+    position: absolute;
+    width: 154px;
+    height: 34px;
+    padding: 4px 14px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    /* Positioned to the left of center.svg */
+    /* center.svg is 220px wide, so its left edge is at calc(50% - 110px) */
+    /* tag is 138px wide, so it should be at calc(50% - 110px - 138px) */
+    left: calc(50% - 220px);
+    /* Vertically centered with center.svg */
+    /* center.svg top is 338px, center is 338 + 110 = 448px */
+    /* tag height is 34px, so top is 448 - 17 = 431px */
+    top: 501px;
+
+    background: #18497D;
+    border: 1px solid #E9EEF4;
+    border-radius: 17px; /* Pill shape */
+
+    color: #FFFFFF;
+    font-size: 0.875rem;
+    font-weight: 600;
+    z-index: 4;
+    pointer-events: auto;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.hero-tag-right {
+    position: absolute;
+    width: 154px;
+    height: 34px;
+    padding: 4px 14px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    /* Symmetrically positioned to the right of center.svg */
+    right: calc(50% - 220px);
+    top: 501px;
+
+    background: #4A8628;
+    border: 1px solid #E9EEF4;
+    border-radius: 17px;
+
+    color: #FFFFFF;
+    font-size: 0.875rem;
+    font-weight: 600;
+    z-index: 4;
+    pointer-events: auto;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.hero-tag-svg {
+    position: absolute;
+    pointer-events: none; /* Changed from auto */
+    z-index: -1;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.hero-tag-svg .connector-hit {
+    pointer-events: stroke;
+    cursor: pointer;
+}
+
+@keyframes mob-flow {
+    to { stroke-dashoffset: -130; }
+}
+
+/* Desktop flow runs the opposite way: from the outer icons inward to the center */
+@keyframes desk-flow {
+    to { stroke-dashoffset: 130; }
+}
+
+.hero-tag-svg .connector-flow {
+    animation: desk-flow 5.6s linear infinite;
+}
+
+.hero-tag-svg-1 .connector-flow { animation-delay: 0s; }
+.hero-tag-svg-2 .connector-flow { animation-delay: 0.22s; }
+.hero-tag-svg-3 .connector-flow { animation-delay: 0.44s; }
+.hero-tag-svg-4 .connector-flow { animation-delay: 0.66s; }
+.hero-tag-right-svg-1 .connector-flow { animation-delay: 0s; }
+.hero-tag-right-svg-2 .connector-flow { animation-delay: 0.18s; }
+.hero-tag-right-svg-3 .connector-flow { animation-delay: 0.36s; }
+.hero-tag-right-svg-4 .connector-flow { animation-delay: 0.54s; }
+
+.hero-tag-icon {
+    position: absolute;
+    pointer-events: auto;
+    z-index: 5;
+    opacity: 0;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+    transition: filter 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+    opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+    transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform: translate(-50%, -50%) scale(1);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.hero-tag-icon svg {
+    width: 64px;
+    height: 66px;
+    flex-shrink: 0;
+}
+
+.hero-tag-icon-label {
+    position: absolute;
+    pointer-events: auto;
+    z-index: 5;
+    opacity: 0;
+    color: #616876;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    width: 160px;
+    left: 50%;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Desaturation Effect */
+.hero.is-hovering .hero-center-svg,
+.hero.is-hovering .hero-tag,
+.hero.is-hovering .hero-tag-right,
+.hero.is-hovering .hero-tag-svg,
+.hero.is-hovering .hero-tag-icon,
+.hero.is-hovering .hero-tag-icon-label,
+.hero.is-hovering .hero-stack {
+    filter: grayscale(100%);
+    opacity: 0.4;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+/* Hover Cards */
+.hero-card {
+    position: absolute;
+    width: 480px;
+    max-width: min(480px, calc(100vw - 48px));
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 32px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    /* Centered on hub: .hero-center-svg top (338px) + half height (110px) */
+    transform: translate(-50%, -50%) scale(0.92);
+    transform-origin: center center;
+    transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+        visibility 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+        transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    text-align: left;
+    pointer-events: auto;
+    border: 1px solid rgba(233, 238, 244, 0.5);
+}
+
+.hero.is-hovering .hero-card.active,
+.hero.hover-hub .hero-card.card-hub.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Hub card sits on top of the center graphic, centered over the hub */
+.card-hub {
+    left: 50%;
+    top: calc(408px + 110px);
+    transform: translate(-50%, -50%) scale(0.92);
+    transform-origin: center center;
+    text-align: center;
+}
+
+.hero.hover-hub .hero-card.card-hub.active {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+
+.card-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.card-icon svg {
+    width: 64px;
+    height: 66px;
+    flex-shrink: 0;
+}
+
+.card-title {
+    color: #263A62;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.card-text {
+    color: #616876;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Card anchor: horizontal + vertical center of hub (matches .hero-center-svg) */
+.card-l1, .card-l2, .card-l3, .card-l4,
+.card-r1, .card-r2, .card-r3, .card-r4 {
+    left: 50%;
+    top: calc(408px + 110px);
+}
+
+
+/* Stack Section Styles */
+.hero-stack {
+    position: absolute;
+    top: 618px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 220px;
+    z-index: 3;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.stack-pill {
+    position: absolute;
+    top: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #FFFFFF;
+    border: 1px solid #E9EEF4;
+    border-radius: 20px;
+    padding: 4px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #616876;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+}
+
+.stack-icon-container {
+    position: absolute;
+    top: 110px;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    transform: translate(-50%, -50%);
+    opacity: 0.55;
+}
+
+.stack-icon-container svg {
+    width: 46px;
+    height: 46px;
+}
+
+.stack-lines-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Override for active group */
+.hero.hover-l1 .hero-tag-svg-1, .hero.hover-l1 .hero-tag-icon-1, .hero.hover-l1 .hero-tag-icon-label-1,
+.hero.hover-l2 .hero-tag-svg-2, .hero.hover-l2 .hero-tag-icon-2, .hero.hover-l2 .hero-tag-icon-label-2,
+.hero.hover-l3 .hero-tag-svg-3, .hero.hover-l3 .hero-tag-icon-3, .hero.hover-l3 .hero-tag-icon-label-3,
+.hero.hover-l4 .hero-tag-svg-4, .hero.hover-l4 .hero-tag-icon-4, .hero.hover-l4 .hero-tag-icon-label-4,
+.hero.hover-r1 .hero-tag-right-svg-1, .hero.hover-r1 .hero-tag-right-icon-1, .hero.hover-r1 .hero-tag-right-icon-label-1,
+.hero.hover-r2 .hero-tag-right-svg-2, .hero.hover-r2 .hero-tag-right-icon-2, .hero.hover-r2 .hero-tag-right-icon-label-2,
+.hero.hover-r3 .hero-tag-right-svg-3, .hero.hover-r3 .hero-tag-right-icon-3, .hero.hover-r3 .hero-tag-right-icon-label-3,
+.hero.hover-r4 .hero-tag-right-svg-4, .hero.hover-r4 .hero-tag-right-icon-4, .hero.hover-r4 .hero-tag-right-icon-label-4 {
+    filter: none !important;
+    opacity: 1 !important;
+}
+
+/* Keep the tag colored if one of its children is hovered */
+.hero.is-hovering .hero-tag:has(.hover-group:hover),
+.hero.is-hovering .hero-tag-right:has(.hover-group:hover) {
+    filter: none;
+    opacity: 1;
+}
+/* Fallback for browsers that don't support :has() well, though it's 2024+ */
+.hero.hover-l1 .hero-tag, .hero.hover-l2 .hero-tag, .hero.hover-l3 .hero-tag, .hero.hover-l4 .hero-tag,
+.hero.hover-r1 .hero-tag-right, .hero.hover-r2 .hero-tag-right, .hero.hover-r3 .hero-tag-right, .hero.hover-r4 .hero-tag-right {
+    filter: none;
+    opacity: 1;
+}
+
+.hero-line-dot {
+    display: none;
+}
+
+@keyframes iconEntrance {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes labelEntrance {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* Auto-draw the connector lines from each icon inward to the hub on load */
+@keyframes drawConnector {
+    from { stroke-dashoffset: -1; }
+    to { stroke-dashoffset: 0; }
+}
+.connector-core {
+    stroke-dasharray: 1;
+    stroke-dashoffset: -1;
+    animation: drawConnector 0.22s ease-out forwards;
+}
+
+.hero-tag-svg-1 { left: -250.5px; top: calc(50% - 206.75px); }
+.hero-tag-svg-2 { left: -250.5px; top: calc(50% - 3.5px); }
+.hero-tag-svg-3 { left: -250.5px; top: calc(50% - 79px); }
+.hero-tag-svg-4 { left: -250.5px; top: calc(50% - 3.5px); }
+
+/* Path starts at x=37.5; left offset + 37.5 = pill width (138px) → stroke begins at right edge of Marketing pill */
+.hero-tag-right-svg-1 { left: calc(100% - 37.5px); top: calc(50% - 206.75px); }
+.hero-tag-right-svg-2 { left: calc(100% - 37.5px); top: calc(50% - 3.5px); }
+.hero-tag-right-svg-3 { left: calc(100% - 37.5px); top: calc(50% - 3.5px); }
+.hero-tag-right-svg-4 { left: calc(100% - 37.5px); top: calc(50% - 79px); }
+
+.hero-tag-icon-1 { left: -212.5px; top: calc(50% - 203.25px); animation: iconEntrance 0.17s ease-out 0.2s forwards; }
+.hero-tag-icon-2 { left: -212.5px; top: calc(50% + 75.5px); animation: iconEntrance 0.17s ease-out 0.2s forwards; }
+.hero-tag-icon-3 { left: -242px; top: calc(50% - 75.5px); animation: iconEntrance 0.17s ease-out 0.2s forwards; }
+.hero-tag-icon-4 { left: -212.5px; top: calc(50% + 203.25px); animation: iconEntrance 0.17s ease-out 0.23s forwards; }
+
+.hero-tag-right-icon-1 { left: calc(100% + 212.5px); top: calc(50% - 203.25px); animation: iconEntrance 0.17s ease-out 0.23s forwards; }
+.hero-tag-right-icon-2 { left: calc(100% + 242px); top: calc(50% + 75.5px); animation: iconEntrance 0.17s ease-out 0.2s forwards; }
+.hero-tag-right-icon-3 { left: calc(100% + 212.5px); top: calc(50% + 203.25px); animation: iconEntrance 0.17s ease-out 0.23s forwards; }
+.hero-tag-right-icon-4 { left: calc(100% + 242px); top: calc(50% - 75.5px); animation: iconEntrance 0.17s ease-out 0.2s forwards; }
+
+.hero-tag-icon-label-1 {
+    left: -212.5px;
+    top: calc(50% - 203.25px + 37px);
+    animation: labelEntrance 0.17s ease-out 0.2s forwards;
+}
+
+.hero-tag-icon-label-2 {
+    left: -212.5px;
+    top: calc(50% + 112.5px);
+    animation: labelEntrance 0.17s ease-out 0.2s forwards;
+}
+
+.hero-tag-icon-label-3 {
+    left: -242px;
+    top: calc(50% - 38.5px);
+    animation: labelEntrance 0.17s ease-out 0.2s forwards;
+}
+
+.hero-tag-icon-label-4 {
+    left: -212.5px;
+    top: calc(50% + 203.25px + 37px);
+    animation: labelEntrance 0.17s ease-out 0.23s forwards;
+}
+
+.hero-tag-right-icon-label-1 {
+    left: calc(100% + 212.5px);
+    top: calc(50% - 203.25px + 37px);
+    animation: labelEntrance 0.17s ease-out 0.23s forwards;
+}
+
+.hero-tag-right-icon-label-2 {
+    left: calc(100% + 242px);
+    top: calc(50% + 112.5px);
+    animation: labelEntrance 0.17s ease-out 0.2s forwards;
+}
+
+.hero-tag-right-icon-label-3 {
+    left: calc(100% + 212.5px);
+    top: calc(50% + 203.25px + 37px);
+    animation: labelEntrance 0.17s ease-out 0.23s forwards;
+}
+.hero-tag-right-icon-label-4 {
+    left: calc(100% + 242px);
+    top: calc(50% - 38.5px);
+    animation: labelEntrance 0.17s ease-out 0.2s forwards;
+}
+
+.hero-container {
+    max-width: 1200px;
+    width: 100%;
+    text-align: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    color: var(--title-color);
+    /* 54px / 16px = 3.375rem */
+    font-size: 3.375rem;
+    font-weight: 700;
+    line-height: 1.25;
+    /* dropped lower now that the subtitle is gone */
+    margin: 126px 0 24px 0;
+}
+
+.hero-title span.accent,
+.card-title span.accent {
+    color: var(--accent-color);
+}
+
+.hero-description {
+    color: var(--body-text-color);
+    font-size: 1.375rem;
+    line-height: 1.6;
+    max-width: 580px;
+    margin: 0 auto;
+}
+
+/* Hero CTA buttons under the description */
+.hero-cta {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+.hero-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 12px 26px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid transparent;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.hero-btn-primary {
+    background: #5A9E2F;
+    color: #FFFFFF;
+    border-color: #5A9E2F;
+}
+
+.hero-btn-primary:hover {
+    background: #4E8A28;
+    border-color: #4E8A28;
+}
+
+.hero-btn-secondary {
+    background: #FFFFFF;
+    color: var(--title-color);
+    border-color: #D5DDE6;
+}
+
+.hero-btn-secondary:hover {
+    border-color: var(--title-color);
+}
+
+.hero-ms-term {
+    position: relative;
+    display: inline;
+    color: #1266b5;
+    font-weight: 600;
+    cursor: default;
+    border-bottom: 1.5px dashed rgba(18, 102, 181, 0.5);
+}
+
+.hero-ms-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    width: 230px;
+    background: #0f2440;
+    border-radius: 8px;
+    padding: 12px 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 100;
+    text-align: left;
+    box-shadow: 0 8px 24px rgba(15, 36, 64, 0.2);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.hero-ms-term:hover .hero-ms-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.hero-ms-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #0f2440;
+}
+
+.hero-ms-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 9px;
+}
+
+.hero-ms-chip {
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    letter-spacing: 0.02em;
+}
+
+.hero-ms-note {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 8px;
+}
+
+/* ---------- stack icons: positions along the stack row ---------- */
+.stack-icon-1 { left: 176px; }
+.stack-icon-2 { left: 234px; }
+.stack-icon-3 { left: 292px; }
+.stack-icon-4 { left: 350px; }
+.stack-icon-5 { left: 408px; }
+.stack-icon-6 { left: 466px; }
+.stack-icon-7 { left: 524px; }
+
+/* hub hover: the side pills turn blue with the rest of the hub theme */
+.hero.hover-hub .hero-tag,
+.hero.hover-hub .hero-tag-right { background: #18497D; }
+
+
+/* ============ Mobile hero graphic (hidden on desktop) ============ */
+.mob-hero { display: none; }
+
+@media (max-width: 767px) {
+    /* Hide all desktop-only elements */
+    .hero-tag, .hero-tag-right, .hero-center-svg, .hero-hub-hit,
+    .hero-stack, .hero-cursor-mask, .hero-card,
+    .hero-container, .mobile-section-header { display: none !important; }
+
+    .hero {
+        height: auto !important;
+        padding: 0 !important;
+        flex-direction: column;
+        align-items: stretch;
+        overflow: visible !important;
+    }
+
+    /* Mobile hero wrapper */
+    .mob-hero {
+        display: block;
+        width: 100%;
+        min-height: 100dvh;
+        background: #F4F7FB;
+        position: relative;
+        overflow: hidden;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        padding: 52px 0 44px;
+        box-sizing: border-box;
+    }
+
+    .mob-dotbg {
+        position: absolute; inset: 0; pointer-events: none;
+        background-image: radial-gradient(circle, #C8D3E2 1px, transparent 1px);
+        background-size: 14px 14px;
+        mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+        -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+        opacity: 0.55;
+    }
+
+    .mob-inner {
+        position: relative;
+        display: flex; flex-direction: column; align-items: center;
+        padding: 0 16px; box-sizing: border-box;
+    }
+
+    /* Title */
+    .mob-h1 {
+        margin: 70px 0 28px;
+        font-weight: 700; font-size: 30px; line-height: 1.08;
+        letter-spacing: -0.8px; color: #0F2B4E; text-align: center;
+    }
+    .mob-h1 .accent { color: #5A9E2F; }
+    .mob-desc {
+        margin: -14px auto 24px; max-width: 300px;
+        font-size: 14px; line-height: 1.5; color: #5B6B80; text-align: center;
+    }
+    .mob-desc .mob-ms {
+        color: #1266b5; font-weight: 600;
+        border-bottom: 1.5px dashed rgba(18,102,181,0.5);
+    }
+
+    /* Mobile CTA buttons */
+    .mob-cta {
+        display: flex; justify-content: center; gap: 10px;
+        margin: 0 0 28px; flex-wrap: wrap;
+    }
+    .mob-btn {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 14px; font-weight: 700;
+        padding: 12px 22px; border-radius: 8px;
+        text-decoration: none; cursor: pointer;
+        display: inline-flex; align-items: center; justify-content: center;
+        border: 1.5px solid transparent; white-space: nowrap;
+    }
+    .mob-btn-primary { background: #5A9E2F; color: #FFFFFF; border-color: #5A9E2F; }
+    .mob-btn-secondary { background: #FFFFFF; color: #263A62; border-color: #D5DDE6; }
+
+    /* Mind-map column */
+    .mob-mindmap { display: flex; flex-direction: column; align-items: center; width: 100%; }
+
+    /* Node rows */
+    .mob-nodes-row {
+        display: grid; width: 343px; justify-items: center;
+    }
+    .mob-nodes-top    { grid-template-columns: 1fr 1fr 1fr 1fr; margin-bottom: -6px; }
+    .mob-nodes-top .mob-node { flex-direction: column-reverse; }
+    .mob-nodes-bottom { grid-template-columns: 1fr 1fr 1fr 1fr; margin-top: -6px; margin-bottom: 28px; }
+
+    .mob-node {
+        display: flex; flex-direction: column; align-items: center;
+        gap: 6px; cursor: pointer; position: relative;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .mob-node-icon {
+        width: 54px; height: 54px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        transition: transform 0.15s ease; position: relative; z-index: 2;
+    }
+    .mob-node.active .mob-node-icon { transform: scale(0.92); }
+
+    .mob-node svg { width: 54px; height: 54px; }
+
+    .mob-node-label {
+        font-size: 13px; font-weight: 500; color: #14213D;
+        letter-spacing: 0.1px; white-space: normal; text-align: center;
+        max-width: 88px; line-height: 1.25;
+    }
+
+    /* Connectors */
+    .mob-connector { display: block; width: 343px; overflow: visible; }
+
+    @keyframes mob-flow { to { stroke-dashoffset: -130; } }
+
+    /* Pills */
+    .mob-pill {
+        padding: 7px 16px; border-radius: 999px;
+        font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
+        color: #fff; white-space: nowrap; position: relative; z-index: 3;
+    }
+    .mob-pill-navy  { background: #0F2B4E; box-shadow: 0 4px 12px rgba(15,43,78,0.4); margin-top: -14px; margin-bottom: 4px; }
+    .mob-pill-green { background: #5A9E2F; box-shadow: 0 4px 12px rgba(90,158,47,0.4); margin-top: 4px; margin-bottom: -14px; }
+
+    /* Hub */
+    .mob-hub { position: relative; z-index: 3; margin: 4px 0; animation: mob-pulse 4s ease-in-out infinite; }
+    @keyframes mob-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+
+    /* Cards — fixed centered overlay */
+    .mob-backdrop {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.35); z-index: 99;
+    }
+    .mob-backdrop.active { display: block; }
+    .mob-card {
+        display: none; position: fixed;
+        top: 50%; left: 50%; transform: translate(-50%, -50%);
+        width: 311px; z-index: 100;
+        background: #fff; border-radius: 20px; padding: 22px;
+        box-sizing: border-box;
+        box-shadow: 0 20px 48px -10px rgba(0,0,0,0.22);
+        border: 1px solid rgba(233,238,244,0.6);
+        flex-direction: column; gap: 4px;
+    }
+    .mob-card.active { display: flex; }
+    .mob-card-close {
+        position: absolute; top: 14px; right: 14px;
+        width: 28px; height: 28px; border-radius: 50%;
+        background: #F0F4F8; border: none; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        color: #6B7A8F; padding: 0;
+    }
+    .mob-card-close:active { background: #E3E8F0; }
+    .mob-card-icon { width: 56px; height: 56px; margin-bottom: 4px; }
+    .mob-card-icon svg { width: 56px; height: 56px; }
+    .mob-card-title { color: #263A62; font-size: 16px; font-weight: 700; margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .mob-card-title .accent { color: #5A9E2F; }
+    .mob-card-text  { color: #616876; font-size: 14px; line-height: 1.6; margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    /* Stack row */
+    .mob-stack { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 4px; }
+    .mob-stack-label {
+        padding: 5px 14px; border-radius: 999px; background: #fff;
+        border: 1px solid #E3E8F0; font-size: 11px; font-weight: 600;
+        color: #14213D; letter-spacing: 0.3px;
+        box-shadow: 0 1px 3px rgba(15,43,78,0.06);
+    }
+    .mob-stack-icons-wrap { position: relative; width: 311px; height: 44px; }
+    .mob-stack-hline {
+        position: absolute; top: 50%; left: 14px; right: 14px;
+        height: 1px; background: #D7DEE8;
+    }
+    .mob-stack-row {
+        position: relative; display: flex; justify-content: space-between;
+        align-items: center; height: 100%;
+    }
+    .mob-stack-ic {
+        width: 28px; height: 28px; border-radius: 7px; background: #fff;
+        border: 1px solid #E3E8F0;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 1px 2px rgba(15,43,78,0.05);
+    }
+    .mob-stack-ic svg { width: 15px; height: 15px; opacity: 0.4; }
+}
+
+/* ---------- mobile connectors: dashes that flow toward / away from the hub ---------- */
+.mob-hub { cursor: pointer; }
+.mob-flow { animation: mob-flow 5.6s linear infinite; }
+.mob-flow-1 { animation-delay: 0s; }
+.mob-flow-2 { animation-delay: 0.18s; }
+.mob-flow-3 { animation-delay: 0.36s; }
+.mob-flow-4 { animation-delay: 0.54s; }
+@keyframes mob-flow { to { stroke-dashoffset: -130; } }

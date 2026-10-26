@@ -1,8 +1,25 @@
 /* ===========================================================
    ImageWorks Creative — Home
-   Plain CSS. No build step. Edit freely.
+   Plain CSS. No build step.
+
+    1. Base
+    2. Shared: keyframes, reveal, marquee, links, buttons
+    3. Hero
+    4. Intro — Built to Stand Out
+    5. How We Do It
+    6. Phones (shared overrides)
+    7. Hero graphic modal
+    8. Reduced motion
+    9. Section layout classes (ix-*)
+   10. Blue band, Meet ImageWorks, Our Superpower
+   11. Components built in script.js
+   12. Large screens (4K / 5K at 100%)
    =========================================================== */
 
+
+/* ===========================================================
+   1. Base
+   =========================================================== */
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
@@ -13,33 +30,13 @@ body {
 }
 ::selection { background: rgba(128, 195, 74, .28); }
 
+
+/* ===========================================================
+   2. Shared
+   =========================================================== */
 /* ---------- keyframes ---------- */
-@keyframes iwFloat   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
-@keyframes iwFloatB  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(12px)} }
-@keyframes iwDrift   { 0%{transform:translate(0,0) scale(1)} 33%{transform:translate(46px,-34px) scale(1.12)} 66%{transform:translate(-34px,26px) scale(.94)} 100%{transform:translate(0,0) scale(1)} }
-@keyframes iwDriftB  { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-40px,30px) scale(1.1)} 100%{transform:translate(0,0) scale(1)} }
-@keyframes iwMarquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-@keyframes iwMarqueeR{ from{transform:translateX(-50%)} to{transform:translateX(0)} }
-@keyframes iwPulse   { 0%{transform:scale(.6);opacity:.6} 100%{transform:scale(2.4);opacity:0} }
-@keyframes iwSpin    { to{transform:rotate(360deg)} }
-@keyframes iwFlow    { from{background-position:0 0} to{background-position:0 12px} }
-@keyframes iwNodePulse { 0%,100%{opacity:1;transform:translateX(-50%) scale(1)} 50%{opacity:.35;transform:translateX(-50%) scale(1.5)} }
-@keyframes iwBob     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
-@keyframes iwBobB    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
-@keyframes iwTileA   { 0%,100%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(0,-14px) rotate(-.7deg)} }
-@keyframes iwTileB   { 0%,100%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(0,13px) rotate(.7deg)} }
-@keyframes iwTileC   { 0%,100%{transform:translate(0,0)} 50%{transform:translate(0,-11px)} }
-@keyframes iwTileD   { 0%,100%{transform:translate(0,0)} 50%{transform:translate(0,12px)} }
-@keyframes iwAmb1    { 0%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(34px,-30px) rotate(4deg)} 100%{transform:translate(0,0) rotate(0deg)} }
-@keyframes iwAmb2    { 0%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(-40px,28px) rotate(-5deg)} 100%{transform:translate(0,0) rotate(0deg)} }
-@keyframes iwAmb3    { 0%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(26px,32px) rotate(3deg)} 100%{transform:translate(0,0) rotate(0deg)} }
-@keyframes iwBlob    { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-26px) scale(1.12)} 100%{transform:translate(0,0) scale(1)} }
-@keyframes iwBlobB   { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-34px,30px) scale(1.1)} 100%{transform:translate(0,0) scale(1)} }
-@keyframes iwGlowPulse { 0%,100%{opacity:.35} 50%{opacity:.85} }
-@keyframes iwPanelFade { 0%,100%{opacity:.5} 50%{opacity:.95} }
-@keyframes iwPart1   { 0%{transform:translate(0,0);opacity:.2} 50%{transform:translate(18px,-46px);opacity:.9} 100%{transform:translate(0,0);opacity:.2} }
-@keyframes iwPart2   { 0%{transform:translate(0,0);opacity:.25} 50%{transform:translate(-22px,-38px);opacity:.85} 100%{transform:translate(0,0);opacity:.25} }
-@keyframes iwGridShift { 0%{background-position:0 0} 100%{background-position:46px 46px} }
+@keyframes iwMarquee  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes iwMarqueeR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 
 /* ---------- scroll reveal ---------- */
 .iw-reveal {
@@ -56,9 +53,11 @@ body {
           mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
 .iw-track { display: flex; width: max-content; }
+/* the review rows: JS hands over the scroll-driven offset as --mq-x */
+.iw-track[data-mq] { transform: translate3d(var(--mq-x, 0px), 0, 0); }
 .iw-marq:hover .iw-track { animation-play-state: paused; }
 
-/* ---------- links & hovers ---------- */
+/* ---------- links, buttons & hovers ---------- */
 .iw-link { position: relative; text-decoration: none; }
 .iw-link::after {
   content: ""; position: absolute; left: 0; bottom: -4px;
@@ -77,41 +76,23 @@ body {
 .iw-btn { transition: transform .25s cubic-bezier(.16,.84,.44,1), box-shadow .25s ease, filter .25s ease; }
 .iw-btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(20,40,80,.18); filter: brightness(1.04); }
 
-.iw-ghost { transition: transform .25s ease, background .25s ease, border-color .25s ease; }
-.iw-ghost:hover { transform: translateY(-3px); background: rgba(18,102,181,.06); border-color: rgba(18,102,181,.5); }
-
 .iw-partner { opacity: .92; transition: opacity .4s ease, transform .4s ease; }
 .iw-partner:hover { opacity: 1; transform: scale(1.06); }
-
-.iw-seg { transition: color .3s ease; }
 
 /* tabbed panels: shown/hidden by JS via [hidden] */
 [hidden] { display: none !important; }
 
+/* shared green CTA button (matches "Let's get started") */
+.iw-cta-btn { display: inline-flex; align-items: center; gap: 10px; height: 58px; padding: 0 36px; border-radius: 2px; background: #80c34a; color: #fff; font-size: 17px; font-weight: 700; text-decoration: none; box-shadow: 0 1px 2px rgba(20,40,80,.14); }
 
-/* shared blue -> navy gradient behind "What We Do" + "Why ImageWorks" */
-.iw-blueband {
-  position: relative;
-  background: linear-gradient(180deg,
-    #205fa6 0%,
-    #1d569a 28%,
-    #164784 47%,
-    #113659 65%,
-    #0d2748 83%,
-    #0a1c38 100%);
-}
-/* the dot field rides on the whole band, not on one section — laid over the
-   gradient rather than replacing it, so the grid runs unbroken from What We Do
-   straight through Why ImageWorks instead of restarting at the seam */
-.iw-blueband::before {
-  content: "";
-  position: absolute; inset: 0;
-  background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
-  background-size: 26px 26px;
-  pointer-events: none;
-}
+/* green underline accent for key phrases in body copy */
+.iw-uline { text-decoration: underline; text-decoration-color: #80c34a; text-decoration-thickness: 2px; text-underline-offset: 3px; }
 
-/* ---------- HERO — navy field + animated tech mesh ---------- */
+
+/* ===========================================================
+   3. Hero
+   =========================================================== */
+/* ---------- navy field ---------- */
 .iw-hero {
   position: relative;
   display: flex; align-items: center; justify-content: center;
@@ -134,17 +115,15 @@ body {
 /* ---------- HERO BACKGROUND: the studio's work, in duotone columns ----------
    Seven columns of the showcase shots ride slowly up and down at their own
    rates, greyscaled and blended to navy so they read as a wall of work seen
-   through the dark. The sprites are only fetched once idle (see initShots), and
-   never on a narrow screen — so on phones the hero is just the navy field. */
+   through the dark. script.js builds the tiles (buildHeroShots). */
 .iwc-shots {
   position: absolute; inset: 0; z-index: 0;
   pointer-events: none; overflow: hidden;
   isolation: isolate;               /* keeps the duotone blend off the field below */
-  opacity: 0; transition: opacity 1.4s ease;
+  opacity: .12;
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 13%, #000 86%, transparent 100%);
           mask-image: linear-gradient(180deg, transparent 0, #000 13%, #000 86%, transparent 100%);
 }
-.iwc-shots.is-on { opacity: .12; }
 .iwc-shots-in { position: absolute; inset: -6% 0; display: flex; justify-content: center; gap: 18px; }
 .iwc-col-strip { flex: none; display: flex; flex-direction: column; gap: 18px; height: max-content; will-change: transform; }
 .iwc-col-strip--0 { animation: iwcRise 68s linear infinite; }
@@ -158,9 +137,8 @@ body {
   background-size: 100% auto; background-repeat: no-repeat; background-color: #081f3a;
   filter: grayscale(1) contrast(1.12) brightness(.4);
 }
-/* nothing is requested until the layer is switched on */
-.iwc-shots.is-on .iwc-shot--s1 { background-image: url("assets/work-sprite-1.png"); }
-.iwc-shots.is-on .iwc-shot--s2 { background-image: url("assets/work-2.png"); }
+.iwc-shot--s1 { background-image: url("assets/work-sprite-1.png"); }
+.iwc-shot--s2 { background-image: url("assets/work-2.png"); }
 /* the duotone: hue/saturation from this plate, luminosity from the shots below */
 .iwc-shots::after {
   content: ""; position: absolute; inset: 0;
@@ -176,17 +154,6 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .iwc-col-strip { animation: none !important; }
-}
-
-/* the mesh sits behind the copy and never eats pointer events */
-.iwh-mesh {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  /* fade out top & bottom so it eases in at the top and into the next section */
-  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 84%, transparent 100%);
-          mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 84%, transparent 100%);
 }
 
 .iwh-center {
@@ -221,7 +188,9 @@ body {
 @keyframes iwhUnveil { from { opacity: 0; transform: translateY(.28em); } }
 
 /* the accent lands a letter at a time — JS stamps each letter's delay */
-.iwh-ch { display: inline-block; animation: iwhChar .44s cubic-bezier(.16,.84,.44,1) backwards; }
+.iwh-ch { display: inline-block; animation: iwhChar .44s cubic-bezier(.16,.84,.44,1) var(--d, 0s) backwards; }
+/* an inline-block holding a single space would collapse to nothing */
+.iwh-ch--space { white-space: pre; }
 @keyframes iwhChar { from { opacity: 0; transform: translateY(.34em); } }
 
 /* the button and trust bar lift in once the words have all landed */
@@ -272,12 +241,44 @@ body {
   .iwh-cta { margin-top: 30px; height: 52px; }
 }
 
-/* ---------- intro statement responsive ---------- */
+
+/* ===========================================================
+   4. Intro — Built to Stand Out
+   =========================================================== */
+.iw-intro-cta { margin-top: 30px; }
+
+/* phones: copy and graphic stack */
 @media (max-width: 767px) {
   .iw-intro-grid { grid-template-columns: 1fr !important; gap: 44px !important; }
 }
 
+/* ---------- intro graphic: the page, read twice ---------- */
+/* no fill here on purpose: each label carries its own fill attribute (blue for
+   the human side, green for the machine side) and a CSS fill would silently
+   override it — presentation attributes lose to CSS */
+/* the dashed runs read as the page being continuously ingested — slow enough
+   to register as a system working, not as an animation asking for attention */
+.iw-sem-flow { stroke-dasharray: 4 5; animation: iwSemFlow 2.8s linear infinite; }
+@keyframes iwSemFlow { to { stroke-dashoffset: -18; } }
+.iw-sem-check { transform-box: fill-box; transform-origin: center; animation: iwSemPulse 4.5s ease-in-out infinite; }
+@keyframes iwSemPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.09); } }
 
+/* ---------- intro graphic: chip labels + hover interactions ---------- */
+.iw-chip-txt { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; }
+.iw-ds-tile, .iw-stack-badge, .iw-glabel, .iw-ai {
+  transform-box: fill-box; transform-origin: center;
+  transition: transform .3s cubic-bezier(.2,.8,.3,1);
+}
+.iw-ds-tile:hover { transform: translateY(-3px); }
+.iw-stack-badge { cursor: pointer; }
+.iw-stack-badge:hover { transform: translateY(-4px) scale(1.1); }
+.iw-glabel:hover { transform: scale(1.05); }
+.iw-ai:hover { transform: scale(1.06); }
+
+
+/* ===========================================================
+   5. How We Do It
+   =========================================================== */
 /* ---------- How We Do It: the process as a rail of four stations ---------- */
 .iw-steps {
   max-width: 1176px; margin: 0 auto; padding: 0 40px;
@@ -359,6 +360,10 @@ body {
   transition: width .5s cubic-bezier(.2,.8,.3,1);
   z-index: 1;
 }
+/* each station sits mid-tab, so the line stops at 12.5%, 37.5%, 62.5%, 87.5% */
+.iw-steps-fill[data-step="1"] { width: 37.5%; }
+.iw-steps-fill[data-step="2"] { width: 62.5%; }
+.iw-steps-fill[data-step="3"] { width: 87.5%; }
 
 .iw-steps-panels {
   display: grid;                      /* every panel shares one cell, so the box
@@ -455,20 +460,14 @@ body {
   .iw-steps-copy, .iw-steps-out { justify-content: flex-start; }
 }
 
-/* ---------- intro graphic: the page, read twice ---------- */
-/* no fill here on purpose: each label carries its own fill attribute (blue for
-   the human side, green for the machine side) and a CSS fill would silently
-   override it — presentation attributes lose to CSS */
-.iw-sem-label { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; }
-/* the dashed runs read as the page being continuously ingested — slow enough
-   to register as a system working, not as an animation asking for attention */
-.iw-sem-flow { stroke-dasharray: 4 5; animation: iwSemFlow 2.8s linear infinite; }
-@keyframes iwSemFlow { to { stroke-dashoffset: -18; } }
-.iw-sem-check { transform-box: fill-box; transform-origin: center; animation: iwSemPulse 4.5s ease-in-out infinite; }
-@keyframes iwSemPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.09); } }
+.iw-hwdi-cta { display: flex; justify-content: flex-start; margin-top: 44px; }
 
-/* ---------- phones: tablet (>=768) keeps the desktop layout, phones stack ----------
-   The grids are set inline in index.html, so these override with !important. */
+
+/* ===========================================================
+   6. Phones (shared overrides)
+   =========================================================== */
+/* tablet (>=768) keeps the desktop layout; phones stack. The grids come from
+   the ix-* layout classes further down, so these override with !important. */
 
 @media (max-width: 767px) {
   /* reviews: one readable row instead of two, with cards that fit the screen */
@@ -491,11 +490,12 @@ body {
   }
   .iw-why-grid > div:first-child { border-top: 0 !important; padding-top: 0 !important; }
 
-  /* trim the tall desktop section padding so phones don't scroll through empty bands */
-  section[style*="104px 40px"], section[style*="112px 40px"], section[style*="108px 40px"] { padding-left: 20px !important; padding-right: 20px !important; }
 }
 
-/* ---------- hero graphic modal ---------- */
+
+/* ===========================================================
+   7. Hero graphic modal
+   =========================================================== */
 .iw-modal {
   position: fixed; inset: 0; z-index: 1000;
   display: flex; align-items: center; justify-content: center;
@@ -510,9 +510,6 @@ body {
 }
 .iw-modal__panel {
   position: relative;
-  /* JS sizes this to hug the scaled graphic on tablet/desktop; this is the
-     fallback before it runs */
-  width: 96vw; height: 92vh;
   background: #f4f7fb; border-radius: 10px; overflow: hidden;
   box-shadow: 0 30px 80px rgba(9, 24, 44, .45);
   opacity: 0; transform: translateY(14px) scale(.985);
@@ -521,8 +518,18 @@ body {
 /* .in is added a frame after unhide so the entrance animates */
 .iw-modal.in .iw-modal__backdrop { opacity: 1; }
 .iw-modal.in .iw-modal__panel { opacity: 1; transform: none; }
-/* the graphic scales from its top-left corner; JS sets the scale factor */
 .iw-modal__frame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; display: block; transform-origin: 0 0; }
+/* tablet/desktop: the graphic is a fixed 1280x920 canvas whose content sits in
+   a 712px band starting 150px down. JS sets the scale factor --k to fit the
+   viewport; the panel hugs the scaled band and the frame crops the empty top. */
+@media (min-width: 768px) {
+  .iw-modal { --gw: 1280px; --gh: 920px; --crop-top: 150px; --band-h: 712px; }
+  .iw-modal__panel { width: calc(var(--gw) * var(--k, 1)); height: calc(var(--band-h) * var(--k, 1)); }
+  .iw-modal__frame {
+    width: var(--gw); height: var(--gh);
+    transform: translateY(calc(var(--crop-top) * var(--k, 1) * -1)) scale(var(--k, 1));
+  }
+}
 .iw-modal__close {
   position: absolute; top: 12px; right: 12px; z-index: 2;
   width: 40px; height: 40px; border-radius: 50%; border: 0; cursor: pointer;
@@ -536,11 +543,13 @@ body.iw-modal-open { overflow: hidden; }
 @media (max-width: 767px) {
   .iw-modal { padding: 0; }
   /* phones: full-screen panel, graphic fluid + scrollable (its own reflow) */
-  .iw-modal__panel { width: 100% !important; height: 100% !important; max-width: none; border-radius: 0; }
-  .iw-modal__frame { transform: none !important; }
+  .iw-modal__panel { width: 100%; height: 100%; max-width: none; border-radius: 0; }
 }
 
-/* ---------- reduced motion ---------- */
+
+/* ===========================================================
+   8. Reduced motion
+   =========================================================== */
 @media (prefers-reduced-motion: reduce) {
   .iw-reveal { transition: none; opacity: 1; transform: none; }
   .iw-track { animation: none !important; }
@@ -548,14 +557,16 @@ body.iw-modal-open { overflow: hidden; }
   /* the hero entrance simply doesn't play — every keyframe ends at the
      element's natural state, so skipping it leaves the copy exactly in place */
   .iwh-up, .iwh-sub, .iwh-tag, .iwh-ch, .iwh-cta, .iwh-trust { animation: none !important; }
+  .iw-ds-tile, .iw-stack-badge, .iw-glabel, .iw-ai { transition: none; }
 }
 
 
-/* ============================================================
-   Utility classes extracted from index.html inline styles.
-   One class per unique declaration set; placed last so they win
-   ties the way the inline styles did.
-   ============================================================ */
+/* ===========================================================
+   9. Section layout classes (ix-*)
+   One class per element, numbered in page order. They come after
+   sections 1–8 so they win ties on the same element; sections 10–11
+   come after them on purpose, to refine a few of them.
+   =========================================================== */
 .ix-1 { position:relative; width:100%; overflow-x:clip; background:#fff; }
 .ix-2 { --d:.08s; }
 .ix-3 { --d:.26s; }
@@ -572,10 +583,6 @@ body.iw-modal-open { overflow: hidden; }
 .ix-14 { display:flex; justify-content:center; align-self:center; }
 .ix-15 { max-width:640px; height:auto; display:block; overflow:visible; }
 .ix-16 { letter-spacing:.1px; }
-.ix-17 { background:#1266b5; }
-.ix-18 { color:#1266b5; }
-.ix-19 { background:#5c9a2e; }
-.ix-20 { color:#4a8628; }
 .ix-21 { position:relative; background:#ffffff; padding:112px 0 100px; overflow:hidden; }
 .ix-22 { max-width:1176px; margin:0 auto 42px; padding:0 40px; display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; }
 .ix-23 { margin:0; font-size:44px; font-weight:800; letter-spacing:-.8px; color:#143c66; text-wrap:balance; }
@@ -614,7 +621,33 @@ body.iw-modal-open { overflow: hidden; }
 .ix-56 { transition-delay:360ms; padding:0 30px; border-left:1px solid rgba(255,255,255,.12); }
 .ix-57 { transition-delay:480ms; padding:0 30px; border-left:1px solid rgba(255,255,255,.12); border-right:1px solid rgba(255,255,255,.12); }
 
-/* Meet ImageWorks has the blue band to itself now, so it takes full pads */
+
+/* ===========================================================
+   10. Blue band, Meet ImageWorks, Our Superpower
+   =========================================================== */
+/* blue -> navy gradient behind Meet ImageWorks and What We Do */
+.iw-blueband {
+  position: relative;
+  background: linear-gradient(180deg,
+    #205fa6 0%,
+    #1d569a 28%,
+    #164784 47%,
+    #113659 65%,
+    #0d2748 83%,
+    #0a1c38 100%);
+}
+/* the dot field rides on the whole band, not on one section — laid over the
+   gradient rather than replacing it, so the grid runs unbroken from What We Do
+   straight through Why ImageWorks instead of restarting at the seam */
+.iw-blueband::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+  pointer-events: none;
+}
+
+/* Meet ImageWorks: full pads, its own band */
 .iw-meet { padding-top:104px; padding-bottom:104px; }
 
 /* Meet ImageWorks: the Why band, now with a lede and a title + line per column */
@@ -672,10 +705,10 @@ body.iw-modal-open { overflow: hidden; }
 .ix-78 { gap:88px; align-items:center; animation:iwMarquee 40s linear infinite; }
 
 
-/* ============================================================
-   Components built in script.js (Our Work cards, testimonial
-   cards, partner logos, hero-wall tiles). No inline styles.
-   ============================================================ */
+/* ===========================================================
+   11. Components built in script.js
+   Our Work cards, testimonial cards, partner logos, hero-wall tiles.
+   =========================================================== */
 .iw-work { flex: none; width: 300px; border-radius: 2px; overflow: hidden; background: #fff; box-shadow: 0 1px 3px rgba(20,40,80,.08), 0 10px 26px rgba(20,40,80,.1); }
 .iw-work__bar { height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 14px; background: #f3f6fb; border-bottom: 1px solid #eaeff6; }
 .iw-work__dot { width: 9px; height: 9px; border-radius: 50%; }
@@ -730,33 +763,10 @@ body.iw-modal-open { overflow: hidden; }
 .pf-ridgley-walsh-02 { background-image: url("assets/hero-shots/ridgley-walsh-02.jpg"); }
 
 
-/* ---------- shared green CTA button (matches "Let's get started") ---------- */
-.iw-cta-btn { display: inline-flex; align-items: center; gap: 10px; height: 58px; padding: 0 36px; border-radius: 2px; background: #80c34a; color: #fff; font-size: 17px; font-weight: 700; text-decoration: none; box-shadow: 0 1px 2px rgba(20,40,80,.14); }
-.iw-intro-cta { margin-top: 30px; }
-.iw-hwdi-cta { display: flex; justify-content: flex-start; margin-top: 44px; }
-
-
-/* ---------- intro graphic: chip labels + hover interactions ---------- */
-.iw-chip-txt { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; }
-.iw-ds-tile, .iw-stack-badge, .iw-glabel, .iw-ai {
-  transform-box: fill-box; transform-origin: center;
-  transition: transform .3s cubic-bezier(.2,.8,.3,1);
-}
-.iw-ds-tile:hover { transform: translateY(-3px); }
-.iw-stack-badge { cursor: pointer; }
-.iw-stack-badge:hover { transform: translateY(-4px) scale(1.1); }
-.iw-glabel:hover { transform: scale(1.05); }
-.iw-ai:hover { transform: scale(1.06); }
-@media (prefers-reduced-motion: reduce) {
-  .iw-ds-tile, .iw-stack-badge, .iw-glabel, .iw-ai { transition: none; }
-}
-
-
-/* green underline accent for key phrases in body copy */
-.iw-uline { text-decoration: underline; text-decoration-color: #80c34a; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-
-/* ---------- 4K / 5K at 100% scaling ----------
-   Everything is sized in px and the content tops out around 1240px, so on a
+/* ===========================================================
+   12. Large screens (4K / 5K at 100%)
+   =========================================================== */
+/*    Everything is sized in px and the content tops out around 1240px, so on a
    3840px or 5120px-wide viewport the page shrinks to a strip in the middle.
    Zooming the whole page lays it out as if the screen were ~2560px wide —
    the same proportions as a 5K display at its default 2x scaling. */
