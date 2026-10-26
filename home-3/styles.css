@@ -640,8 +640,14 @@ body.iw-modal-open { overflow: hidden; }
   .iw-meet-head { margin-bottom:48px; }
   .iw-meet-lede { font-size:15.5px; }
   .iw-super-lead { font-size:18px; }
-  /* copy first, then the graphic */
-  .iw-super-grid .iw-illus { order:0; }
+  /* these two headings run longer than the others — at 44px "Meet ImageWorks"
+     broke nearly a word per line on a phone */
+  .iw-meet-head .ix-28 { font-size:32px; letter-spacing:-.5px; line-height:1.18; }
+  .iw-super-grid .ix-10 { font-size:34px; }
+  /* copy first, then the graphic — bled to the screen edges so its labels
+     stay legible */
+  .iw-super-grid .iw-illus { order:0; margin:0 -32px; }
+  .iw-super-grid .iw-illus svg { width:100%; max-width:none; }
 }
 .ix-58 { position:relative; }
 .ix-59 { position:relative; display:flex; flex-direction:column; background:#fff; padding:104px 0; overflow:hidden; }
@@ -748,3 +754,11 @@ body.iw-modal-open { overflow: hidden; }
 
 /* green underline accent for key phrases in body copy */
 .iw-uline { text-decoration: underline; text-decoration-color: #80c34a; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+/* ---------- 4K / 5K at 100% scaling ----------
+   Everything is sized in px and the content tops out around 1240px, so on a
+   3840px or 5120px-wide viewport the page shrinks to a strip in the middle.
+   Zooming the whole page lays it out as if the screen were ~2560px wide —
+   the same proportions as a 5K display at its default 2x scaling. */
+@media (min-width: 3000px) { body { zoom: 1.5; } }
+@media (min-width: 4400px) { body { zoom: 2; } }

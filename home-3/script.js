@@ -113,10 +113,13 @@ function joinHTML(list, fn) {
   return list.map(fn).join('');
 }
 
-/* fill a marquee track with two copies of the content for a seamless loop */
-function fillTrack(id, html) {
+/* fill a marquee track with two copies of the content for a seamless loop.
+   `reps` repeats the content inside each copy, for short sets that would
+   otherwise run out before the edge of a wide screen */
+function fillTrack(id, html, reps) {
   const el = document.getElementById(id);
-  if (el) el.innerHTML = html + html;
+  const half = html.repeat(reps || 1);
+  if (el) el.innerHTML = half + half;
 }
 
 /* marquees move side-to-side driven by scroll position (no auto-play) */
@@ -227,8 +230,10 @@ function buildShowcase() {
   fillTrack('track-scroll-works-a', worksFwd);
   fillTrack('track-scroll-works-b', worksRev);
   fillTrack('track-scroll-partners', partners);
-  fillTrack('track-scroll-testi-a', testiA);
-  fillTrack('track-scroll-testi-b', testiB);
+  // four reviews per row is ~1100px — not enough to cover a 2560px-wide
+  // layout once the reverse row starts shifted by a full loop
+  fillTrack('track-scroll-testi-a', testiA, 3);
+  fillTrack('track-scroll-testi-b', testiB, 3);
 }
 
 /* -----------------------------------------------------------
