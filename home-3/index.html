@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
 <div class="ix-1">
@@ -178,10 +178,8 @@
   </div>
 </section>
 
-<!-- ===================== MEET IMAGEWORKS + WHAT WE DO (shared blue→navy gradient band) ===================== -->
+<!-- ===================== MEET IMAGEWORKS (blue→navy gradient band) ===================== -->
 <div class="iw-blueband">
-<!-- ===================== MEET IMAGEWORKS + OUR SUPERPOWER ===================== -->
-<!-- opens the band now, so it takes a full top pad instead of the trimmed one -->
 <section class="ix-48 iw-meet" id="why">
   <div class="ix-49">
     <div class="iw-reveal ix-50 iw-meet-head">
@@ -245,21 +243,158 @@
         <p class="iw-why-d">Your website, content, creative, and marketing developed as a connected strategy.</p>
       </div>
     </div>
+  </div>
+</section>
+</div>
 
-    <!-- Our Superpower: the closing statement of the band, centred under the four columns -->
-    <div class="iw-reveal iw-super">
-      <span class="iw-super-k">Our Superpower?</span>
-      <h2 class="ix-28 iw-super-h">Customization.</h2>
-      <p class="iw-super-lead">AI can generate almost anything. Making it exceptional takes real talent.</p>
-      <p class="iw-super-body">We combine the power of AI with the expertise of our designers, UX specialists, strategists, and writers to customize every aspect of your digital presence—from websites and user experiences to content and marketing.</p>
-      <p class="iw-super-end"><span class="iw-uline">Nothing generic. Everything expertly crafted.</span></p>
+<!-- ===================== OUR SUPERPOWER ===================== -->
+<section class="ix-7 iw-super-sec">
+  <div class="iw-reveal ix-8">
+    <div class="iw-intro-grid ix-9 iw-super-grid">
+      <div>
+        <h2 class="ix-10">Our Superpower?<br><span class="ix-11">Customization.</span></h2>
+        <p class="iw-super-lead">AI can generate almost anything. Making it exceptional takes real talent.</p>
+        <p class="ix-13">We combine the power of AI with the expertise of our designers, UX specialists, strategists, and writers to customize every aspect of your digital presence—from websites and user experiences to content and marketing.</p>
+        <p class="iw-super-end"><span class="iw-uline">Nothing generic. Everything expertly crafted.</span></p>
+      </div>
+      <!-- The same generic AI output goes in on the left; the four kinds of
+           expert named in the copy work it over; a site that's unmistakably
+           the client's comes out on the right. -->
+      <div class="iw-illus ix-14">
+        <svg class="iw-sem ix-15" viewBox="0 0 640 390" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Identical, generic AI-generated pages pass through ImageWorks designers, UX specialists, strategists and writers, and come out as a fully custom, on-brand website.">
+          <defs>
+            <filter id="iwSupCard" x="-30%" y="-30%" width="160%" height="170%">
+              <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#0d2748" flood-opacity="0.18"/>
+            </filter>
+            <linearGradient id="iwSupHero" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#143c66"/><stop offset="1" stop-color="#1266b5"/>
+            </linearGradient>
+            <radialGradient id="iwSupGlow" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="#80c34a" stop-opacity="0.30"/>
+              <stop offset="0.55" stop-color="#1266b5" stop-opacity="0.10"/>
+              <stop offset="1" stop-color="#1266b5" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- ---------- generic AI output: the same page, three times ---------- -->
+          <g opacity="0.9">
+            <rect x="48" y="96" width="132" height="168" rx="10" fill="#f6f8fb" stroke="#e1e7ef"/>
+            <rect x="36" y="108" width="132" height="168" rx="10" fill="#f6f8fb" stroke="#e1e7ef"/>
+          </g>
+          <g class="iw-ds-tile">
+            <rect x="24" y="120" width="132" height="168" rx="10" fill="#f8fafc" stroke="#dbe2eb"/>
+            <circle cx="38" cy="134" r="3" fill="#d3dbe5"/>
+            <circle cx="48" cy="134" r="3" fill="#d3dbe5"/>
+            <line x1="24" y1="146" x2="156" y2="146" stroke="#e6ebf1"/>
+            <rect x="36" y="156" width="108" height="50" rx="5" fill="#e9eef4"/>
+            <path d="M36 156 L144 206 M144 156 L36 206" stroke="#d7dee8" stroke-width="1"/>
+            <rect x="36" y="218" width="84" height="8" rx="4" fill="#cfd8e3"/>
+            <rect x="36" y="232" width="104" height="6" rx="3" fill="#e1e7ef"/>
+            <rect x="36" y="244" width="92" height="6" rx="3" fill="#e1e7ef"/>
+            <rect x="36" y="260" width="46" height="16" rx="3" fill="#cfd8e3"/>
+          </g>
+          <g class="iw-glabel">
+            <rect x="24" y="306" width="166" height="27" rx="13.5" fill="#eef1f5"/>
+            <circle cx="42" cy="319.5" r="4" fill="#a3b0c0"/>
+            <text class="iw-chip-txt" x="54" y="323" fill="#8593a6">GENERIC AI OUTPUT</text>
+          </g>
+
+          <!-- into the experts -->
+          <g stroke="#9db8d6" stroke-width="1.4" fill="none">
+            <path class="iw-sem-flow" d="M156 180 C 184 180, 186 150, 214 150"/>
+            <path class="iw-sem-flow" d="M156 204 L 214 204"/>
+            <path class="iw-sem-flow" d="M156 228 C 184 228, 186 258, 214 258"/>
+          </g>
+
+          <!-- ---------- the people who make it exceptional ---------- -->
+          <g class="iw-ai">
+            <path d="M302 66 L302 80" stroke="#9db8d6" stroke-width="1.4" stroke-dasharray="3 4"/>
+            <rect x="266" y="38" width="72" height="28" rx="14" fill="#80c34a"/>
+            <path class="iw-sem-check" d="M285 45 l2.2 4.6 4.6 2.2 -4.6 2.2 -2.2 4.6 -2.2 -4.6 -4.6 -2.2 4.6 -2.2 z" fill="#ffffff"/>
+            <text x="297" y="57" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="800" letter-spacing="1" fill="#ffffff">+AI</text>
+          </g>
+          <rect x="214" y="80" width="176" height="250" rx="16" fill="#143c66"/>
+          <text class="iw-chip-txt" x="302" y="106" text-anchor="middle" fill="#9fc3e8">HUMAN EXPERTS</text>
+
+          <g class="iw-ds-tile">
+            <rect x="228" y="120" width="148" height="42" rx="21" fill="#ffffff" fill-opacity="0.07" stroke="#ffffff" stroke-opacity="0.14"/>
+            <circle cx="250" cy="141" r="13" fill="#80c34a"/>
+            <circle cx="246" cy="138" r="2" fill="#143c66"/><circle cx="253" cy="137" r="2" fill="#143c66"/><circle cx="249" cy="145" r="2" fill="#143c66"/>
+            <text x="272" y="146" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" fill="#ffffff">Designers</text>
+          </g>
+          <g class="iw-ds-tile">
+            <rect x="228" y="172" width="148" height="42" rx="21" fill="#ffffff" fill-opacity="0.07" stroke="#ffffff" stroke-opacity="0.14"/>
+            <circle cx="250" cy="193" r="13" fill="#4a9be0"/>
+            <path d="M245 186 l10 6 -4.4 1.2 2.6 4.6 -2 1.1 -2.6 -4.6 -3.4 3z" fill="#ffffff"/>
+            <text x="272" y="198" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" fill="#ffffff">UX Specialists</text>
+          </g>
+          <g class="iw-ds-tile">
+            <rect x="228" y="224" width="148" height="42" rx="21" fill="#ffffff" fill-opacity="0.07" stroke="#ffffff" stroke-opacity="0.14"/>
+            <circle cx="250" cy="245" r="13" fill="#80c34a"/>
+            <circle cx="250" cy="245" r="7" stroke="#143c66" stroke-width="1.8"/>
+            <circle cx="250" cy="245" r="2.2" fill="#143c66"/>
+            <text x="272" y="250" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" fill="#ffffff">Strategists</text>
+          </g>
+          <g class="iw-ds-tile">
+            <rect x="228" y="276" width="148" height="42" rx="21" fill="#ffffff" fill-opacity="0.07" stroke="#ffffff" stroke-opacity="0.14"/>
+            <circle cx="250" cy="297" r="13" fill="#4a9be0"/>
+            <path d="M244 303 l1.4 -4.6 8 -8 3.2 3.2 -8 8z M244 303 h12" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+            <text x="272" y="302" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="700" fill="#ffffff">Writers</text>
+          </g>
+
+          <!-- out comes the custom site -->
+          <g stroke="#80c34a" stroke-width="1.6" fill="none">
+            <path class="iw-sem-flow" d="M390 205 L 414 205"/>
+          </g>
+          <circle cx="414" cy="205" r="3.4" fill="#80c34a"/>
+
+          <!-- ---------- the finished, unmistakably custom website ---------- -->
+          <circle cx="517" cy="210" r="150" fill="url(#iwSupGlow)"/>
+          <g filter="url(#iwSupCard)">
+            <rect x="414" y="92" width="206" height="226" rx="12" fill="#ffffff" stroke="#e6ebf2"/>
+          </g>
+          <line x1="414" y1="120" x2="620" y2="120" stroke="#eef2f7" stroke-width="1.5"/>
+          <circle cx="430" cy="106" r="3.4" fill="#80c34a"/>
+          <circle cx="442" cy="106" r="3.4" fill="#dce4ee"/>
+          <circle cx="454" cy="106" r="3.4" fill="#dce4ee"/>
+          <rect x="428" y="132" width="178" height="86" rx="7" fill="url(#iwSupHero)"/>
+          <circle cx="578" cy="164" r="24" fill="#80c34a" fill-opacity="0.9"/>
+          <circle cx="560" cy="190" r="15" stroke="#7cc0f7" stroke-width="2.4"/>
+          <rect x="442" y="150" width="90" height="9" rx="4.5" fill="#ffffff"/>
+          <rect x="442" y="165" width="66" height="7" rx="3.5" fill="#ffffff" fill-opacity="0.55"/>
+          <rect x="442" y="186" width="54" height="17" rx="3" fill="#80c34a"/>
+          <rect x="428" y="230" width="54" height="42" rx="6" fill="#eaf6dd"/>
+          <rect x="490" y="230" width="54" height="42" rx="6" fill="#e8f1fb"/>
+          <rect x="552" y="230" width="54" height="42" rx="6" fill="#eef2f7"/>
+          <circle cx="455" cy="251" r="7" fill="#5c9a2e"/>
+          <circle cx="517" cy="251" r="7" fill="#1266b5"/>
+          <circle cx="579" cy="251" r="7" fill="#143c66"/>
+          <rect x="428" y="284" width="150" height="7" rx="3.5" fill="#d7e0ec"/>
+          <rect x="428" y="298" width="112" height="7" rx="3.5" fill="#e3e9f1"/>
+
+          <g class="iw-ai">
+            <rect x="532" y="76" width="98" height="30" rx="15" fill="#143c66"/>
+            <circle cx="550" cy="91" r="8" fill="#80c34a"/>
+            <path d="M546.4 91.2 l2.4 2.4 4.4 -4.8" stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <text class="iw-chip-txt" x="564" y="95" fill="#ffffff">CUSTOM</text>
+          </g>
+          <path class="iw-sem-check" d="M402 82 l2 4.2 4.2 2 -4.2 2 -2 4.2 -2 -4.2 -4.2 -2 4.2 -2 z" fill="#80c34a"/>
+          <path class="iw-sem-check" d="M628 300 l1.6 3.4 3.4 1.6 -3.4 1.6 -1.6 3.4 -1.6 -3.4 -3.4 -1.6 3.4 -1.6 z" fill="#1266b5"/>
+
+          <g class="iw-glabel">
+            <rect x="414" y="338" width="168" height="27" rx="13.5" fill="#eef7e4"/>
+            <circle cx="432" cy="351.5" r="4" fill="#5c9a2e"/>
+            <text class="iw-chip-txt" x="444" y="355" fill="#4a8628">EXPERTLY CRAFTED</text>
+          </g>
+        </svg>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ===================== WHAT WE DO ===================== -->
-<!-- top pad trimmed: it follows Meet ImageWorks' bottom pad inside the same band -->
-<section class="ix-26 iw-what-after">
+<!-- ===================== WHAT WE DO (blue→navy gradient band) ===================== -->
+<div class="iw-blueband">
+<section class="ix-26">
   <div class="ix-8">
     <div class="ix-27">
       <h2 class="iw-reveal ix-28">What We Do</h2>
@@ -521,6 +656,6 @@
   </div>
 </div>
 
-<script src="script.js?v=5"></script>
+<script src="script.js?v=6"></script>
 </body>
 </html>

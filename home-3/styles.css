@@ -490,10 +490,6 @@ body {
     padding: 30px 6px 4px !important;
   }
   .iw-why-grid > div:first-child { border-top: 0 !important; padding-top: 0 !important; }
-  .iw-meet-head { margin-bottom: 48px; }
-  .iw-meet-lede, .iw-super-body { font-size: 15.5px; }
-  .iw-super { margin-top: 64px; padding-top: 52px; }
-  .iw-super-lead { font-size: 18px; }
 
   /* trim the tall desktop section padding so phones don't scroll through empty bands */
   section[style*="104px 40px"], section[style*="112px 40px"], section[style*="108px 40px"] { padding-left: 20px !important; padding-right: 20px !important; }
@@ -618,9 +614,8 @@ body.iw-modal-open { overflow: hidden; }
 .ix-56 { transition-delay:360ms; padding:0 30px; border-left:1px solid rgba(255,255,255,.12); }
 .ix-57 { transition-delay:480ms; padding:0 30px; border-left:1px solid rgba(255,255,255,.12); border-right:1px solid rgba(255,255,255,.12); }
 
-/* Meet ImageWorks opens the blue band; What We Do follows it inside the band */
-.iw-meet { padding-top:104px; padding-bottom:96px; }
-.iw-what-after { padding-top:24px; }
+/* Meet ImageWorks has the blue band to itself now, so it takes full pads */
+.iw-meet { padding-top:104px; padding-bottom:104px; }
 
 /* Meet ImageWorks: the Why band, now with a lede and a title + line per column */
 .iw-meet-head { max-width:900px; margin-bottom:80px; }
@@ -631,13 +626,23 @@ body.iw-modal-open { overflow: hidden; }
 .iw-why-t { font-weight:700; font-size:18.5px; line-height:1.35; }
 .iw-why-d { margin:10px 0 0; font-size:15.5px; line-height:1.55; color:rgba(226,238,252,.72); }
 
-/* Our Superpower: closes the band, centred under the columns */
-.iw-super { max-width:760px; margin:104px auto 0; padding-top:72px; border-top:1px solid rgba(255,255,255,.12); text-align:center; }
-.iw-super-k { display:block; font-size:15px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#80c34a; }
-.iw-super-h { margin-top:10px; }
-.iw-super-lead { margin:18px 0 0; font-size:20px; font-weight:600; line-height:1.5; color:#fff; text-wrap:balance; }
-.iw-super-body { margin:16px auto 0; max-width:680px; font-size:16.5px; line-height:1.65; color:rgba(226,238,252,.72); }
-.iw-super-end { margin:26px 0 0; font-size:17px; font-weight:700; color:#fff; }
+/* Our Superpower: its own white section, laid out like the intro but mirrored —
+   the graphic leads on the left, the copy answers on the right */
+.iw-super-sec { background:#fff; }
+.iw-super-grid { grid-template-columns:1.2fr 1fr; }
+.iw-super-grid .iw-illus { order:-1; }
+.iw-super-lead { margin:0; font-size:20px; font-weight:700; line-height:1.5; color:#143c66; text-wrap:pretty; max-width:520px; }
+.iw-super-end { margin:24px 0 0; font-size:18px; font-weight:700; color:#143c66; }
+
+/* phones — after the base rules above so they actually win */
+@media (max-width: 767px) {
+  .iw-meet { padding-top:72px; padding-bottom:72px; }
+  .iw-meet-head { margin-bottom:48px; }
+  .iw-meet-lede { font-size:15.5px; }
+  .iw-super-lead { font-size:18px; }
+  /* copy first, then the graphic */
+  .iw-super-grid .iw-illus { order:0; }
+}
 .ix-58 { position:relative; }
 .ix-59 { position:relative; display:flex; flex-direction:column; background:#fff; padding:104px 0; overflow:hidden; }
 .ix-60 { text-align:center; max-width:680px; margin:0 auto 48px; padding:0 40px; }
