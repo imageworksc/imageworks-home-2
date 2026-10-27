@@ -300,13 +300,26 @@ function initHeroType() {
 
   const START = 0.48;
   const STEP = 0.038;
-  Array.from(text).forEach((c, i) => {
-    const ch = document.createElement('span');
-    ch.className = c === ' ' ? 'iwh-ch iwh-ch--space' : 'iwh-ch';
-    ch.setAttribute('aria-hidden', 'true');
-    ch.textContent = c;
-    ch.style.setProperty('--d', `${(START + i * STEP).toFixed(3)}s`);
-    el.appendChild(ch);
+  // letters are grouped per word, so a line can only break between words —
+  // otherwise a narrow phone can strand a single letter or the full stop
+  let i = 0;
+  text.split(' ').forEach((word, w) => {
+    if (w > 0) {
+      el.appendChild(document.createTextNode(' '));
+      i++;
+    }
+    const wordEl = document.createElement('span');
+    wordEl.className = 'iwh-word';
+    wordEl.setAttribute('aria-hidden', 'true');
+    Array.from(word).forEach((c) => {
+      const ch = document.createElement('span');
+      ch.className = 'iwh-ch';
+      ch.textContent = c;
+      ch.style.setProperty('--d', `${(START + i * STEP).toFixed(3)}s`);
+      wordEl.appendChild(ch);
+      i++;
+    });
+    el.appendChild(wordEl);
   });
 }
 

@@ -305,7 +305,6 @@ body {
     transform: translate(-50%, -50%) scale(1);
 }
 
-
 .card-icon {
     width: 64px;
     height: 64px;
@@ -343,7 +342,6 @@ body {
     left: 50%;
     top: calc(408px + 110px);
 }
-
 
 /* Stack Section Styles */
 .hero-stack {
@@ -557,128 +555,7 @@ body {
     color: var(--accent-color);
 }
 
-.hero-description {
-    color: var(--body-text-color);
-    font-size: 1.375rem;
-    line-height: 1.6;
-    max-width: 580px;
-    margin: 0 auto;
-}
-
 /* Hero CTA buttons under the description */
-.hero-cta {
-    position: relative;
-    z-index: 5;
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin-top: 24px;
-    flex-wrap: wrap;
-}
-
-.hero-btn {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    padding: 12px 26px;
-    border-radius: 8px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1.5px solid transparent;
-    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    white-space: nowrap;
-}
-
-.hero-btn-primary {
-    background: #5A9E2F;
-    color: #FFFFFF;
-    border-color: #5A9E2F;
-}
-
-.hero-btn-primary:hover {
-    background: #4E8A28;
-    border-color: #4E8A28;
-}
-
-.hero-btn-secondary {
-    background: #FFFFFF;
-    color: var(--title-color);
-    border-color: #D5DDE6;
-}
-
-.hero-btn-secondary:hover {
-    border-color: var(--title-color);
-}
-
-.hero-ms-term {
-    position: relative;
-    display: inline;
-    color: #1266b5;
-    font-weight: 600;
-    cursor: default;
-    border-bottom: 1.5px dashed rgba(18, 102, 181, 0.5);
-}
-
-.hero-ms-tooltip {
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%) translateY(4px);
-    width: 230px;
-    background: #0f2440;
-    border-radius: 8px;
-    padding: 12px 14px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.15s ease, transform 0.15s ease;
-    z-index: 100;
-    text-align: left;
-    box-shadow: 0 8px 24px rgba(15, 36, 64, 0.2);
-    font-size: 11px;
-    font-weight: 400;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.55);
-}
-
-.hero-ms-term:hover .hero-ms-tooltip {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
-.hero-ms-tooltip::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: #0f2440;
-}
-
-.hero-ms-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: 9px;
-}
-
-.hero-ms-chip {
-    font-size: 10.5px;
-    font-weight: 600;
-    padding: 3px 9px;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    letter-spacing: 0.02em;
-}
-
-.hero-ms-note {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 8px;
-}
 
 /* ---------- stack icons: positions along the stack row ---------- */
 .stack-icon-1 { left: 176px; }
@@ -693,7 +570,6 @@ body {
 .hero.hover-hub .hero-tag,
 .hero.hover-hub .hero-tag-right { background: #18497D; }
 
-
 /* ============ Mobile hero graphic (hidden on desktop) ============ */
 .mob-hero { display: none; }
 
@@ -701,7 +577,7 @@ body {
     /* Hide all desktop-only elements */
     .hero-tag, .hero-tag-right, .hero-center-svg, .hero-hub-hit,
     .hero-stack, .hero-cursor-mask, .hero-card,
-    .hero-container, .mobile-section-header { display: none !important; }
+    .hero-container { display: none !important; }
 
     .hero {
         height: auto !important;
@@ -746,30 +622,8 @@ body {
         letter-spacing: -0.8px; color: #0F2B4E; text-align: center;
     }
     .mob-h1 .accent { color: #5A9E2F; }
-    .mob-desc {
-        margin: -14px auto 24px; max-width: 300px;
-        font-size: 14px; line-height: 1.5; color: #5B6B80; text-align: center;
-    }
-    .mob-desc .mob-ms {
-        color: #1266b5; font-weight: 600;
-        border-bottom: 1.5px dashed rgba(18,102,181,0.5);
-    }
 
     /* Mobile CTA buttons */
-    .mob-cta {
-        display: flex; justify-content: center; gap: 10px;
-        margin: 0 0 28px; flex-wrap: wrap;
-    }
-    .mob-btn {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 14px; font-weight: 700;
-        padding: 12px 22px; border-radius: 8px;
-        text-decoration: none; cursor: pointer;
-        display: inline-flex; align-items: center; justify-content: center;
-        border: 1.5px solid transparent; white-space: nowrap;
-    }
-    .mob-btn-primary { background: #5A9E2F; color: #FFFFFF; border-color: #5A9E2F; }
-    .mob-btn-secondary { background: #FFFFFF; color: #263A62; border-color: #D5DDE6; }
 
     /* Mind-map column */
     .mob-mindmap { display: flex; flex-direction: column; align-items: center; width: 100%; }

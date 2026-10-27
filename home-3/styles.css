@@ -7,7 +7,7 @@
     3. Hero
     4. Intro — Built to Stand Out
     5. How We Do It
-    6. Phones (shared overrides)
+    6. Phones & tablets (shared overrides)
     7. Hero graphic modal
     8. Reduced motion
     9. Section layout classes (ix-*)
@@ -189,8 +189,8 @@ body {
 
 /* the accent lands a letter at a time — JS stamps each letter's delay */
 .iwh-ch { display: inline-block; animation: iwhChar .44s cubic-bezier(.16,.84,.44,1) var(--d, 0s) backwards; }
-/* an inline-block holding a single space would collapse to nothing */
-.iwh-ch--space { white-space: pre; }
+/* letters are grouped per word so lines only break between words */
+.iwh-word { display: inline-block; white-space: nowrap; }
 @keyframes iwhChar { from { opacity: 0; transform: translateY(.34em); } }
 
 /* the button and trust bar lift in once the words have all landed */
@@ -464,11 +464,30 @@ body {
 
 
 /* ===========================================================
-   6. Phones (shared overrides)
+   6. Phones & tablets (shared overrides)
    =========================================================== */
-/* tablet (>=768) keeps the desktop layout; phones stack. The grids come from
-   the ix-* layout classes further down, so these override with !important. */
+/* Phones stack everything; portrait tablets stack the two-column sections and
+   halve the four-column one; landscape tablets (1024+) keep the desktop
+   layout. The grids come from the ix-* layout classes further down, so these
+   override with !important. */
 
+/* portrait tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Built to Stand Out + Our Superpower: copy on top, the graphic below at a
+     size you can read */
+  .iw-intro-grid { grid-template-columns: 1fr !important; gap: 56px !important; }
+  .iw-intro-grid .iw-illus { order: 0 !important; }
+  .iw-intro-grid .ix-12, .iw-intro-grid .ix-13, .iw-intro-grid .iw-super-lead { max-width: 620px; }
+
+  /* What We Do: one card per row, at a comfortable width */
+  .iw-what-grid { grid-template-columns: 1fr !important; max-width: 600px; margin: 0 auto; }
+
+  /* Meet ImageWorks: four columns become a 2×2 grid, each still bracketed by rules */
+  .iw-why-grid { grid-template-columns: repeat(2, 1fr) !important; row-gap: 56px !important; }
+  .iw-why-grid > div:nth-child(2n) { border-right: 1px solid rgba(255,255,255,.12) !important; }
+}
+
+/* phones */
 @media (max-width: 767px) {
   /* reviews: one readable row instead of two, with cards that fit the screen */
   .iw-testi-row2 { display: none !important; }
@@ -489,7 +508,6 @@ body {
     padding: 30px 6px 4px !important;
   }
   .iw-why-grid > div:first-child { border-top: 0 !important; padding-top: 0 !important; }
-
 }
 
 
