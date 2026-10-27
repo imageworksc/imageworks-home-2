@@ -651,11 +651,11 @@ body.iw-modal-open { overflow: hidden; }
 .iw-meet { padding-top:104px; padding-bottom:104px; }
 
 /* Meet ImageWorks: the Why band, now with a lede and a title + line per column */
-.iw-meet-head { max-width:900px; margin-bottom:80px; }
-/* subtitle and lede share one measure and balance their lines, so the two
-   paragraphs read as one even block instead of a wide line over a ragged one */
-.iw-meet-head .ix-29 { max-width:900px; margin-left:auto; margin-right:auto; text-wrap:balance; }
-.iw-meet-lede { margin:18px auto 0; max-width:900px; font-size:16.5px; line-height:1.65; color:rgba(226,238,252,.72); font-weight:400; text-wrap:pretty; }
+/* left-aligned on the same edge as the column copy below, at a reading
+   measure (~75 characters) instead of long centred lines */
+.iw-meet-head { text-align:left; max-width:none; margin:0 0 80px; padding-left:30px; }
+.iw-meet-head .ix-29 { max-width:680px; text-wrap:pretty; }
+.iw-meet-lede { margin:18px 0 0; max-width:640px; font-size:16.5px; line-height:1.65; color:rgba(226,238,252,.72); font-weight:400; text-wrap:pretty; }
 .iw-why-t { font-weight:700; font-size:18.5px; line-height:1.35; }
 .iw-why-d { margin:10px 0 0; font-size:15.5px; line-height:1.55; color:rgba(226,238,252,.72); }
 
@@ -670,7 +670,7 @@ body.iw-modal-open { overflow: hidden; }
 /* phones — after the base rules above so they actually win */
 @media (max-width: 767px) {
   .iw-meet { padding-top:72px; padding-bottom:72px; }
-  .iw-meet-head { margin-bottom:48px; }
+  .iw-meet-head { margin-bottom:48px; padding-left:6px; }
   .iw-meet-lede { font-size:15.5px; }
   .iw-super-lead { font-size:18px; }
   /* these two headings run longer than the others — at 44px "Meet ImageWorks"
