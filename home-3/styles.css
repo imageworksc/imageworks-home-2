@@ -228,7 +228,7 @@ body {
 }
 /* outlined against the navy: a green rule, the hero showing through, and the
    site's squared 2px corner rather than a pill. No drop shadow — a shadow under
-   a see-through button reads as a mistake. It fills in on hover */
+   a see-through button reads as a mistake. On hover the rule turns white */
 .iwh-cta {
   display: inline-flex; align-items: center; gap: 12px;
   height: 54px; padding: 0 24px;
@@ -238,7 +238,7 @@ body {
   font-size: 16px; font-weight: 700; text-decoration: none;
   transition: background .25s ease, border-color .25s ease;
 }
-.iwh-cta:hover { background: #80c34a; border-color: #80c34a; }
+.iwh-cta:hover { border-color: #fff; }
 /* the primary action is filled from the start */
 .iwh-cta--solid { background: #80c34a; }
 .iwh-cta--solid:hover { background: #6fb23c; border-color: #6fb23c; }
