@@ -713,17 +713,23 @@ function initHeroType() {
   el.textContent = '';
 
   const START = 0.48, STEP = 0.038;
-  for (let i = 0; i < text.length; i++) {
-    const c = text.charAt(i);
-    const ch = document.createElement('span');
-    ch.className = 'iwh-ch';
-    ch.setAttribute('aria-hidden', 'true');
-    ch.textContent = c;
-    // an inline-block holding a single space would collapse to nothing
-    if (c === ' ') ch.style.whiteSpace = 'pre';
-    if (!REDUCE) ch.style.animationDelay = (START + i * STEP).toFixed(3) + 's';
-    el.appendChild(ch);
-  }
+  // letters are grouped per word, so a line can only break between words —
+  // otherwise a narrow phone can strand a single letter or the full stop
+  let i = 0;
+  text.split(' ').forEach(function (word, w) {
+    if (w > 0) { el.appendChild(document.createTextNode(' ')); i++; }
+    const wordEl = document.createElement('span');
+    wordEl.className = 'iwh-word';
+    wordEl.setAttribute('aria-hidden', 'true');
+    for (let k = 0; k < word.length; k++, i++) {
+      const ch = document.createElement('span');
+      ch.className = 'iwh-ch';
+      ch.textContent = word.charAt(k);
+      if (!REDUCE) ch.style.animationDelay = (START + i * STEP).toFixed(3) + 's';
+      wordEl.appendChild(ch);
+    }
+    el.appendChild(wordEl);
+  });
 }
 
 /* -----------------------------------------------------------
