@@ -226,9 +226,8 @@ body {
 .iwh-word { display: inline-block; white-space: nowrap; }
 @keyframes iwhChar { from { opacity: 0; transform: translateY(.34em); } }
 
-/* the buttons and trust bar lift in once the words have all landed */
+/* the buttons, then the tagline under them, lift in once the words have all landed */
 .iwh-ctas  { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) 1.16s backwards; }
-.iwh-trust { animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) 1.28s backwards; }
 /* Only a from-state: every keyframe ends at the element's natural value, and
    `backwards` drops the fill once it's done — so the CTA's hover lift still wins
    afterwards instead of being pinned by a forwards fill. */
@@ -239,12 +238,13 @@ body {
   color: rgba(226,238,252,.78);
   text-wrap: balance;
 }
+/* sits under the buttons, in the spot the trust bar used to hold */
 .iwh-tag {
-  margin: 14px auto 0; max-width: 680px;
+  margin: 36px auto 0; max-width: 680px;
   font-size: 15px; line-height: 1.55; font-weight: 700; letter-spacing: .01em;
   color: #fff;
   text-wrap: pretty;
-  animation: iwhUnveil .8s cubic-bezier(.16,.84,.44,1) .8s backwards;
+  animation: iwhFade .8s cubic-bezier(.16,.84,.44,1) 1.28s backwards;
 }
 .iwh-ms { color: #7cc0f7; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 /* "Continuously improved." is the line the page is built around: it carries the
@@ -286,7 +286,7 @@ body {
   .iw-hero { min-height: 0; padding: 90px 24px 90px; }   /* same total as the old 126/54 split */
   .iwh-h1 { font-size: 30px; letter-spacing: -1px; }
   .iwh-sub { font-size: 17px; margin-top: 18px; }
-  .iwh-tag { font-size: 14px; margin-top: 12px; }
+  .iwh-tag { font-size: 14px; margin-top: 28px; }
   .iwh-ctas { margin-top: 30px; }
   /* stacked, the two buttons share one width */
   .iwh-cta { height: 52px; width: 100%; max-width: 260px; justify-content: center; }
@@ -567,7 +567,7 @@ body.iw-modal-open { overflow: hidden; }
   .iw-sem-flow, .iw-sem-check { animation: none !important; }
   /* the hero entrance simply doesn't play — every keyframe ends at the
      element's natural state, so skipping it leaves the copy exactly in place */
-  .iwh-up, .iwh-sub, .iwh-tag, .iwh-ch, .iwh-ctas, .iwh-trust { animation: none !important; }
+  .iwh-up, .iwh-sub, .iwh-tag, .iwh-ch, .iwh-ctas { animation: none !important; }
 }
 
 
@@ -579,9 +579,6 @@ body.iw-modal-open { overflow: hidden; }
 .ix-1 { position:relative; width:100%; overflow-x:clip; background:#fff; }
 .ix-2 { --d:.08s; }
 .ix-3 { --d:.26s; }
-.ix-4 { display:flex; justify-content:center; align-items:center; gap:28px; margin-top:38px; flex-wrap:wrap; }
-.ix-5 { display:flex; align-items:center; gap:9px; }
-.ix-6 { font-size:13.5px; font-weight:600; color:#c9ddf2; letter-spacing:.01em; }
 .ix-7 { position:relative; background:#f2f5f9; padding:108px 40px 116px; overflow:hidden; }
 .ix-8 { position:relative; max-width:1240px; margin:0 auto; }
 .ix-9 { display:grid; grid-template-columns:1fr 1.2fr; gap:60px; align-items:center; }
